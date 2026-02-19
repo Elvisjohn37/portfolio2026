@@ -5,9 +5,11 @@
         },
     ],
     "settings": {
-        "editor.defaultFormatter": "vscode.typescript-language-features",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true,
         "eslint.alwaysShowStatus": true,
+        "prettier.tabWidth": 4,
+        "prettier.semi": false,
         "files.exclude": {
             "node_modules/": false
         },
@@ -18,10 +20,11 @@
         "editor.wordWrapColumn": 120,
         "editor.tabSize": 4,
         "[typescriptreact]": {
-            "editor.defaultFormatter": "vscode.typescript-language-features"
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.formatOnSave": true,
         },
         "[json]": {
-            "editor.defaultFormatter": "vscode.json-language-features"
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
         }
     },
 }
