@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+.ul {
+    height: var(--navigation-height);
+    @apply flex py-[5px];
+}
+
+.ul li {
+    @apply h-full;
+}
+
+.ul li .link {
+    @apply block h-full content-center px-[10px] rounded-xs hover:bg-primary-dark transition duration-300 text-primary-text-accent;
+}
