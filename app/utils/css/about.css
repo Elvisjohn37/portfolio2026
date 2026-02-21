@@ -1,0 +1,3 @@
+.icon-container {
+    @apply p-2 rounded-sm text-4xl w-fit bg-primary border border-primary-light duration-300 transition hover:border-primary-text-accent hover:border;
+}
