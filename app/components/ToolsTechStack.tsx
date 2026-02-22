@@ -1,102 +1,45 @@
 import { Button, Grow, Popover, Tooltip, Typography } from "@mui/material"
-import {
-    Bootstrap,
-    Css,
-    Gulp,
-    Html,
-    Javascript,
-    Jest,
-    Jquery,
-    MaterialUi,
-    Reactjs,
-    Sass,
-    Tailwindcss,
-    Vuejs,
-    Webpack,
-} from "./Icons"
+import { Docker, Github, Bitbucket, Jira, Trello, Jenkins } from "./Icons"
 import { useInView } from "react-intersection-observer"
 import { useState } from "react"
 
 const ToolsTechStack = () => {
     const toolsTechStacks = [
         {
-            Component: Reactjs,
-            title: "Reactjs",
             id: 1,
-            details:
-                "7 years of experience building dynamic, high-performance applications using ReactJS.",
+            Component: Docker,
+            title: "Docker",
+            details: "7 years of experience",
         },
         {
             id: 2,
-            Component: Css,
-            title: "Css",
-            details: "4 years experience",
+            Component: Github,
+            title: "Github",
+            details: "7 years of experience",
         },
         {
             id: 3,
-            Component: Gulp,
-            title: "Gulp",
-            details: "4 years experience",
+            Component: Bitbucket,
+            title: "Bitbucket",
+            details: "7 years of experience",
         },
         {
             id: 4,
-            Component: Html,
-            title: "Html",
-            details: "4 years experience",
+            Component: Jira,
+            title: "Jira",
+            details: "7 years of experience",
+        },
+        {
+            id: 4,
+            Component: Trello,
+            title: "Trello",
+            details: "7 years of experience",
         },
         {
             id: 5,
-            Component: Javascript,
-            title: "Javascript",
-            details: "4 years experience",
-        },
-        {
-            id: 6,
-            Component: Jest,
-            title: "Jest",
-            details: "4 years experience",
-        },
-        {
-            id: 7,
-            Component: Jquery,
-            title: "Jquery",
-            details: "4 years experience",
-        },
-        {
-            id: 8,
-            Component: MaterialUi,
-            title: "MaterialUi",
-            details: "4 years experience",
-        },
-        {
-            id: 9,
-            Component: Bootstrap,
-            title: "Bootstrap",
-            details: "4 years experience",
-        },
-        {
-            id: 10,
-            Component: Sass,
-            title: "Sass",
-            details: "4 years experience",
-        },
-        {
-            id: 11,
-            Component: Tailwindcss,
-            title: "Tailwindcss",
-            details: "4 years experience",
-        },
-        {
-            id: 12,
-            Component: Vuejs,
-            title: "Vuejs",
-            details: "4 years experience",
-        },
-        {
-            id: 13,
-            Component: Webpack,
-            title: "Webpack",
-            details: "4 years experience",
+            Component: Jenkins,
+            title: "Jenkins",
+            details: "7 years of experience",
         },
     ]
 

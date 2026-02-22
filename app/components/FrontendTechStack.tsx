@@ -17,6 +17,7 @@ import {
     Typescript,
     Es6,
     Nextjs,
+    Wordpress,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
 import { useState } from "react"
@@ -124,6 +125,12 @@ const FrontendTechStack = () => {
             id: 17,
             Component: Nextjs,
             title: "Nextjs",
+            details: "4 years experience",
+        },
+        {
+            id: 18,
+            Component: Wordpress,
+            title: "Wordpress",
             details: "4 years experience",
         },
     ]
