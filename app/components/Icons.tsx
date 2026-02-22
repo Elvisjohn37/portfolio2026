@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const BrowserCode = ({ fill = "#000000", ...props }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -411,7 +412,7 @@ export const Laravel = ({ fill = "#ff5252", ...props }) => (
     </svg>
 )
 
-export const Php = (props) => (
+export const Php = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -452,7 +453,7 @@ export const Php = (props) => (
     </svg>
 )
 
-export const Nodejs = (props) => (
+export const Nodejs = (props: any) => (
     <svg
         width="1em"
         height="1em"
@@ -471,7 +472,7 @@ export const Nodejs = (props) => (
     </svg>
 )
 
-export const Expressjs = (props) => (
+export const Expressjs = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -492,7 +493,7 @@ export const Expressjs = (props) => (
     </svg>
 )
 
-export const Mysql = (props) => (
+export const Mysql = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -515,7 +516,7 @@ export const Mysql = (props) => (
     </svg>
 )
 
-export const Postgresql = (props) => (
+export const Postgresql = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -539,7 +540,7 @@ export const Postgresql = (props) => (
     </svg>
 )
 
-export const Mongodb = (props) => (
+export const Mongodb = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -565,7 +566,7 @@ export const Mongodb = (props) => (
     </svg>
 )
 
-export const Docker = (props) => (
+export const Docker = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -583,7 +584,7 @@ export const Docker = (props) => (
     </svg>
 )
 
-export const Vscode = (props) => (
+export const Vscode = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -706,7 +707,7 @@ export const Vscode = (props) => (
     </svg>
 )
 
-export const Trello = (props) => (
+export const Trello = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -746,7 +747,7 @@ export const Trello = (props) => (
     </svg>
 )
 
-export const Github = (props) => (
+export const Github = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -761,7 +762,7 @@ export const Github = (props) => (
     </svg>
 )
 
-export const Bitbucket = (props) => (
+export const Bitbucket = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -795,7 +796,7 @@ export const Bitbucket = (props) => (
     </svg>
 )
 
-export const Jira = (props) => (
+export const Jira = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -840,7 +841,7 @@ export const Jira = (props) => (
     </svg>
 )
 
-export const Viber = (props) => (
+export const Viber = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -855,7 +856,7 @@ export const Viber = (props) => (
     </svg>
 )
 
-export const Whatsapp = (props) => (
+export const Whatsapp = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -870,7 +871,7 @@ export const Whatsapp = (props) => (
     </svg>
 )
 
-export const GoogleGmail = (props) => (
+export const GoogleGmail = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -901,7 +902,7 @@ export const GoogleGmail = (props) => (
     </svg>
 )
 
-export const Telegram = (props) => (
+export const Telegram = (props: any) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"

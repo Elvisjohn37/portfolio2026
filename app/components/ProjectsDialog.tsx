@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     Button,
     Dialog,
@@ -33,7 +34,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close"
 import Link from "next/link"
 
-const ProjectsDialog = ({ open, onClose, data }) => {
+const ProjectsDialog = ({ open, onClose, data }: any) => {
     const { name, description, thumbnail, images, info, techStacks, url } = data
     const settings = {
         infinite: true,
@@ -96,7 +97,7 @@ const ProjectsDialog = ({ open, onClose, data }) => {
                 </MuiLink>
                 <DialogContentText>{info}</DialogContentText>
                 <div className="flex flex-wrap gap-2 mt-4">
-                    {techStacks.map((techStack, index) => (
+                    {techStacks.map((techStack: any, index: any) => (
                         <Tooltip
                             key={index}
                             title={techStack.name}

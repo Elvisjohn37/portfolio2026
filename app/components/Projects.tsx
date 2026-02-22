@@ -99,7 +99,9 @@ const Projects = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [currentProject, setCurrentProject] = useState(false)
 
-    const handleClick = (project) => {
+    const handleClick = (
+        project: boolean | ((prevState: boolean) => boolean),
+    ) => {
         setCurrentProject(project)
         setIsModalOpen(true)
     }
