@@ -36,7 +36,7 @@ import Link from "next/link"
 
 const ProjectsDialog = ({ open, onClose, data }: any) => {
     const { name, description, thumbnail, images, info, techStacks, url } = data
-    const settings = {
+    const settings: any = {
         infinite: true,
         speed: 500,
         slidesToShow: 1,

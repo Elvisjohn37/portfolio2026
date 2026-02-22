@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     Avatar,
     Card,
@@ -130,7 +131,7 @@ const Projects = () => {
                             >
                                 <Card
                                     className="cursor-pointer transition-transform duration-300 border-t border-secondary-light ease-in-out hover:scale-110"
-                                    onClick={() => handleClick(project)}
+                                    onClick={() => handleClick(project as any)}
                                 >
                                     <CardHeader
                                         avatar={
