@@ -13,16 +13,13 @@ import {
     Tailwindcss,
     Vuejs,
     Webpack,
-    Vitejs,
-    Typescript,
-    Es6,
-    Nextjs,
+    Laravel,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
 import { useState } from "react"
 
-const FrontendTechStack = () => {
-    const frontendTechStacks = [
+const BackendTechStack = () => {
+    const backendTechStacks = [
         {
             Component: Reactjs,
             title: "Reactjs",
@@ -104,26 +101,8 @@ const FrontendTechStack = () => {
         },
         {
             id: 14,
-            Component: Vitejs,
-            title: "Vitejs",
-            details: "4 years experience",
-        },
-        {
-            id: 15,
-            Component: Typescript,
-            title: "Typescript",
-            details: "4 years experience",
-        },
-        {
-            id: 16,
-            Component: Es6,
-            title: "Es6",
-            details: "4 years experience",
-        },
-        {
-            id: 17,
-            Component: Nextjs,
-            title: "Nextjs",
+            Component: Laravel,
+            title: "Laravel",
             details: "4 years experience",
         },
     ]
@@ -140,7 +119,7 @@ const FrontendTechStack = () => {
         id: number,
     ) => {
         setAnchorEl(event.currentTarget)
-        const currentTeckstacks = frontendTechStacks.find(
+        const currentTeckstacks = backendTechStacks.find(
             (item) => item.id === id,
         )
         setCurrentDetails(currentTeckstacks)
@@ -152,15 +131,15 @@ const FrontendTechStack = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [currentDetails, setCurrentDetails] = useState<any>(
-        frontendTechStacks[0],
+        backendTechStacks[0],
     )
 
     const open = Boolean(anchorEl)
     const id = open ? "simple-popover" : undefined
 
     return (
-        <div ref={ref} className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-5">
-            {frontendTechStacks.map((item, index) => (
+        <div ref={ref} className="grid grid-cols-5 gap-5">
+            {backendTechStacks.map((item, index) => (
                 <Grow in={inView} timeout={1000 + index * 200} key={item.id}>
                     <Tooltip title={item.title} placement="top" arrow>
                         <div className="icon-container">
@@ -197,4 +176,4 @@ const FrontendTechStack = () => {
     )
 }
 
-export default FrontendTechStack
+export default BackendTechStack

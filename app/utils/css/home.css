@@ -1,10 +1,6 @@
 .home {
 }
 
-.home .job-title {
-    @apply text-5xl;
-}
-
 .home .icon-button {
-    @apply border-1 text-primary-text-accent;
+    @apply border-1 text-primary;
 }

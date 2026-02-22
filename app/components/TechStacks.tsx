@@ -1,14 +1,23 @@
-import { Box, CircularProgress, Tab, Tabs } from "@mui/material"
-import { Suspense, useState } from "react"
+import { Box, Tab, Tabs } from "@mui/material"
+import { useState } from "react"
 import dynamic from "next/dynamic"
+import { DotLoader } from "react-spinners"
 
 const Loading = () => (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <CircularProgress />
+        <DotLoader color="#30374c" />
     </div>
 )
 
 const FrontendTechStack = dynamic(() => import("./FrontendTechStack"), {
+    loading: Loading,
+})
+
+const BackendTechStack = dynamic(() => import("./BackendTechStack"), {
+    loading: Loading,
+})
+
+const ToolsTechStack = dynamic(() => import("./ToolsTechStack"), {
     loading: Loading,
 })
 
@@ -33,9 +42,9 @@ const TechStacks = () => {
                     onChange={handleChange}
                     aria-label="basic tabs example"
                 >
-                    <Tab label="Item One" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
-                    <Tab label="Item Three" {...a11yProps(2)} />
+                    <Tab label="Frontend" {...a11yProps(0)} />
+                    <Tab label="Backend" {...a11yProps(1)} />
+                    <Tab label="Tools" {...a11yProps(2)} />
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
@@ -44,10 +53,14 @@ const TechStacks = () => {
                 </div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <div className="min-h-80">Item Two</div>
+                <div className="min-h-80 relative">
+                    <BackendTechStack />
+                </div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-                <div className="min-h-80">Item Three</div>
+                <div className="min-h-80 relative">
+                    <ToolsTechStack />
+                </div>
             </CustomTabPanel>
         </Box>
     )

@@ -10,5 +10,5 @@
 }
 
 .ul li .link {
-    @apply block h-full content-center px-[10px] rounded-xs hover:bg-primary-dark transition duration-300 text-primary-text-accent;
+    @apply block h-full content-center text-[12px] sm:text-[16px] px-1 sm:px-2.5 rounded-xs hover:bg-secondary-dark transition duration-300 text-primary;
 }
