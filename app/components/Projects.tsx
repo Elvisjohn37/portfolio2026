@@ -331,56 +331,52 @@ const Projects = () => {
     return (
         <div
             id="projects"
-            className="flex flex-col sm:items-center min-h-lvh scroll-m-16"
+            className="flex justify-center min-h-lvh items-center scroll-m-16 sm:scroll-m-0"
             ref={ref}
         >
-            {inView && (
-                <div className="flex sm:justify-center flex-col w-full">
-                    <Fade in={inView} timeout={1000}>
-                        <p className="text-center text-[16px] sm:text-3xl text-primary">
-                            PROJECTS
-                        </p>
-                    </Fade>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10">
-                        {projects.map((project, index) => (
-                            <Grow
-                                in={inView}
-                                timeout={1000 + index * 600}
-                                key={project.id}
+            <div className="flex sm:justify-center flex-col w-full">
+                <Fade in={inView} timeout={1000}>
+                    <p className="text-center text-[16px] sm:text-3xl text-primary">
+                        PROJECTS
+                    </p>
+                </Fade>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10">
+                    {projects.map((project, index) => (
+                        <Grow
+                            in={inView}
+                            timeout={1000 + index * 600}
+                            key={project.id}
+                        >
+                            <Card
+                                className="cursor-pointer transition-transform duration-300 border-t border-secondary-light ease-in-out hover:scale-110"
+                                onClick={() => handleClick(project as any)}
                             >
-                                <Card
-                                    className="cursor-pointer transition-transform duration-300 border-t border-secondary-light ease-in-out hover:scale-110"
-                                    onClick={() => handleClick(project as any)}
-                                >
-                                    <CardHeader
-                                        avatar={
-                                            <Avatar aria-label="recipe">
-                                                R
-                                            </Avatar>
-                                        }
-                                        title={project.name}
-                                        subheader={project.description}
-                                    />
-                                    <Image
-                                        src={project.thumbnail}
-                                        width={300}
-                                        height={100}
-                                        alt="test"
-                                        className="w-full"
-                                    />
-                                </Card>
-                            </Grow>
-                        ))}
-                    </div>
-                    {currentProject && (
-                        <ProjectsDialog
-                            open={isModalOpen}
-                            data={currentProject}
-                            onClose={handleClose}
-                        />
-                    )}
+                                <CardHeader
+                                    avatar={
+                                        <Avatar aria-label="recipe">R</Avatar>
+                                    }
+                                    title={project.name}
+                                    subheader={project.description}
+                                />
+                                <Image
+                                    src={project.thumbnail}
+                                    width={300}
+                                    height={100}
+                                    alt="test"
+                                    className="w-full"
+                                />
+                            </Card>
+                        </Grow>
+                    ))}
                 </div>
-            )}
+                {currentProject && (
+                    <ProjectsDialog
+                        open={isModalOpen}
+                        data={currentProject}
+                        onClose={handleClose}
+                    />
+                )}
+            </div>
         </div>
     )
 }

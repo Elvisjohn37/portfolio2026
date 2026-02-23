@@ -33,7 +33,7 @@ export default function RootLayout({
                 <ThemeProvider>
                     <MainNav />
                     {children}
-                    <div className="flex h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secobg-secondary-text">
+                    <div className="flex absolute w-full h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secobg-secondary-text">
                         <Typography>All Rights Reserved</Typography>
                     </div>
                 </ThemeProvider>
