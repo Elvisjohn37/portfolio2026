@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+    Alert,
+    AlertTitle,
     Button,
+    Chip,
     Dialog,
     DialogActions,
     DialogContent,
@@ -11,6 +14,7 @@ import {
     Link as MuiLink,
     Slide,
     Tooltip,
+    Typography,
 } from "@mui/material"
 import Image from "next/image"
 import "slick-carousel/slick/slick.css"
@@ -36,6 +40,8 @@ import Link from "next/link"
 
 const ProjectsDialog = ({ open, onClose, data }: any) => {
     const { name, description, thumbnail, images, info, techStacks, url } = data
+    const { frontend, backend, tools } = techStacks
+
     const settings: any = {
         infinite: true,
         speed: 500,
@@ -78,43 +84,78 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
                 }}
             >
                 <Slider {...settings}>
-                    {[thumbnail, ...images].map((image, index) => (
+                    {[thumbnail, ...(images || "")].map((image, index) => (
                         <div key={index}>
                             <Image
                                 src={image}
                                 width={600}
                                 height={100}
                                 alt={`slide ${index}`}
-                                className="w-full"
+                                className="h-full center"
                             />
                         </div>
                     ))}
                 </Slider>
-                <MuiLink>
-                    <Link href={url} target="_blank">
-                        {url}
-                    </Link>
-                </MuiLink>
+
+                {url ? (
+                    <MuiLink>
+                        <Link href={url} target="_blank">
+                            {url}
+                        </Link>
+                    </MuiLink>
+                ) : (
+                    <div className="my-2">
+                        <Alert variant="outlined" color="warning">
+                            <AlertTitle color="warning">Note</AlertTitle>
+                            <Typography color="warning">
+                                This website is not yet available at the
+                                production URL.
+                            </Typography>
+                        </Alert>
+                    </div>
+                )}
                 <DialogContentText>{info}</DialogContentText>
-                <div className="flex flex-wrap gap-2 mt-4">
-                    {techStacks.map((techStack: any, index: any) => (
-                        <Tooltip
-                            key={index}
-                            title={techStack.name}
-                            placement="top"
-                            arrow
-                        >
-                            <div className="p-2 bg-secondary-dark border border-transparent w-fit rounded-full duration-300 hover:border-primary-dark">
-                                <techStack.icon />
-                            </div>
-                        </Tooltip>
-                    ))}
+                <p className="mt-5 text-primary">Tech Stacks</p>
+                <div className="flex flex-col flex-wrap gap-5 mt-4">
+                    <TechStacks techStack={frontend} label="Frontend" />
+                    <TechStacks techStack={backend} label="Backtend" />
+                    <TechStacks techStack={tools} label="Tools" />
                 </div>
             </DialogContent>
             <DialogActions className="sm:opacity-0">
                 <Button onClick={onClose}>Close</Button>
             </DialogActions>
         </Dialog>
+    )
+}
+
+const TechStacks = ({ techStack, label }: any) => {
+    if (!techStack) return
+    return (
+        <div className="flex flex-col gap-2">
+            <div>
+                <Chip
+                    size="small"
+                    color="primary"
+                    label={label}
+                    variant="outlined"
+                />
+            </div>
+            <div className="flex gap-2 flex-wrap">
+                {techStack?.map((item: any, index: any) => (
+                    <Tooltip
+                        key={index}
+                        title={item.name}
+                        placement="top"
+                        arrow
+                    >
+                        <div className="p-2 bg-secondary-dark border border-transparent w-fit rounded-full duration-300 hover:border-primary-dark hover:scale-130 hover:bg-secondary-light">
+                            <item.icon />
+                        </div>
+                    </Tooltip>
+                ))}
+            </div>
+        </div>
     )
 }
 

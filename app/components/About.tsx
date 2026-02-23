@@ -25,7 +25,7 @@ const About = () => {
     return (
         <div
             id="about"
-            className="flex justify-center min-h-lvh sm:items-center scroll-m-16"
+            className="flex justify-center min-h-lvh sm:items-center scroll-m-16 sm:scroll-m-0"
             ref={ref}
         >
             {inView && (
