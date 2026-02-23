@@ -52,10 +52,10 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-image: url("/bg.jpg");
+    /* background-image: url("/bg.jpg");
     background-attachment: fixed;
     background-size: cover;
-    background-blend-mode: overlay;
+    background-blend-mode: overlay; */
 }
 
 html {
