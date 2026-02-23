@@ -191,7 +191,7 @@ const Projects = () => {
                 "/projects/sbobet_mobile_reports.png",
             ],
             info: "Online gaming casino platform, designed exclusively for players across Indonesia. Our website offers a secure, fast, and immersive gaming experience featuring popular slot games, live casino tables, sports betting, and exciting jackpot opportunities. Built with user-friendly navigation and mobile compatibility, players can enjoy seamless access anytime, anywhere within Indonesia.",
-            url: "https://338a.com",
+            url: "https://games.classicku.com",
             techStacks: {
                 frontend: [
                     { icon: Reactjs, name: "Reactjs" },
@@ -347,7 +347,7 @@ const Projects = () => {
                         <Grow
                             in={inView}
                             timeout={1000 + index * 600}
-                            key={project.id}
+                            key={`${project.name}-${project.id}`}
                         >
                             <Card
                                 className="cursor-pointer transition-transform duration-300 border-t border-secondary-light ease-in-out hover:scale-110"

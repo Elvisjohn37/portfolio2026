@@ -1,26 +1,35 @@
 import {
     Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     Slide,
-    SvgIcon,
     Typography,
 } from "@mui/material"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useInView } from "react-intersection-observer"
-import Image from "next/image"
-import Logo from "@/public/docker.svg"
 import DescriptionIcon from "@mui/icons-material/Description"
 import TechStacks from "./TechStacks"
 import CallIcon from "@mui/icons-material/Call"
+import { useState } from "react"
+import dynamic from "next/dynamic"
+import DownloadIcon from "@mui/icons-material/Download"
+
+const PdfViewer = dynamic(() => import("./PdfViewer"), {
+    ssr: false,
+})
 
 const About = () => {
     const { ref, inView } = useInView({
         threshold: 0.3, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
+
+    const [isOpenPdf, setIsOpenPdf] = useState(false)
+
+    const handleOpenPdf = () => setIsOpenPdf(true)
+
+    const handleOnClose = () => setIsOpenPdf(false)
 
     return (
         <div
@@ -61,6 +70,7 @@ const About = () => {
                         <Slide direction="right" in={inView} timeout={2500}>
                             <div className="flex gap-2 sm:gap-1 md:gap-2">
                                 <Button
+                                    onClick={handleOpenPdf}
                                     startIcon={<DescriptionIcon />}
                                     variant="outlined"
                                     size="small"
@@ -85,6 +95,24 @@ const About = () => {
                     </div>
                 </div>
             </div>
+            <Dialog
+                open={isOpenPdf}
+                onClose={handleOnClose}
+                maxWidth="xl"
+                // fullScreen
+                className="min-w-1/2 w-full lg:[&>div:first-child]:w-screen [&>div>div:first-child]:w-full sm:[&>div>div:first-child]:w-fit"
+            >
+                <DialogTitle>Updated CV</DialogTitle>
+                <DialogContent
+                    dividers
+                    className="lg:max-w-[75vw] w-full justify-items-center"
+                >
+                    <PdfViewer />
+                </DialogContent>
+                <DialogActions>
+                    <Button startIcon={<DownloadIcon />}>Download CV</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
