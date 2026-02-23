@@ -47,7 +47,7 @@ const Home = () => {
                                     fullstack.
                                 </Typography>
                             </Slide>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 justify-end sm:justify-start">
                                 <Grow in={inView} timeout={3000}>
                                     <div>
                                         <Tooltip

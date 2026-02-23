@@ -4,6 +4,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    IconButton,
     Slide,
     Typography,
 } from "@mui/material"
@@ -14,6 +15,8 @@ import CallIcon from "@mui/icons-material/Call"
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import DownloadIcon from "@mui/icons-material/Download"
+import { redirect } from "next/navigation"
+import CloseIcon from "@mui/icons-material/Close"
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
     ssr: false,
@@ -68,7 +71,7 @@ const About = () => {
                             </Typography>
                         </Slide>
                         <Slide direction="right" in={inView} timeout={2500}>
-                            <div className="flex gap-2 sm:gap-1 md:gap-2">
+                            <div className="flex gap-2 sm:gap-1 md:gap-2 justify-end sm:justify-start">
                                 <Button
                                     onClick={handleOpenPdf}
                                     startIcon={<DescriptionIcon />}
@@ -81,6 +84,7 @@ const About = () => {
                                     startIcon={<CallIcon />}
                                     variant="outlined"
                                     size="small"
+                                    onClick={() => redirect("#contact")}
                                 >
                                     Contact Me
                                 </Button>
@@ -102,7 +106,21 @@ const About = () => {
                 // fullScreen
                 className="min-w-1/2 w-full lg:[&>div:first-child]:w-screen [&>div>div:first-child]:w-full sm:[&>div>div:first-child]:w-fit"
             >
-                <DialogTitle>Updated CV</DialogTitle>
+                <DialogTitle>
+                    Updated CV
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleOnClose}
+                        sx={{
+                            position: "absolute",
+                            right: 8,
+                            top: 8,
+                            color: "#7b8383",
+                        }}
+                    >
+                        <CloseIcon className="opacity-0 sm:opacity-100" />
+                    </IconButton>
+                </DialogTitle>
                 <DialogContent
                     dividers
                     className="lg:max-w-[75vw] w-full justify-items-center"
@@ -110,7 +128,20 @@ const About = () => {
                     <PdfViewer />
                 </DialogContent>
                 <DialogActions>
-                    <Button startIcon={<DownloadIcon />}>Download CV</Button>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        startIcon={<DownloadIcon />}
+                    >
+                        Download CV
+                    </Button>
+                    <Button
+                        size="small"
+                        startIcon={<CloseIcon />}
+                        onClick={handleOnClose}
+                    >
+                        Close
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>

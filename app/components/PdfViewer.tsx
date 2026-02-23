@@ -31,7 +31,7 @@ const PdfViewer = () => {
     }
 
     return (
-        <div className="flex justify-center scale-50 lg:scale-100 w-[50vw] h-[50vh] sm:h-screen">
+        <div className="flex justify-center scale-50 lg:scale-100 w-[50vw] h-[50vh] sm:h-screen translate-y-[-25%] lg:translate-y-0">
             {isLoading && <Loading />}
             <Document
                 file="/cv/updated CV 01-15-2026.pdf"
