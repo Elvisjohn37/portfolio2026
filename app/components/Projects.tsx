@@ -335,11 +335,13 @@ const Projects = () => {
             ref={ref}
         >
             <div className="flex sm:justify-center flex-col w-full">
-                <Fade in={inView} timeout={1000}>
-                    <p className="text-center text-[16px] sm:text-3xl text-primary">
-                        PROJECTS
-                    </p>
-                </Fade>
+                <div className="overflow-y-hidden">
+                    <Slide in={inView} direction="up" timeout={1000}>
+                        <p className="text-center text-[16px] sm:text-3xl text-primary">
+                            PROJECTS
+                        </p>
+                    </Slide>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10">
                     {projects.map((project, index) => (
                         <Grow

@@ -29,11 +29,13 @@ const About = () => {
             ref={ref}
         >
             <div className="flex sm:justify-center flex-col w-full">
-                <Slide in={inView} direction="up" timeout={1000}>
-                    <p className="text-center text-[16px] sm:text-3xl text-primary">
-                        ABOUT ME
-                    </p>
-                </Slide>
+                <div className="overflow-y-hidden">
+                    <Slide in={inView} direction="up" timeout={1000}>
+                        <p className="text-center text-[16px] sm:text-3xl text-primary">
+                            ABOUT ME
+                        </p>
+                    </Slide>
+                </div>
                 <div className="flex flex-col sm:flex-row mt-5 gap-3 sm:mt-10">
                     <div className="flex flex-col flex-1 gap-3 sm:gap-5">
                         <Slide direction="right" in={inView} timeout={1000}>
