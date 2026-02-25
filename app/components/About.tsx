@@ -128,20 +128,31 @@ const About = () => {
                     <PdfViewer />
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        variant="contained"
-                        size="small"
-                        startIcon={<DownloadIcon />}
-                    >
-                        Download CV
-                    </Button>
-                    <Button
-                        size="small"
-                        startIcon={<CloseIcon />}
-                        onClick={handleOnClose}
-                    >
-                        Close
-                    </Button>
+                    <div className="hidden! sm:flex! gap-2">
+                        <Button
+                            variant="contained"
+                            size="small"
+                            startIcon={<DownloadIcon />}
+                        >
+                            Download CV
+                        </Button>
+                        <Button
+                            size="small"
+                            startIcon={<CloseIcon />}
+                            onClick={handleOnClose}
+                            variant="outlined"
+                        >
+                            Close
+                        </Button>
+                    </div>
+                    <div className="sm:hidden! gap-2">
+                        <IconButton color="primary">
+                            <DownloadIcon />
+                        </IconButton>
+                        <IconButton color="primary" onClick={handleOnClose}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
                 </DialogActions>
             </Dialog>
         </div>

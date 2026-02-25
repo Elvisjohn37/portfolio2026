@@ -258,7 +258,7 @@ const Projects = () => {
             description: "Admin Website",
             thumbnail: "/projects/landers_admin.png",
             info: "Landers offers a wide variety of local and imported products including groceries, household items, personal care, and specialty goods in spacious, well-organized aisles, similar to other membership club formats.",
-            url: "http://landers.ph",
+            url: "https://admin.snapmart.ph",
             techStacks: {
                 frontend: [
                     { icon: Reactjs, name: "Reactjs" },
@@ -294,7 +294,7 @@ const Projects = () => {
                 "/projects/elgada9.png",
                 "/projects/elgada10.png",
             ],
-            info: "Landers offers a wide variety of local and imported products including groceries, household items, personal care, and specialty goods in spacious, well-organized aisles, similar to other membership club formats.",
+            info: "This is an admin website of employee records, organization records, etc.",
             techStacks: {
                 frontend: [
                     { icon: Reactjs, name: "Reactjs" },
@@ -311,6 +311,14 @@ const Projects = () => {
                     { icon: Bitbucket, name: "Bitbucket" },
                     { icon: Jira, name: "Jira" },
                     { icon: Jenkins, name: "Jenkins" },
+                ],
+                backend: [
+                    { icon: Laravel, name: "Laravel" },
+                    { icon: Php, name: "PHP" },
+                    { icon: Nodejs, name: "Nodejs" },
+                    { icon: Expressjs, name: "Expressjs" },
+                    { icon: Mysql, name: "Mysql" },
+                    { icon: Mongodb, name: "Mongodb" },
                 ],
             },
         },
