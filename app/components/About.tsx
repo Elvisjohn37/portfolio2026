@@ -1,5 +1,6 @@
 import {
     Button,
+    Chip,
     Dialog,
     DialogActions,
     DialogContent,
@@ -17,6 +18,7 @@ import dynamic from "next/dynamic"
 import DownloadIcon from "@mui/icons-material/Download"
 import { redirect } from "next/navigation"
 import CloseIcon from "@mui/icons-material/Close"
+import SchoolIcon from "@mui/icons-material/School"
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
     ssr: false,
@@ -33,6 +35,14 @@ const About = () => {
     const handleOpenPdf = () => setIsOpenPdf(true)
 
     const handleOnClose = () => setIsOpenPdf(false)
+    const filePath = "/cv/updated CV 01-15-2026.pdf"
+    const handleDownload = () => {
+        // Create an invisible link and click it programmatically
+        const link = document.createElement("a")
+        link.href = filePath
+        link.download = "CAYETANO_ELVIS_JOHN_REYES.pdf" // File name when downloaded
+        link.click()
+    }
 
     return (
         <div
@@ -53,12 +63,12 @@ const About = () => {
                         <Slide direction="right" in={inView} timeout={1000}>
                             <Typography>Elvis John Reyes Cayetano</Typography>
                         </Slide>
-                        <Slide direction="right" in={inView} timeout={1500}>
+                        <Slide direction="right" in={inView} timeout={1200}>
                             <p className="text-2xl lg:text-3xl text-primary">
                                 Senior Web Developer
                             </p>
                         </Slide>
-                        <Slide direction="right" in={inView} timeout={2000}>
+                        <Slide direction="right" in={inView} timeout={1400}>
                             <Typography>
                                 Highly skilled in leveraging pre-rendered and
                                 component-based frontend frameworks (such as
@@ -70,7 +80,7 @@ const About = () => {
                                 support complex, data-driven applications.
                             </Typography>
                         </Slide>
-                        <Slide direction="right" in={inView} timeout={2500}>
+                        <Slide direction="right" in={inView} timeout={1600}>
                             <div className="flex gap-2 sm:gap-1 md:gap-2 justify-end sm:justify-start">
                                 <Button
                                     onClick={handleOpenPdf}
@@ -90,10 +100,44 @@ const About = () => {
                                 </Button>
                             </div>
                         </Slide>
+                        <Slide timeout={1800} direction="right" in={inView}>
+                            <div className="flex flex-col gap-2">
+                                <div
+                                    className="flex gap-2
+                        "
+                                >
+                                    <SchoolIcon color="primary" />
+                                    <Typography color="primary">
+                                        Education
+                                    </Typography>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex gap-2">
+                                        <Typography>Degree: </Typography>
+                                        <Typography className="font-bold!">
+                                            Bachelor of Science in Information
+                                            Technology
+                                        </Typography>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Typography>School: </Typography>
+                                        <Typography className="font-bold!">
+                                            AMA Computer Learning Center
+                                        </Typography>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Typography>School Year: </Typography>
+                                        <Typography className="font-bold!">
+                                            2014 - 2018
+                                        </Typography>
+                                    </div>
+                                </div>
+                            </div>
+                        </Slide>
                     </div>
 
                     <div className="flex flex-1 gap-2 flex-col">
-                        <Slide direction="left" timeout={1000} in={inView}>
+                        <Slide direction="left" timeout={1800} in={inView}>
                             <div>{inView && <TechStacks />}</div>
                         </Slide>
                     </div>
@@ -133,6 +177,7 @@ const About = () => {
                             variant="contained"
                             size="small"
                             startIcon={<DownloadIcon />}
+                            onClick={handleDownload}
                         >
                             Download CV
                         </Button>

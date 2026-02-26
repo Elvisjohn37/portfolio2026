@@ -4,16 +4,10 @@ import GitHubIcon from "@mui/icons-material/GitHub"
 import WhatsAppIcon from "@mui/icons-material/WhatsApp"
 import EmailIcon from "@mui/icons-material/Email"
 import TelegramIcon from "@mui/icons-material/Telegram"
-import {
-    Grow,
-    IconButton,
-    Slide,
-    Tooltip,
-    Typography,
-    Zoom,
-} from "@mui/material"
+import { IconButton, Slide, Tooltip, Typography, Zoom } from "@mui/material"
 import Image from "next/image"
 import { useInView } from "react-intersection-observer"
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
 
 const Home = () => {
     const { ref, inView } = useInView({
@@ -32,14 +26,20 @@ const Home = () => {
                     <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
                         <div className="flex sm:flex-7 w-full flex-col gap-2 justify-center order-2 sm:order-1">
                             <Slide direction="right" in={inView} timeout={1000}>
-                                <Typography>Hi, I'm Elvis John</Typography>
+                                <div className="flex flex-col gap-2">
+                                    <Typography>Hi, I'm Elvis John</Typography>
+                                    <div className="flex gap-2">
+                                        <LocationOnOutlinedIcon />
+                                        Metro Manila, Philippines
+                                    </div>
+                                </div>
                             </Slide>
-                            <Slide direction="right" in={inView} timeout={1500}>
+                            <Slide direction="right" in={inView} timeout={1200}>
                                 <p className="text-2xl lg:text-5xl text-primary">
                                     Senior Web Developer
                                 </p>
                             </Slide>
-                            <Slide direction="right" in={inView} timeout={2000}>
+                            <Slide direction="right" in={inView} timeout={1400}>
                                 <Typography>
                                     Seasoned Full Stack Developer with 7 years
                                     of hands-on experience in Frontend
@@ -47,8 +47,13 @@ const Home = () => {
                                     fullstack.
                                 </Typography>
                             </Slide>
-                            <div className="flex gap-2 justify-end sm:justify-start">
-                                <Grow in={inView} timeout={3000}>
+                            <Slide
+                                in={inView}
+                                timeout={1600}
+                                className="flex gap-2 justify-end sm:justify-start"
+                                direction="right"
+                            >
+                                <div>
                                     <div>
                                         <Tooltip
                                             placement="top"
@@ -63,8 +68,7 @@ const Home = () => {
                                             </IconButton>
                                         </Tooltip>
                                     </div>
-                                </Grow>
-                                <Grow in={inView} timeout={3500}>
+
                                     <div>
                                         <Tooltip
                                             placement="top"
@@ -79,8 +83,7 @@ const Home = () => {
                                             </IconButton>
                                         </Tooltip>
                                     </div>
-                                </Grow>
-                                <Grow in={inView} timeout={4000}>
+
                                     <div>
                                         <Tooltip
                                             placement="top"
@@ -95,8 +98,7 @@ const Home = () => {
                                             </IconButton>
                                         </Tooltip>
                                     </div>
-                                </Grow>
-                                <Grow in={inView} timeout={4500}>
+
                                     <div>
                                         <Tooltip
                                             placement="top"
@@ -111,8 +113,8 @@ const Home = () => {
                                             </IconButton>
                                         </Tooltip>
                                     </div>
-                                </Grow>
-                            </div>
+                                </div>
+                            </Slide>
                         </div>
                         <div className="flex sm:flex-5 w-full justify-center items-center order-1 sm:order-2">
                             <Slide direction="left" in={inView} timeout={1000}>
