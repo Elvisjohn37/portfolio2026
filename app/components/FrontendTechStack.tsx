@@ -176,7 +176,7 @@ const FrontendTechStack = () => {
                                 onClick={(event: any) =>
                                     handleClick(event, item.id)
                                 }
-                                className="w-full h-full"
+                                className="w-full h-full duration-300 transition transform-[translate] hover:scale-110"
                                 width={100}
                                 height={100}
                             />
