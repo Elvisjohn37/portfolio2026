@@ -2,14 +2,14 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 
 const MainNav = () => {
     const [activeHash, setActiveHash] = useState("")
 
     const sections = ["home", "about", "projects", "contact"]
 
-    const handleHashChange = (hash) => {
+    const handleHashChange = (hash: SetStateAction<string>) => {
         setActiveHash(hash)
         console.log(hash)
     }
