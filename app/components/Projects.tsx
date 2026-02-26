@@ -358,7 +358,7 @@ const Projects = () => {
                             key={`${project.name}-${project.id}`}
                         >
                             <Card
-                                className="cursor-pointer transition-transform duration-300 border-t border-secondary-light ease-in-out hover:scale-110"
+                                className="cursor-pointer transition-transform border-t border-secondary-light"
                                 onClick={() => handleClick(project as any)}
                             >
                                 <CardHeader
@@ -373,7 +373,7 @@ const Projects = () => {
                                     width={300}
                                     height={100}
                                     alt="test"
-                                    className="w-full"
+                                    className="w-full duration-300 ease-in-out hover:scale-110"
                                 />
                             </Card>
                         </Grow>
