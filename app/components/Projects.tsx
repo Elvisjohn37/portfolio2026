@@ -358,7 +358,7 @@ const Projects = () => {
                             key={`${project.name}-${project.id}`}
                         >
                             <Card
-                                className="cursor-pointer transition-transform border-t border-secondary-light"
+                                className="cursor-pointer transition-transform"
                                 onClick={() => handleClick(project as any)}
                             >
                                 <CardHeader

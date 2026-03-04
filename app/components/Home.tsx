@@ -8,12 +8,17 @@ import { IconButton, Slide, Tooltip, Typography, Zoom } from "@mui/material"
 import Image from "next/image"
 import { useInView } from "react-intersection-observer"
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
+import { useContext } from "react"
+import ThemeContext from "../utils/js/ThemeContext"
 
 const Home = () => {
     const { ref, inView } = useInView({
         threshold: 0.3, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
+    const { state, dispatch } = useContext(ThemeContext)
+
+    console.log(state.theme)
 
     return (
         <>

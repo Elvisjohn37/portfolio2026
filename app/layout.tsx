@@ -1,9 +1,10 @@
-import type { Metadata, Viewport } from "next"
+import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import MainNav from "./components/MainNav"
 import ThemeProvider from "./ThemeProvider"
 import { Typography } from "@mui/material"
+import ColorTheme from "./components/ColorTheme"
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
             >
                 <ThemeProvider>
                     <MainNav />
+                    <ColorTheme />
                     {children}
                     <div className="flex absolute w-full h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secobg-secondary-text">
                         <Typography>All Rights Reserved</Typography>
