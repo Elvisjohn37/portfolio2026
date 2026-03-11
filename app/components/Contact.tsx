@@ -4,6 +4,7 @@
 import {
     Alert,
     Button,
+    Divider,
     Paper,
     Slide,
     Snackbar,
@@ -61,7 +62,7 @@ const Contact = () => {
                             </p>
                         </Slide>
                     </div>
-                    <div className="flex gap-5">
+                    <div className="flex gap-5 flex-col sm:flex-row">
                         <Slide in={inView} direction="right" timeout={1000}>
                             <div className="flex justify-center items-center flex-1">
                                 <Snackbar
@@ -130,6 +131,7 @@ const Contact = () => {
                                 </form>
                             </div>
                         </Slide>
+                        <Divider className="none sm:block" />
                         <Slide in={inView} direction="left" timeout={1000}>
                             <div className="flex justify-center flex-1 flex-col gap-5">
                                 <Paper className="flex flex-col gap-2 p-5">
