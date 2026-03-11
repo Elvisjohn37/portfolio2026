@@ -39,7 +39,7 @@ export default function ImageWithSkeleton({
                 height={height}
                 onLoadingComplete={() => {
                     setLoading(false)
-                    setIsReady(true)
+                    setIsReady?.(true)
                 }}
                 onError={() => {
                     setError(true)
