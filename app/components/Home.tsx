@@ -4,21 +4,28 @@ import GitHubIcon from "@mui/icons-material/GitHub"
 import WhatsAppIcon from "@mui/icons-material/WhatsApp"
 import EmailIcon from "@mui/icons-material/Email"
 import TelegramIcon from "@mui/icons-material/Telegram"
-import { IconButton, Slide, Tooltip, Typography, Zoom } from "@mui/material"
-import Image from "next/image"
+import {
+    Backdrop,
+    CircularProgress,
+    IconButton,
+    Slide,
+    Tooltip,
+    Typography,
+    Zoom,
+} from "@mui/material"
+import Image from "@/app/components/Image"
 import { useInView } from "react-intersection-observer"
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
-import { useContext } from "react"
-import ThemeContext from "../utils/js/ThemeContext"
+import { useState } from "react"
+import Loader from "./Loader"
 
 const Home = () => {
     const { ref, inView } = useInView({
         threshold: 0.3, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
-    const { state, dispatch } = useContext(ThemeContext)
 
-    console.log(state.theme)
+    const [isReady, setIsReady] = useState(false)
 
     return (
         <>
@@ -27,10 +34,17 @@ const Home = () => {
                 id="home"
                 className="flex justify-center min-h-lvh home pt-12.5 items-center"
             >
+                <Backdrop open={!isReady && inView}>
+                    <Loader />
+                </Backdrop>
                 {inView && (
                     <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
                         <div className="flex sm:flex-7 w-full flex-col gap-2 justify-center order-2 sm:order-1">
-                            <Slide direction="right" in={inView} timeout={1000}>
+                            <Slide
+                                direction="right"
+                                in={inView && isReady}
+                                timeout={1000}
+                            >
                                 <div className="flex flex-col gap-2">
                                     <Typography>Hi, I'm Elvis John</Typography>
                                     <div className="flex gap-2">
@@ -39,12 +53,20 @@ const Home = () => {
                                     </div>
                                 </div>
                             </Slide>
-                            <Slide direction="right" in={inView} timeout={1200}>
+                            <Slide
+                                direction="right"
+                                in={inView && isReady}
+                                timeout={1200}
+                            >
                                 <p className="text-2xl lg:text-5xl text-primary">
                                     Senior Web Developer
                                 </p>
                             </Slide>
-                            <Slide direction="right" in={inView} timeout={1400}>
+                            <Slide
+                                direction="right"
+                                in={inView && isReady}
+                                timeout={1400}
+                            >
                                 <Typography>
                                     Seasoned Full Stack Developer with 7 years
                                     of hands-on experience in Frontend
@@ -53,7 +75,7 @@ const Home = () => {
                                 </Typography>
                             </Slide>
                             <Slide
-                                in={inView}
+                                in={inView && isReady}
                                 timeout={1600}
                                 className="flex gap-2 justify-end sm:justify-start"
                                 direction="right"
@@ -122,13 +144,18 @@ const Home = () => {
                             </Slide>
                         </div>
                         <div className="flex sm:flex-5 w-full justify-center items-center order-1 sm:order-2">
-                            <Slide direction="left" in={inView} timeout={1000}>
+                            <Slide
+                                direction="left"
+                                in={inView && isReady}
+                                timeout={1000}
+                            >
                                 <div className="w-3/4 md:w-1/2 rounded-sm overflow-hidden">
                                     <Image
                                         src="/profile-pic.jpg"
                                         width={1092}
                                         height={1400}
                                         alt="profile-image"
+                                        setIsReady={setIsReady}
                                     />
                                 </div>
                             </Slide>

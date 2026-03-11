@@ -1,24 +1,18 @@
 import { Box, Tab, Tabs } from "@mui/material"
 import { useState } from "react"
 import dynamic from "next/dynamic"
-import { DotLoader } from "react-spinners"
-
-const Loading = () => (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <DotLoader color="#30374c" />
-    </div>
-)
+import Loader from "./Loader"
 
 const FrontendTechStack = dynamic(() => import("./FrontendTechStack"), {
-    loading: Loading,
+    loading: Loader,
 })
 
 const BackendTechStack = dynamic(() => import("./BackendTechStack"), {
-    loading: Loading,
+    loading: Loader,
 })
 
 const ToolsTechStack = dynamic(() => import("./ToolsTechStack"), {
-    loading: Loading,
+    loading: Loader,
 })
 
 type TabPanelProps = {

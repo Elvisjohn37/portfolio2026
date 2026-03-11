@@ -20,6 +20,8 @@
         "@mui/icons-material": "^7.3.8",
         "@mui/material": "^7.3.8",
         "@mui/styled-engine-sc": "^7.3.8",
+        "@react-email/components": "^1.0.8",
+        "@react-email/render": "^2.0.4",
         "next": "16.1.1",
         "react": "19.2.3",
         "react-dom": "19.2.3",
@@ -27,8 +29,10 @@
         "react-pdf": "^10.4.0",
         "react-slick": "^0.31.0",
         "react-spinners": "^0.17.0",
+        "resend": "^6.9.3",
         "slick-carousel": "^1.8.1",
-        "styled-components": "^6.3.10"
+        "styled-components": "^6.3.10",
+        "zod": "^4.3.6"
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4",
