@@ -9,10 +9,8 @@ const MainNav = () => {
 
     const sections = ["home", "about", "projects", "contact"]
 
-    const handleHashChange = (hash: SetStateAction<string>) => {
+    const handleHashChange = (hash: SetStateAction<string>) =>
         setActiveHash(hash)
-        console.log(hash)
-    }
 
     const getLinkClass = (hash: string) =>
         `link ${activeHash === hash ? "text-primary! [text-shadow:0_0_12px_rgb(88,218,210)]" : ""}`

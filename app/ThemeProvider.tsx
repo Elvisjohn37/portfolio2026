@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
+
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material"
 import ThemeContext, { ThemeReducer, Ttheme } from "./utils/js/ThemeContext"
-import { useEffect, useMemo, useReducer } from "react"
+import { useEffect, useMemo, useReducer, ReactNode } from "react"
 
 declare module "@mui/material/styles" {
     interface Theme {
@@ -10,7 +11,7 @@ declare module "@mui/material/styles" {
             danger: string
         }
     }
-    // allow configuration using `createTheme()`
+
     interface ThemeOptions {
         status?: {
             danger?: string
@@ -18,9 +19,13 @@ declare module "@mui/material/styles" {
     }
 }
 
-const theme = (activeTheme: Ttheme) => {
-    console.log(activeTheme)
+interface Props {
+    children: ReactNode
+}
+
+const createAppTheme = (activeTheme: Ttheme) => {
     const isLight = activeTheme === "light"
+
     return createTheme({
         cssVariables: true,
         status: {
@@ -36,7 +41,7 @@ const theme = (activeTheme: Ttheme) => {
             },
             text: {
                 primary: "#dbf6f5",
-                secondary: "#7b8383", // 👈 your new secondary text color
+                secondary: "#7b8383",
             },
         },
         components: {
@@ -50,8 +55,7 @@ const theme = (activeTheme: Ttheme) => {
                     paper: {
                         backgroundColor: isLight ? "#ffffff" : "#080d1b",
                         color: "#7b8383",
-                        borderColor: "#30374c",
-                        borderTopWidth: 1,
+                        border: "1px solid #30374c",
                         maxWidth: 300,
                     },
                 },
@@ -66,8 +70,8 @@ const theme = (activeTheme: Ttheme) => {
             MuiDialog: {
                 styleOverrides: {
                     paper: {
-                        backgroundColor: isLight
-                            ? "1px solid #ffff"
+                        border: isLight
+                            ? "1px solid #ffffff"
                             : "1px solid #30374c",
                     },
                 },
@@ -85,30 +89,31 @@ const theme = (activeTheme: Ttheme) => {
     })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ThemeProvider = ({ children }: any) => {
-    const [state, dispatch] = useReducer(ThemeReducer, {
-        theme: "dark",
-    })
+const ThemeProvider = ({ children }: Props) => {
+    const [state, dispatch] = useReducer(ThemeReducer, { theme: "dark" })
 
-    const value: any = useMemo(() => ({ state, dispatch }), [state])
+    const muiTheme = useMemo(() => createAppTheme(state.theme), [state.theme])
 
-    const muiTheme = useMemo(() => theme(state.theme), [state.theme])
+    const contextValue: any = useMemo(() => ({ state, dispatch }), [state])
 
     const bgClass =
         state.theme === "dark" ? "bg-secondary-dark" : "bg-background"
 
     useEffect(() => {
-        const currentTheme = window.localStorage.getItem("theme") || "dark"
-        window.localStorage.setItem("theme", currentTheme)
+        const storedTheme = (localStorage.getItem("theme") as Ttheme) || "dark"
+
         dispatch({
             type: "CHANGE_THEME",
-            theme: currentTheme as Ttheme,
+            theme: storedTheme,
         })
     }, [])
 
+    useEffect(() => {
+        localStorage.setItem("theme", state.theme)
+    }, [state.theme])
+
     return (
-        <ThemeContext.Provider value={value}>
+        <ThemeContext.Provider value={contextValue}>
             <MuiThemeProvider theme={muiTheme}>
                 <div className={bgClass}>{children}</div>
             </MuiThemeProvider>

@@ -46,7 +46,13 @@
 }
 
 body {
-    background: var(--secondary-dark);
+    background: #2e3a59;
+    background: linear-gradient(
+        90deg,
+        rgba(46, 58, 89, 1) 0%,
+        rgba(8, 13, 27, 1) 50%,
+        rgba(8, 13, 27, 1) 100%
+    );
     color: var(--secondary-text);
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;

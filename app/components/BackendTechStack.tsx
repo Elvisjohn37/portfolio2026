@@ -90,7 +90,11 @@ const BackendTechStack = () => {
     return (
         <div ref={ref} className="grid grid-cols-5 gap-5">
             {backendTechStacks.map((item, index) => (
-                <Grow in={inView} timeout={1000 + index * 200} key={item.id}>
+                <Grow
+                    in={inView}
+                    timeout={1000 + index * 200}
+                    key={`backend-${item.id}`}
+                >
                     <Tooltip title={item.title} placement="top" arrow>
                         <div className="icon-container">
                             <item.Component
