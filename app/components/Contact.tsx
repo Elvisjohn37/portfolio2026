@@ -43,10 +43,9 @@ const Contact = () => {
 
     useEffect(() => {
         if (isPending) return
-        setOpen(true)
+        setOpen(currentState.success || Boolean(currentState.error))
     }, [isPending])
 
-    console.log(currentState)
     return (
         <div
             id="contact"
