@@ -6,7 +6,6 @@ import EmailIcon from "@mui/icons-material/Email"
 import TelegramIcon from "@mui/icons-material/Telegram"
 import {
     Backdrop,
-    CircularProgress,
     IconButton,
     Slide,
     Tooltip,
@@ -16,8 +15,9 @@ import {
 import Image from "@/app/components/Image"
 import { useInView } from "react-intersection-observer"
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
-import { useState } from "react"
+import { use, useEffect, useState } from "react"
 import Loader from "./Loader"
+import { hello } from "./hello"
 
 const Home = () => {
     const { ref, inView } = useInView({
@@ -26,6 +26,19 @@ const Home = () => {
     })
 
     const [isReady, setIsReady] = useState(false)
+
+    const [data, setData] = useState(null)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await hello()
+            setData(res)
+        }
+
+        fetchData()
+    }, [])
+
+    console.log(data)
 
     return (
         <>
