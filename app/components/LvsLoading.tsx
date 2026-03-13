@@ -1,13 +1,19 @@
 import React from "react"
+import Image from "next/image"
 
 export default function LVSLoader({ size = 60 }) {
     return (
-        <div style={styles.wrapper}>
+        <div className="flex items-center gap-[14px] px-4 py-2">
             <div
-                style={{ ...styles.spinnerWrapper, width: size, height: size }}
+                className="relative flex items-center justify-center"
+                style={{ width: size, height: size }}
             >
                 {/* Spinner Ring */}
-                <svg viewBox="0 0 50 50" style={styles.spinner}>
+                <svg
+                    viewBox="0 0 50 50"
+                    className="absolute w-full h-full animate-spin"
+                    style={{ animationDuration: "1.2s" }}
+                >
                     <circle
                         cx="25"
                         cy="25"
@@ -30,67 +36,27 @@ export default function LVSLoader({ size = 60 }) {
                     />
                 </svg>
 
-                {/* Logo (only globe icon) */}
-                <img
-                    src="/logo-no-text.png"
-                    alt="LVS Logo"
-                    style={styles.logo}
-                />
+                {/* Logo */}
+                <div className="relative w-[55%] h-[55%]">
+                    <Image
+                        src="/logo-no-text.png"
+                        alt="LVS Logo"
+                        fill
+                        className="object-contain"
+                        priority
+                    />
+                </div>
             </div>
 
-            {/* Text outside spinner */}
-            <div style={styles.text}>
-                <div style={styles.main}>LVS</div>
-                <div style={styles.sub}>WEB SOLUTIONS</div>
+            {/* Text */}
+            <div className="text-[#e6e6e6] font-sans">
+                <div className="text-[20px] font-semibold tracking-[2px]">
+                    LVS
+                </div>
+                <div className="text-[10px] tracking-[3px] opacity-80">
+                    WEB SOLUTIONS
+                </div>
             </div>
-
-            <style>
-                {`
-        @keyframes lvsSpin {
-          100% { transform: rotate(360deg); }
-        }
-        `}
-            </style>
         </div>
     )
-}
-
-const styles = {
-    wrapper: {
-        display: "flex",
-        alignItems: "center",
-        gap: "14px",
-        padding: "10px 16px",
-    },
-    spinnerWrapper: {
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    spinner: {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        animation: "lvsSpin 1.2s linear infinite",
-    },
-    logo: {
-        width: "55%",
-        height: "55%",
-        objectFit: "contain",
-    },
-    text: {
-        color: "#e6e6e6",
-        fontFamily: "Arial, sans-serif",
-    },
-    main: {
-        fontSize: "20px",
-        fontWeight: 600,
-        letterSpacing: "2px",
-    },
-    sub: {
-        fontSize: "10px",
-        letterSpacing: "3px",
-        opacity: 0.8,
-    },
 }
