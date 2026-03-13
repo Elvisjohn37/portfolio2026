@@ -16,8 +16,8 @@ import Image from "@/app/components/Image"
 import { useInView } from "react-intersection-observer"
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
 import { use, useEffect, useState } from "react"
-import Loader from "./Loader"
 import { hello } from "./hello"
+import LvsLoading from "./LvsLoading"
 
 const Home = () => {
     const { ref, inView } = useInView({
@@ -48,7 +48,7 @@ const Home = () => {
                 className="flex justify-center min-h-lvh home pt-12.5 items-center"
             >
                 <Backdrop open={!isReady && inView}>
-                    <Loader />
+                    <LvsLoading />
                 </Backdrop>
                 {inView && (
                     <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
