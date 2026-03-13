@@ -2,8 +2,8 @@ import React from "react"
 import Image from "next/image"
 
 export default function LVSLoader({ size = 60 }) {
-    const dotCount = 12 // now 12 dots
-    const radius = 20 // distance from center
+    const dotCount = 12 // 12 dots
+    const radius = 20 // orbit radius
     const dots = Array.from({ length: dotCount })
 
     return (
@@ -12,21 +12,21 @@ export default function LVSLoader({ size = 60 }) {
                 className="relative flex items-center justify-center"
                 style={{ width: size, height: size }}
             >
-                {/* Spinner Dots Orbiting */}
+                {/* Spinner Dots Orbiting with fancy animation */}
                 <svg viewBox="0 0 50 50" className="absolute w-full h-full">
                     <g
-                        className="animate-spin"
                         style={{
                             transformOrigin: "25px 25px",
-                            animationDuration: "2.5s",
+                            animation: "spin 2.5s linear infinite",
                         }}
                     >
                         {dots.map((_, i) => {
-                            const angle = (360 / dotCount) * i // evenly spaced
+                            const angle = (360 / dotCount) * i
                             const cx =
                                 25 + radius * Math.cos((angle * Math.PI) / 180)
                             const cy =
                                 25 + radius * Math.sin((angle * Math.PI) / 180)
+
                             return (
                                 <circle
                                     key={i}
@@ -34,6 +34,10 @@ export default function LVSLoader({ size = 60 }) {
                                     cy={cy}
                                     r="3"
                                     fill="#00baab"
+                                    style={{
+                                        animation: `fade 1.2s linear infinite`,
+                                        animationDelay: `${(i * 1.2) / dotCount}s`,
+                                    }}
                                 />
                             )
                         })}
@@ -62,18 +66,25 @@ export default function LVSLoader({ size = 60 }) {
                 </div>
             </div>
 
-            {/* Extra CSS for spinning */}
+            {/* Extra CSS */}
             <style jsx>{`
-                .animate-spin {
-                    animation: spin 2.5s linear infinite; /* slower rotation */
-                }
-
                 @keyframes spin {
                     0% {
                         transform: rotate(0deg);
                     }
                     100% {
                         transform: rotate(360deg);
+                    }
+                }
+
+                @keyframes fade {
+                    0%,
+                    39%,
+                    100% {
+                        opacity: 0.2;
+                    }
+                    40% {
+                        opacity: 1;
                     }
                 }
             `}</style>
