@@ -12,7 +12,7 @@ export default function LVSLoader({ size = 60 }) {
                 className="relative flex items-center justify-center"
                 style={{ width: size, height: size }}
             >
-                {/* Spinner Dots Orbiting with fancy animation */}
+                {/* Spinner Dots Orbiting without fade */}
                 <svg viewBox="0 0 50 50" className="absolute w-full h-full">
                     <g
                         style={{
@@ -34,10 +34,6 @@ export default function LVSLoader({ size = 60 }) {
                                     cy={cy}
                                     r="3"
                                     fill="#00baab"
-                                    style={{
-                                        animation: `fade 1.2s linear infinite`,
-                                        animationDelay: `${(i * 1.2) / dotCount}s`,
-                                    }}
                                 />
                             )
                         })}
@@ -74,17 +70,6 @@ export default function LVSLoader({ size = 60 }) {
                     }
                     100% {
                         transform: rotate(360deg);
-                    }
-                }
-
-                @keyframes fade {
-                    0%,
-                    39%,
-                    100% {
-                        opacity: 0.2;
-                    }
-                    40% {
-                        opacity: 1;
                     }
                 }
             `}</style>
