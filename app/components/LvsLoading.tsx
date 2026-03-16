@@ -1,10 +1,15 @@
-import React from "react"
+"use client"
+
 import Image from "next/image"
 
 export default function LVSLoader({ size = 60 }) {
-    const dotCount = 12 // 12 dots
+    const dotCount = 12 // number of dots
     const radius = 20 // orbit radius
+    const center = 25 // SVG center coordinate
     const dots = Array.from({ length: dotCount })
+
+    // helper to round to 3 decimal places to avoid hydration mismatch
+    const round = (num) => Math.round(num * 1000) / 1000
 
     return (
         <div className="flex items-center gap-[14px] px-4 py-2">
@@ -12,21 +17,24 @@ export default function LVSLoader({ size = 60 }) {
                 className="relative flex items-center justify-center"
                 style={{ width: size, height: size }}
             >
-                {/* Spinner Dots Orbiting without fade */}
+                {/* Spinner Dots Orbiting */}
                 <svg viewBox="0 0 50 50" className="absolute w-full h-full">
                     <g
                         style={{
-                            transformOrigin: "25px 25px",
+                            transformOrigin: `${center}px ${center}px`,
                             animation: "spin 2.5s linear infinite",
                         }}
                     >
                         {dots.map((_, i) => {
                             const angle = (360 / dotCount) * i
-                            const cx =
-                                25 + radius * Math.cos((angle * Math.PI) / 180)
-                            const cy =
-                                25 + radius * Math.sin((angle * Math.PI) / 180)
-
+                            const cx = round(
+                                center +
+                                    radius * Math.cos((angle * Math.PI) / 180),
+                            )
+                            const cy = round(
+                                center +
+                                    radius * Math.sin((angle * Math.PI) / 180),
+                            )
                             return (
                                 <circle
                                     key={i}

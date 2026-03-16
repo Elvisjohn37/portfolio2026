@@ -7,6 +7,7 @@ import TelegramIcon from "@mui/icons-material/Telegram"
 import {
     Backdrop,
     IconButton,
+    Skeleton,
     Slide,
     Tooltip,
     Typography,
@@ -18,6 +19,12 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
 import { use, useEffect, useState } from "react"
 import { hello } from "./hello"
 import LvsLoading from "./LvsLoading"
+import _ from "lodash"
+
+type TuserData = {
+    firstName: string
+    // add other fields from `res.data` if needed
+}
 
 const Home = () => {
     const { ref, inView } = useInView({
@@ -27,18 +34,16 @@ const Home = () => {
 
     const [isReady, setIsReady] = useState(false)
 
-    const [data, setData] = useState(null)
+    const [data, setData] = useState<TuserData | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
             const res = await hello()
-            setData(res)
+            setData(res.data)
         }
 
         fetchData()
     }, [])
-
-    console.log(data)
 
     return (
         <>
@@ -59,7 +64,14 @@ const Home = () => {
                                 timeout={1000}
                             >
                                 <div className="flex flex-col gap-2">
-                                    <Typography>Hi, I'm Elvis John</Typography>
+                                    <Typography className="flex gap-2">
+                                        Hi, I'm{" "}
+                                        {_.isEmpty(data) ? (
+                                            <Skeleton width={100} />
+                                        ) : (
+                                            data?.firstName
+                                        )}
+                                    </Typography>
                                     <div className="flex gap-2">
                                         <LocationOnOutlinedIcon />
                                         Metro Manila, Philippines
