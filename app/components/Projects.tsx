@@ -338,7 +338,6 @@ const Projects = () => {
 
     return (
         <div
-            id="projects"
             className="flex justify-center min-h-lvh items-center scroll-m-16 sm:scroll-m-0"
             ref={ref}
         >

@@ -48,7 +48,6 @@ const Contact = () => {
 
     return (
         <div
-            id="contact"
             className="flex justify-center min-h-lvh scroll-m-16 sm:scroll-m-0"
             ref={ref}
         >

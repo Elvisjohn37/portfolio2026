@@ -6,6 +6,7 @@ import EmailIcon from "@mui/icons-material/Email"
 import TelegramIcon from "@mui/icons-material/Telegram"
 import {
     Backdrop,
+    Fade,
     IconButton,
     Skeleton,
     Slide,
@@ -16,14 +17,17 @@ import {
 import Image from "@/app/components/Image"
 import { useInView } from "react-intersection-observer"
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
-import { use, useEffect, useState } from "react"
-import { hello } from "./hello"
+import { useEffect, useMemo, useState } from "react"
+import { getAbout } from "@/app/api/about"
 import LvsLoading from "./LvsLoading"
 import _ from "lodash"
 
 type TuserData = {
     firstName: string
     position: string
+    about1: string
+    province: string
+    country: string
     // add other fields from `res.data` if needed
 }
 
@@ -34,29 +38,41 @@ const Home = () => {
     })
 
     const [isReady, setIsReady] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(null)
 
     const [data, setData] = useState<TuserData | null>(null)
+    const { firstName, position, about1, province, country } = useMemo(
+        () =>
+            data || {
+                firstName: "",
+                position: "",
+                about1: "",
+                province: "",
+                country: "",
+            },
+        [data],
+    )
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await hello()
+            const res = await getAbout()
+            if (_.isEmpty(res.data)) setErrorMessage(res.errorMessage)
             setData(res.data)
+            setIsReady(true)
         }
-
         fetchData()
     }, [])
 
     return (
-        <>
-            <div
-                ref={ref}
-                id="home"
-                className="flex justify-center min-h-lvh home pt-12.5 items-center"
-            >
-                <Backdrop open={!isReady && inView}>
-                    <LvsLoading />
-                </Backdrop>
-                {inView && (
+        <div
+            ref={ref}
+            className="flex justify-center min-h-lvh home pt-12.5 items-center"
+        >
+            <Backdrop key="home-loader" open={!isReady && inView}>
+                <LvsLoading />
+            </Backdrop>
+            {inView &&
+                (!errorMessage ? (
                     <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
                         <div className="flex sm:flex-7 w-full flex-col gap-2 justify-center order-2 sm:order-1">
                             <Slide
@@ -70,12 +86,16 @@ const Home = () => {
                                         {_.isEmpty(data) ? (
                                             <Skeleton width={100} />
                                         ) : (
-                                            data?.firstName
+                                            firstName
                                         )}
                                     </Typography>
                                     <div className="flex gap-2">
                                         <LocationOnOutlinedIcon />
-                                        Metro Manila, Philippines
+                                        {_.isEmpty(data) ? (
+                                            <Skeleton className="w-50" />
+                                        ) : (
+                                            `${province}, ${country}`
+                                        )}
                                     </div>
                                 </div>
                             </Slide>
@@ -88,7 +108,7 @@ const Home = () => {
                                     {_.isEmpty(data) ? (
                                         <Skeleton className="w-[75vw] sm:w-125" />
                                     ) : (
-                                        data?.position
+                                        position
                                     )}
                                 </p>
                             </Slide>
@@ -97,11 +117,16 @@ const Home = () => {
                                 in={inView && isReady}
                                 timeout={1400}
                             >
-                                <Typography>
-                                    Seasoned Full Stack Developer with 7 years
-                                    of hands-on experience in Frontend
-                                    Development and 5 years working across the
-                                    fullstack.
+                                <Typography className="sm:flex sm:flex-col">
+                                    {_.isEmpty(data) ? (
+                                        <>
+                                            <Skeleton className="w-[75vw] sm:w-125" />
+                                            <Skeleton className="w-[75vw] sm:w-120" />
+                                            <Skeleton className="w-[75vw] sm:w-100" />
+                                        </>
+                                    ) : (
+                                        about1
+                                    )}
                                 </Typography>
                             </Slide>
                             <Slide
@@ -185,15 +210,21 @@ const Home = () => {
                                         width={1092}
                                         height={1400}
                                         alt="profile-image"
-                                        setIsReady={setIsReady}
+                                        // setIsReady={setIsReady}
                                     />
                                 </div>
                             </Slide>
                         </div>
                     </div>
-                )}
-            </div>
-        </>
+                ) : (
+                    <Fade in={inView} timeout={1000}>
+                        <div className="flex flex-col gap-5 items-center border-2 border-red-500 rounded-sm p-8">
+                            <p className="text-4xl">Something Went Wrong</p>
+                            <p className="text-3xl">{errorMessage}</p>
+                        </div>
+                    </Fade>
+                ))}
+        </div>
     )
 }
 
