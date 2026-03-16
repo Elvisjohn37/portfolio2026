@@ -9,7 +9,7 @@ export default function LVSLoader({ size = 60 }) {
     const dots = Array.from({ length: dotCount })
 
     // helper to round to 3 decimal places to avoid hydration mismatch
-    const round = (num) => Math.round(num * 1000) / 1000
+    const round = (num: number) => Math.round(num * 1000) / 1000
 
     return (
         <div className="flex items-center gap-[14px] px-4 py-2">
