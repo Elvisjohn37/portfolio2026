@@ -23,6 +23,7 @@ import _ from "lodash"
 
 type TuserData = {
     firstName: string
+    position: string
     // add other fields from `res.data` if needed
 }
 
@@ -84,7 +85,11 @@ const Home = () => {
                                 timeout={1200}
                             >
                                 <p className="text-2xl lg:text-5xl text-primary">
-                                    Senior Web Developer
+                                    {_.isEmpty(data) ? (
+                                        <Skeleton className="w-[75vw] sm:w-125" />
+                                    ) : (
+                                        data?.position
+                                    )}
                                 </p>
                             </Slide>
                             <Slide
