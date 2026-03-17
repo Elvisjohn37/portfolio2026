@@ -1,7 +1,7 @@
 const getHomeData = async () => {
     try {
         const about = await fetch(
-            "http://localhost:8080/api/about/69b7b3deae50c7eb975112fd",
+            "http://portfolio2026backend.vercel.app/api/about/69b7b3deae50c7eb975112fd",
         )
         if (!about.ok) throw new Error("About data is unavailable")
         const data = await about.json()
@@ -14,7 +14,7 @@ const getHomeData = async () => {
 const getAboutData = async () => {
     try {
         const about = await fetch(
-            "http://localhost:8080/api/about/more-about/69b7b3deae50c7eb975112fd",
+            "http://portfolio2026backend.vercel.app/api/about/more-about/69b7b3deae50c7eb975112fd",
         )
         if (!about.ok) throw new Error("About data is unavailable")
         const data = await about.json()
