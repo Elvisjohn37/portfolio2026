@@ -64,7 +64,11 @@ const App = () => {
                     renderedSections.includes("#home")) && (
                     <Suspense
                         fallback={
-                            <Backdrop key="home-loader" open={true}>
+                            <Backdrop
+                                sx={{ backgroundColor: "transparent" }}
+                                key="home-loader"
+                                open={true}
+                            >
                                 <LvsLoading />
                             </Backdrop>
                         }
@@ -79,7 +83,10 @@ const App = () => {
                     renderedSections.includes("#about")) && (
                     <Suspense
                         fallback={
-                            <Backdrop open={true}>
+                            <Backdrop
+                                sx={{ backgroundColor: "transparent" }}
+                                open={true}
+                            >
                                 <Loader />
                             </Backdrop>
                         }
@@ -94,7 +101,10 @@ const App = () => {
                     renderedSections.includes("#projects")) && (
                     <Suspense
                         fallback={
-                            <Backdrop open={true}>
+                            <Backdrop
+                                sx={{ backgroundColor: "transparent" }}
+                                open={true}
+                            >
                                 <Loader />
                             </Backdrop>
                         }
@@ -109,7 +119,10 @@ const App = () => {
                     renderedSections.includes("#contact")) && (
                     <Suspense
                         fallback={
-                            <Backdrop open={true}>
+                            <Backdrop
+                                sx={{ backgroundColor: "transparent" }}
+                                open={true}
+                            >
                                 <Loader />
                             </Backdrop>
                         }

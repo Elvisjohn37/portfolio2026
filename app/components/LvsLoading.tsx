@@ -1,12 +1,19 @@
 "use client"
 
 import Image from "next/image"
+import { useContext } from "react"
+import ThemeContext from "../utils/js/ThemeContext"
 
 export default function LVSLoader({ size = 60 }) {
+    const { state, dispatch } = useContext(ThemeContext)
+    const { theme } = state
+    console.log(theme)
     const dotCount = 12 // number of dots
     const radius = 20 // orbit radius
     const center = 25 // SVG center coordinate
     const dots = Array.from({ length: dotCount })
+    const lvsText = `text-[20px] font-semibold tracking-[2px] ${theme === "light" ? "text-secondary-text" : ""}`
+    const webSolutionsText = `text-[10px] tracking-[3px] opacity-80 ${theme === "light" ? "text-secondary-text" : ""}`
 
     // helper to round to 3 decimal places to avoid hydration mismatch
     const round = (num: number) => Math.round(num * 1000) / 1000
@@ -62,12 +69,8 @@ export default function LVSLoader({ size = 60 }) {
 
             {/* Text */}
             <div className="text-[#e6e6e6] font-sans">
-                <div className="text-[20px] font-semibold tracking-[2px]">
-                    LVS
-                </div>
-                <div className="text-[10px] tracking-[3px] opacity-80">
-                    WEB SOLUTIONS
-                </div>
+                <div className={lvsText}>LVS</div>
+                <div className={webSolutionsText}>WEB SOLUTIONS</div>
             </div>
 
             {/* Extra CSS */}

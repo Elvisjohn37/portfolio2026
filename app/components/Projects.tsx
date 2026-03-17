@@ -338,7 +338,7 @@ const Projects = () => {
 
     return (
         <div
-            className="flex justify-center min-h-lvh items-center scroll-m-16 sm:scroll-m-0"
+            className="flex justify-center h-full items-center scroll-m-16 sm:scroll-m-0"
             ref={ref}
         >
             <div className="flex sm:justify-center flex-col w-full">

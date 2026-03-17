@@ -18,7 +18,7 @@ import Image from "@/app/components/Image"
 import { useInView } from "react-intersection-observer"
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
 import { useEffect, useMemo, useState } from "react"
-import { getAbout } from "@/app/api/about"
+import { getHomeData } from "@/app/api/about"
 import LvsLoading from "./LvsLoading"
 import _ from "lodash"
 
@@ -55,7 +55,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await getAbout()
+            const res = await getHomeData()
             if (_.isEmpty(res.data)) setErrorMessage(res.errorMessage)
             setData(res.data)
             setIsReady(true)
@@ -68,7 +68,11 @@ const Home = () => {
             ref={ref}
             className="flex justify-center min-h-lvh home pt-12.5 items-center"
         >
-            <Backdrop key="home-loader" open={!isReady && inView}>
+            <Backdrop
+                sx={{ backgroundColor: "transparent" }}
+                key="home-loader"
+                open={!isReady && inView}
+            >
                 <LvsLoading />
             </Backdrop>
             {inView &&
@@ -129,7 +133,7 @@ const Home = () => {
                                     )}
                                 </Typography>
                             </Slide>
-                            <Slide
+                            {/* <Slide
                                 in={inView && isReady}
                                 timeout={1600}
                                 className="flex gap-2 justify-end sm:justify-start"
@@ -196,7 +200,7 @@ const Home = () => {
                                         </Tooltip>
                                     </div>
                                 </div>
-                            </Slide>
+                            </Slide> */}
                         </div>
                         <div className="flex sm:flex-5 w-full justify-center items-center order-1 sm:order-2">
                             <Slide

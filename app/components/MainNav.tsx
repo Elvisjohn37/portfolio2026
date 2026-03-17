@@ -24,14 +24,13 @@ const MainNav = () => {
                         const newHash = `#${id}`
 
                         setActiveHash(newHash)
-
-                        // Update URL without scrolling jump
                         window.history.replaceState(null, "", newHash)
                     }
                 })
             },
             {
-                threshold: 0.6, // section must be 60% visible
+                rootMargin: "-50% 0px -50% 0px",
+                threshold: 0,
             },
         )
 
