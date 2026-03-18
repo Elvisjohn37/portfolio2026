@@ -55,8 +55,6 @@ const App = () => {
             setRenderedSections([...renderedSections, activeHash as string])
     }, [activeHash])
 
-    console.log(renderedSections)
-
     return (
         <div className="2xl:px-80 xl:px-50 lg:px-30 md:px-20 sm:px-10 px-5 overflow-y-hidden pb-5">
             <div id="home" className="min-h-lvh">

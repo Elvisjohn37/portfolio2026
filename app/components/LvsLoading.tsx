@@ -5,9 +5,8 @@ import { useContext } from "react"
 import ThemeContext from "../utils/js/ThemeContext"
 
 export default function LVSLoader({ size = 60 }) {
-    const { state, dispatch } = useContext(ThemeContext)
+    const { state } = useContext(ThemeContext)
     const { theme } = state
-    console.log(theme)
     const dotCount = 12 // number of dots
     const radius = 20 // orbit radius
     const center = 25 // SVG center coordinate

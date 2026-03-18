@@ -217,7 +217,9 @@ const About = () => {
 
                     <div className="flex flex-1 gap-2 flex-col">
                         <Slide direction="left" timeout={1800} in={inView}>
-                            <div>{inView && <TechStacks />}</div>
+                            <div>
+                                <TechStacks />
+                            </div>
                         </Slide>
                     </div>
                 </div>

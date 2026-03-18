@@ -1,4 +1,4 @@
-import { Button, Grow, Popover, Tooltip, Typography } from "@mui/material"
+import { Grow, Popover, Tooltip, Typography } from "@mui/material"
 import {
     Laravel,
     Php,
@@ -9,70 +9,71 @@ import {
     Mongodb,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
-import { useState } from "react"
+import { useState, MouseEvent } from "react"
+import useSWR from "swr"
+import { getAboutTechStacks } from "../api/about"
+import Loader from "./Loader"
+
+type IconComponent = React.ComponentType<{
+    onClick?: (event: MouseEvent<HTMLElement>) => void
+    className?: string
+    width?: number
+    height?: number
+}>
+
+const components: Record<string, IconComponent> = {
+    Laravel,
+    PHP: Php,
+    NodeJS: Nodejs,
+    Express: Expressjs,
+    Mysql,
+    Postgresql,
+    Mongodb,
+}
+
+interface TechStack {
+    _id: string
+    name: keyof typeof components
+    description: string
+}
+
+interface FrontendTechItem {
+    Component: IconComponent
+    title: string
+    id: string
+    details: string
+}
 
 const BackendTechStack = () => {
-    const backendTechStacks = [
+    const { data = [], isLoading } = useSWR<TechStack[]>(
+        ["about-tech", "backend"],
+        getAboutTechStacks,
         {
-            id: 1,
-            Component: Laravel,
-            title: "Laravel",
-            details: "4 years experience",
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            revalidateIfStale: false,
         },
-        {
-            id: 2,
-            Component: Php,
-            title: "Php",
-            details: "4 years experience",
-        },
-        {
-            id: 3,
-            Component: Nodejs,
-            title: "Nodejs",
-            details: "4 years experience",
-        },
-        {
-            id: 4,
-            Component: Expressjs,
-            title: "Expressjs",
-            details: "4 years experience",
-        },
-        {
-            id: 5,
-            Component: Mysql,
-            title: "Mysql",
-            details: "4 years experience",
-        },
-        {
-            id: 6,
-            Component: Postgresql,
-            title: "Postgresql",
-            details: "4 years experience",
-        },
-        {
-            id: 7,
-            Component: Mongodb,
-            title: "Mongodb",
-            details: "4 years experience",
-        },
-    ]
+    )
+
+    const backendTechStacks: FrontendTechItem[] = data.map((datum) => ({
+        Component: components[datum.name],
+        title: datum.name,
+        id: datum._id,
+        details: datum.description,
+    }))
 
     const { ref, inView } = useInView({
         threshold: 0.3, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
 
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
-    const handleClick = (
-        event: React.MouseEvent<HTMLButtonElement>,
-        id: number,
-    ) => {
+    const handleClick = (event: MouseEvent<HTMLElement>, id: string) => {
         setAnchorEl(event.currentTarget)
-        const currentTeckstacks = backendTechStacks.find(
-            (item) => item.id === id,
-        )
-        setCurrentDetails(currentTeckstacks)
+
+        const selected = backendTechStacks.find((item) => item.id === id)
+        setCurrentDetails(selected ?? null)
     }
 
     const handleClose = () => {
@@ -86,6 +87,8 @@ const BackendTechStack = () => {
 
     const open = Boolean(anchorEl)
     const id = open ? "simple-popover" : undefined
+
+    if (isLoading) return <Loader />
 
     return (
         <div ref={ref} className="grid grid-cols-5 gap-5">
@@ -122,7 +125,7 @@ const BackendTechStack = () => {
                     }}
                 >
                     <Typography sx={{ p: 2 }}>
-                        {currentDetails.details}
+                        {currentDetails?.details}
                     </Typography>
                 </Popover>
             </div>

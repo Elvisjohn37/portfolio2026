@@ -1,8 +1,11 @@
+const url =
+    process.env.NODE_ENV === "development"
+        ? process.env.NEXT_PUBLIC_API_LOCALHOST
+        : process.env.NEXT_PUBLIC_API
+
 const getHomeData = async () => {
     try {
-        const about = await fetch(
-            "https://portfolio2026backend.vercel.app/api/about/69b7b3deae50c7eb975112fd",
-        )
+        const about = await fetch(`${url}/api/about/69b7b3deae50c7eb975112fd`)
         if (!about.ok) throw new Error("About data is unavailable")
         const data = await about.json()
         return data
@@ -14,7 +17,7 @@ const getHomeData = async () => {
 const getAboutData = async () => {
     try {
         const about = await fetch(
-            "https://portfolio2026backend.vercel.app/api/about/more-about/69b7b3deae50c7eb975112fd",
+            `${url}/api/about/more-about/69b7b3deae50c7eb975112fd`,
         )
         if (!about.ok) throw new Error("About data is unavailable")
         const data = await about.json()
@@ -24,4 +27,17 @@ const getAboutData = async () => {
     }
 }
 
-export { getHomeData, getAboutData }
+const getAboutTechStacks = async ([, techStack]: [string, string]) => {
+    try {
+        const res = await fetch(
+            `${url}/api/about/about-tech-stacks/${techStack}`,
+        )
+        if (!res.ok) throw new Error("About data is unavailable")
+        const { data } = await res.json()
+        return data
+    } catch {
+        return []
+    }
+}
+
+export { getHomeData, getAboutData, getAboutTechStacks }
