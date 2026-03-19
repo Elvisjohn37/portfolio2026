@@ -56,7 +56,7 @@ const App = () => {
     }, [activeHash])
 
     return (
-        <div className="2xl:px-80 xl:px-50 lg:px-30 md:px-20 sm:px-10 px-5 overflow-y-hidden pb-5">
+        <div className="2xl:px-80 xl:px-50 lg:px-30 md:px-20 sm:px-10 px-5 overflow-x-hidden pb-5">
             <div id="home" className="min-h-lvh">
                 {(activeHash === "#home" ||
                     renderedSections.includes("#home")) && (
@@ -76,7 +76,7 @@ const App = () => {
                 )}
             </div>
 
-            <div id="about" className="min-h-lvh">
+            <div id="about" className="min-h-lvh scroll-m-16 sm:scroll-m-5">
                 {(activeHash === "#about" ||
                     renderedSections.includes("#about")) && (
                     <Suspense
@@ -94,7 +94,7 @@ const App = () => {
                 )}
             </div>
 
-            <div id="projects" className="min-h-lvh">
+            <div id="projects" className="min-h-lvh scroll-m-16 sm:scroll-m-20">
                 {(activeHash === "#projects" ||
                     renderedSections.includes("#projects")) && (
                     <Suspense
@@ -112,7 +112,7 @@ const App = () => {
                 )}
             </div>
 
-            <div id="contact" className="min-h-lvh">
+            <div id="contact" className="min-h-lvh scroll-m-16 sm:scroll-m-0">
                 {(activeHash === "#contact" ||
                     renderedSections.includes("#contact")) && (
                     <Suspense

@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import MainNav from "./components/MainNav"
 import ThemeProvider from "./ThemeProvider"
-import { Typography } from "@mui/material"
 import ColorTheme from "./components/ColorTheme"
 
 const geistSans = Geist({
@@ -21,11 +20,17 @@ export const metadata: Metadata = {
     description: "My portfolio",
 }
 
+const Footer = () => (
+    <footer className="flex absolute w-full h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secobg-secondary-text">
+        <p>All Rights Reserved</p>
+    </footer>
+)
+
 export default function RootLayout({
     children,
-}: Readonly<{
+}: {
     children: React.ReactNode
-}>) {
+}) {
     return (
         <html lang="en">
             <body
@@ -35,9 +40,7 @@ export default function RootLayout({
                     <MainNav />
                     <ColorTheme />
                     {children}
-                    <div className="flex absolute w-full h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secobg-secondary-text">
-                        <Typography>All Rights Reserved</Typography>
-                    </div>
+                    <Footer />
                 </ThemeProvider>
             </body>
         </html>

@@ -1,84 +1,78 @@
 import { Box, Tab, Tabs } from "@mui/material"
-import { useState } from "react"
+import { useState, SyntheticEvent } from "react"
 import dynamic from "next/dynamic"
-import Loader from "./Loader"
 
+// Better loading fallback (prevents layout shift)
 const FrontendTechStack = dynamic(() => import("./FrontendTechStack"), {
-    loading: Loader,
+    loading: () => null,
 })
 
 const BackendTechStack = dynamic(() => import("./BackendTechStack"), {
-    loading: Loader,
+    loading: () => null,
 })
 
 const ToolsTechStack = dynamic(() => import("./ToolsTechStack"), {
-    loading: Loader,
+    loading: () => null,
 })
 
-type TabPanelProps = {
-    children?: React.ReactNode
-    index: number
-    value: number
-}
+const TABS = [
+    { label: "Frontend", Component: FrontendTechStack },
+    { label: "Backend", Component: BackendTechStack },
+    { label: "Tools", Component: ToolsTechStack },
+]
 
 const TechStacks = () => {
     const [value, setValue] = useState(0)
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    // Track visited tabs (prevents remount lag)
+    const [mountedTabs, setMountedTabs] = useState([0])
+
+    const handleChange = (_: SyntheticEvent, newValue: number) => {
         setValue(newValue)
+
+        if (!mountedTabs.includes(newValue)) {
+            setMountedTabs((prev) => [...prev, newValue])
+        }
     }
 
     return (
         <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs example"
-                >
-                    <Tab label="Frontend" {...a11yProps(0)} />
-                    <Tab label="Backend" {...a11yProps(1)} />
-                    <Tab label="Tools" {...a11yProps(2)} />
+                <Tabs value={value} onChange={handleChange}>
+                    {TABS.map((tab, index) => (
+                        <Tab
+                            key={tab.label}
+                            label={tab.label}
+                            id={`tab-${index}`}
+                            aria-controls={`tabpanel-${index}`}
+                        />
+                    ))}
                 </Tabs>
             </Box>
-            <CustomTabPanel value={value} index={0}>
-                <div className="min-h-80 relative">
-                    <FrontendTechStack />
-                </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                <div className="min-h-80 relative">
-                    <BackendTechStack />
-                </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-                <div className="min-h-80 relative">
-                    <ToolsTechStack />
-                </div>
-            </CustomTabPanel>
+
+            {TABS.map(({ Component }, index) => {
+                const isActive = value === index
+                const isMounted = mountedTabs.includes(index)
+
+                if (!isMounted) return null
+
+                return (
+                    <Box
+                        key={index}
+                        role="tabpanel"
+                        hidden={!isActive}
+                        id={`tabpanel-${index}`}
+                        aria-labelledby={`tab-${index}`}
+                        sx={{ p: 3 }}
+                    >
+                        <Box className="min-h-80 relative">
+                            <Component />
+                        </Box>
+                    </Box>
+                )
+            })}
         </Box>
     )
 }
-
-const CustomTabPanel = (props: TabPanelProps) => {
-    const { children, value, index, ...other } = props
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-        </div>
-    )
-}
-
-const a11yProps = (index: number) => ({
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-})
 
 export default TechStacks
