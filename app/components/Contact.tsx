@@ -10,14 +10,18 @@ import {
     Snackbar,
     SnackbarCloseReason,
     TextField,
+    Tooltip,
     Typography,
 } from "@mui/material"
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useContext, useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { FormState, submitContactForm } from "./forms/email-form"
 import { Viber, Whatsapp, Location } from "./Icons"
+import ThemeContext from "../utils/js/ThemeContext"
 
 const Contact = () => {
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
     const { ref, inView } = useInView({
         threshold: 0.3, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
@@ -136,8 +140,32 @@ const Contact = () => {
                                     <Typography>Contact Number</Typography>
                                     <div className="flex gap-2 items-center">
                                         <Typography>09306915794</Typography>
-                                        <Viber fill="#ffffff" />
-                                        <Whatsapp fill="#ffffff" />
+                                        <Tooltip
+                                            placement="top"
+                                            arrow
+                                            title="Viber"
+                                        >
+                                            <Viber
+                                                fill={
+                                                    theme === "dark"
+                                                        ? "#ffffff"
+                                                        : "#30374c"
+                                                }
+                                            />
+                                        </Tooltip>
+                                        <Tooltip
+                                            placement="top"
+                                            arrow
+                                            title="Whatsapp"
+                                        >
+                                            <Whatsapp
+                                                fill={
+                                                    theme === "dark"
+                                                        ? "#ffffff"
+                                                        : "#30374c"
+                                                }
+                                            />
+                                        </Tooltip>
                                     </div>
                                 </Paper>
                                 <Paper className="flex flex-col gap-2 p-5">
@@ -146,7 +174,13 @@ const Contact = () => {
                                         <Typography>
                                             Barangay 175 Camarin Caloocan City
                                         </Typography>
-                                        <Location fill="#ffffff" />
+                                        <Location
+                                            fill={
+                                                theme === "dark"
+                                                    ? "#ffffff"
+                                                    : "#30374c"
+                                            }
+                                        />
                                     </div>
                                 </Paper>
                             </div>

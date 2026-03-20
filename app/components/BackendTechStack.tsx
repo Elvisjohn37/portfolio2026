@@ -9,10 +9,12 @@ import {
     Mongodb,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
-import { useState, MouseEvent } from "react"
+import { useState, MouseEvent, useContext } from "react"
 import useSWR from "swr"
 import { getAboutTechStacks } from "../api/about"
 import Loader from "./Loader"
+import classnames from "classnames"
+import ThemeContext from "../utils/js/ThemeContext"
 
 type IconComponent = React.ComponentType<{
     onClick?: (event: MouseEvent<HTMLElement>) => void
@@ -45,6 +47,8 @@ interface FrontendTechItem {
 }
 
 const BackendTechStack = () => {
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
     const { data = [], isLoading } = useSWR<TechStack[]>(
         ["about-tech", "backend"],
         getAboutTechStacks,
@@ -99,7 +103,14 @@ const BackendTechStack = () => {
                     key={`backend-${item.id}`}
                 >
                     <Tooltip title={item.title} placement="top" arrow>
-                        <div className="icon-container">
+                        <div
+                            className={classnames([
+                                "icon-container",
+                                theme === "dark"
+                                    ? "bg-secondary border-secondary-light border  hover:shadow-[0_0_8px_#30374c]"
+                                    : "shadow-2xl hover:shadow-lg",
+                            ])}
+                        >
                             <item.Component
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onClick={(event: any) =>

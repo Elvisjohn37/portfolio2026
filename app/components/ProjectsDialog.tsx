@@ -37,6 +37,9 @@ import {
 } from "./Icons"
 import CloseIcon from "@mui/icons-material/Close"
 import Link from "next/link"
+import classNames from "classnames"
+import ThemeContext from "../utils/js/ThemeContext"
+import { useContext } from "react"
 
 const ProjectsDialog = ({ open, onClose, data }: any) => {
     const { name, description, thumbnail, images, info, techStacks, url } = data
@@ -130,6 +133,8 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
 }
 
 const TechStacks = ({ techStack, label }: any) => {
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
     if (!techStack) return
     return (
         <div className="flex flex-col gap-2">
@@ -141,7 +146,7 @@ const TechStacks = ({ techStack, label }: any) => {
                     variant="outlined"
                 />
             </div>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-3 flex-wrap">
                 {techStack?.map((item: any, index: any) => (
                     <Tooltip
                         key={index}
@@ -149,8 +154,15 @@ const TechStacks = ({ techStack, label }: any) => {
                         placement="top"
                         arrow
                     >
-                        <div className="p-2 bg-secondary-dark border border-transparent w-fit rounded-full duration-300 hover:border-primary-dark hover:scale-130 hover:bg-secondary-light">
-                            <item.icon />
+                        <div
+                            className={classNames([
+                                "p-3 rounded-full duration-300 hover:scale-130",
+                                theme === "light"
+                                    ? "shadow-2xs hover:border-secondary-dark"
+                                    : "bg-secondary border border-transparent hover:border-primary-dark hover:bg-secondary-light",
+                            ])}
+                        >
+                            <item.icon width={30} height={30} />
                         </div>
                     </Tooltip>
                 ))}

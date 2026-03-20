@@ -40,7 +40,6 @@ const createAppTheme = (activeTheme: Ttheme) => {
                 main: "#0f172a",
             },
             text: {
-                primary: "#dbf6f5",
                 secondary: "#7b8383",
             },
         },
@@ -54,8 +53,7 @@ const createAppTheme = (activeTheme: Ttheme) => {
                 styleOverrides: {
                     paper: {
                         backgroundColor: isLight ? "#ffffff" : "#080d1b",
-                        color: "#7b8383",
-                        border: "1px solid #30374c",
+                        border: isLight ? "transparent" : "1px solid #30374c",
                         maxWidth: 300,
                     },
                 },

@@ -86,7 +86,7 @@ const Home = () => {
                             >
                                 <div className="flex flex-col gap-2">
                                     <Typography className="flex gap-2">
-                                        Hi, I'm{" "}
+                                        {"Hi, I'm "}
                                         {_.isEmpty(data) ? (
                                             <Skeleton width={100} />
                                         ) : (

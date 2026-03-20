@@ -20,11 +20,12 @@ import {
     Wordpress,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
-import { useState, MouseEvent } from "react"
+import { useState, MouseEvent, useContext } from "react"
 import { getAboutTechStacks } from "../api/about"
 import Loader from "./Loader"
 import useSWR from "swr"
-
+import classnames from "classnames"
+import ThemeContext from "../utils/js/ThemeContext"
 /**
  * API response type
  */
@@ -79,6 +80,8 @@ interface FrontendTechItem {
 }
 
 const FrontendTechStack = () => {
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
     const { data = [], isLoading } = useSWR<TechStack[]>(
         ["about-tech", "frontend"],
         getAboutTechStacks,
@@ -130,7 +133,14 @@ const FrontendTechStack = () => {
                     key={`frontend-${item.id}`}
                 >
                     <Tooltip title={item.title} placement="top" arrow>
-                        <div className="icon-container">
+                        <div
+                            className={classnames([
+                                "icon-container",
+                                theme === "dark"
+                                    ? "bg-secondary border-secondary-light border  hover:shadow-[0_0_8px_#30374c]"
+                                    : "shadow-2xl hover:shadow-lg",
+                            ])}
+                        >
                             <item.Component
                                 onClick={(event) => handleClick(event, item.id)}
                                 className="w-full h-full duration-300 transition transform-[translate] hover:scale-110"

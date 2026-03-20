@@ -1,9 +1,13 @@
-import { Button, Grow, Popover, Tooltip, Typography } from "@mui/material"
+import { Grow, Popover, Tooltip, Typography } from "@mui/material"
 import { Docker, Github, Bitbucket, Jira, Trello, Jenkins } from "./Icons"
 import { useInView } from "react-intersection-observer"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import classnames from "classnames"
+import ThemeContext from "../utils/js/ThemeContext"
 
 const ToolsTechStack = () => {
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
     const toolsTechStacks = [
         {
             id: 1,
@@ -80,7 +84,14 @@ const ToolsTechStack = () => {
                     key={`tools-${item.id}`}
                 >
                     <Tooltip title={item.title} placement="top" arrow>
-                        <div className="icon-container">
+                        <div
+                            className={classnames([
+                                "icon-container",
+                                theme === "dark"
+                                    ? "bg-secondary border-secondary-light border  hover:shadow-[0_0_8px_#30374c]"
+                                    : "shadow-2xl hover:shadow-lg",
+                            ])}
+                        >
                             <item.Component
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onClick={(event: any) =>

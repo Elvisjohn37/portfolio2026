@@ -63,6 +63,7 @@ const Projects = () => {
     const projects = [
         {
             id: 1,
+            logoSrc: "/projects/leekie/338a/favicon.png",
             name: "338a",
             description: "Online Gaming",
             thumbnail: "/projects/338a_bsi.png",
@@ -104,6 +105,7 @@ const Projects = () => {
         },
         {
             id: 2,
+            logoSrc: "/projects/leekie/gobetx/favicon.png",
             name: "GOBETX",
             description: "Online Gaming",
             thumbnail: "/projects/gobetx_asi.png",
@@ -143,6 +145,7 @@ const Projects = () => {
         },
         {
             id: 3,
+            logoSrc: "/projects/leekie/gosdsb/favicon.png",
             name: "GOSDSB",
             description: "Online Gaming",
             thumbnail: "/projects/gosdsb_bsi.png",
@@ -182,6 +185,7 @@ const Projects = () => {
         },
         {
             id: 4,
+            logoSrc: "/projects/leekie/sbobet/favicon.ico",
             name: "SBOBET Classic games",
             description: "Online Gaming",
             thumbnail: "/projects/sbobet_asi.png",
@@ -222,6 +226,7 @@ const Projects = () => {
         },
         {
             id: 5,
+            logoSrc: "/projects/landers/favicon.ico",
             name: "Landers",
             description: "E-commerce",
             thumbnail: "/projects/landers1.png",
@@ -254,6 +259,7 @@ const Projects = () => {
         },
         {
             id: 6,
+            logoSrc: "/projects/landers/favicon.ico",
             name: "Landers Admin Website",
             description: "Admin Website",
             thumbnail: "/projects/landers_admin.png",
@@ -280,6 +286,7 @@ const Projects = () => {
         },
         {
             id: 5,
+            logoSrc: "/projects/leekie/338a/favicon.png",
             name: "Streamline Verify",
             description: "Admin Website",
             thumbnail: "/projects/elgada1.png",
@@ -362,7 +369,12 @@ const Projects = () => {
                             >
                                 <CardHeader
                                     avatar={
-                                        <Avatar aria-label="recipe">R</Avatar>
+                                        <Image
+                                            src={project.logoSrc}
+                                            alt={""}
+                                            width={20}
+                                            height={20}
+                                        />
                                     }
                                     title={project.name}
                                     subheader={project.description}
