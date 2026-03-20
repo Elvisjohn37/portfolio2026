@@ -2,24 +2,48 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { Suspense, useEffect, useState } from "react"
+import { useEffect, useState, ComponentType } from "react"
 import Loader from "./components/Loader"
 import LvsLoading from "./components/LvsLoading"
-import { Backdrop } from "@mui/material"
 
-const Home = dynamic(() => import("./components/Home"))
-const About = dynamic(() => import("./components/About"))
-const Projects = dynamic(() => import("./components/Projects"))
-const Contact = dynamic(() => import("./components/Contact"))
+// Section IDs as a union type
+type SectionID = "home" | "about" | "projects" | "contact"
+
+// Dynamic component creator type
+type TCreateDynamicParams = (
+    importFn: () => Promise<{ default: ComponentType<unknown> }>,
+    hasCustomLoader?: boolean,
+) => ComponentType<unknown>
+
+const CreateDynamic: TCreateDynamicParams = (
+    importFn,
+    hasCustomLoader = false,
+) =>
+    dynamic(importFn, {
+        ssr: false,
+        loading: () => (
+            <div className="relative w-full h-lvh flex items-center justify-center">
+                {hasCustomLoader ? <LvsLoading /> : <Loader />}
+            </div>
+        ),
+    })
+
+// Dynamic components
+const Home = CreateDynamic(() => import("./components/Home"), true)
+const About = CreateDynamic(() => import("./components/About"))
+const Projects = CreateDynamic(() => import("./components/Projects"))
+const Contact = CreateDynamic(() => import("./components/Contact"))
 
 const App = () => {
-    const [activeHash, setActiveHash] = useState<string | undefined>()
+    const sections: SectionID[] = ["home", "about", "projects", "contact"]
 
-    const sections = ["home", "about", "projects", "contact"]
-    const [renderedSections, setRenderedSections] = useState<string[]>([])
+    const [activeHash, setActiveHash] = useState<`#${SectionID}` | undefined>()
+    const [renderedSections, setRenderedSections] = useState<`#${SectionID}`[]>(
+        [],
+    )
 
     useEffect(() => {
-        setActiveHash(window.location.hash)
+        setActiveHash(window.location.hash as `#${SectionID}`)
     }, [])
 
     useEffect(() => {
@@ -27,8 +51,8 @@ const App = () => {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        const id = entry.target.id
-                        const newHash = `#${id}`
+                        const id = entry.target.id as SectionID
+                        const newHash: `#${SectionID}` = `#${id}`
 
                         setActiveHash(newHash)
 
@@ -51,83 +75,31 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-        if (!renderedSections.includes(activeHash as string))
-            setRenderedSections([...renderedSections, activeHash as string])
-    }, [activeHash])
+        if (activeHash && !renderedSections.includes(activeHash)) {
+            setRenderedSections([...renderedSections, activeHash])
+        }
+    }, [activeHash, renderedSections])
 
     return (
         <div className="2xl:px-80 xl:px-50 lg:px-30 md:px-20 sm:px-10 px-5 overflow-x-hidden pb-5">
             <div id="home" className="min-h-lvh">
                 {(activeHash === "#home" ||
-                    renderedSections.includes("#home")) && (
-                    <Suspense
-                        fallback={
-                            <Backdrop
-                                sx={{ backgroundColor: "transparent" }}
-                                key="home-loader"
-                                open={true}
-                            >
-                                <LvsLoading />
-                            </Backdrop>
-                        }
-                    >
-                        <Home />
-                    </Suspense>
-                )}
+                    renderedSections.includes("#home")) && <Home />}
             </div>
 
             <div id="about" className="min-h-lvh scroll-m-16 sm:scroll-m-5">
                 {(activeHash === "#about" ||
-                    renderedSections.includes("#about")) && (
-                    <Suspense
-                        fallback={
-                            <Backdrop
-                                sx={{ backgroundColor: "transparent" }}
-                                open={true}
-                            >
-                                <Loader />
-                            </Backdrop>
-                        }
-                    >
-                        <About />
-                    </Suspense>
-                )}
+                    renderedSections.includes("#about")) && <About />}
             </div>
 
             <div id="projects" className="min-h-lvh scroll-m-16 sm:scroll-m-20">
                 {(activeHash === "#projects" ||
-                    renderedSections.includes("#projects")) && (
-                    <Suspense
-                        fallback={
-                            <Backdrop
-                                sx={{ backgroundColor: "transparent" }}
-                                open={true}
-                            >
-                                <Loader />
-                            </Backdrop>
-                        }
-                    >
-                        <Projects />
-                    </Suspense>
-                )}
+                    renderedSections.includes("#projects")) && <Projects />}
             </div>
 
             <div id="contact" className="min-h-lvh scroll-m-16 sm:scroll-m-0">
                 {(activeHash === "#contact" ||
-                    renderedSections.includes("#contact")) && (
-                    <Suspense
-                        fallback={
-                            <Backdrop
-                                sx={{ backgroundColor: "transparent" }}
-                                open={true}
-                            >
-                                <Loader />
-                            </Backdrop>
-                        }
-                    >
-                        <Contact />
-                    </Suspense>
-                )}
+                    renderedSections.includes("#contact")) && <Contact />}
             </div>
         </div>
     )

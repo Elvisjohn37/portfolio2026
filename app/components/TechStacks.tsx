@@ -1,18 +1,19 @@
 import { Box, Tab, Tabs } from "@mui/material"
 import { useState, SyntheticEvent } from "react"
 import dynamic from "next/dynamic"
+import Loader from "./Loader"
 
 // Better loading fallback (prevents layout shift)
 const FrontendTechStack = dynamic(() => import("./FrontendTechStack"), {
-    loading: () => null,
+    loading: () => <Loader />,
 })
 
 const BackendTechStack = dynamic(() => import("./BackendTechStack"), {
-    loading: () => null,
+    loading: () => <Loader />,
 })
 
 const ToolsTechStack = dynamic(() => import("./ToolsTechStack"), {
-    loading: () => null,
+    loading: () => <Loader />,
 })
 
 const TABS = [

@@ -63,18 +63,18 @@ const Home = () => {
         fetchData()
     }, [])
 
+    if (!isReady)
+        return (
+            <div className="relative w-full h-lvh flex items-center justify-center">
+                <LvsLoading />
+            </div>
+        )
+
     return (
         <div
             ref={ref}
             className="flex justify-center min-h-lvh home pt-12.5 items-center"
         >
-            <Backdrop
-                sx={{ backgroundColor: "transparent" }}
-                key="home-loader"
-                open={!isReady && inView}
-            >
-                <LvsLoading />
-            </Backdrop>
             {inView &&
                 (!errorMessage ? (
                     <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
