@@ -75,12 +75,12 @@ html {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    @apply bg-secondary-dark;
+    @apply bg-secondary-light;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    @apply bg-secondary-light rounded-full;
+    @apply bg-secondary-dark rounded-full;
 }
 
 /* Handle on hover */

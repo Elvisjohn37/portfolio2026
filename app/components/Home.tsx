@@ -33,7 +33,7 @@ type TuserData = {
 
 const Home = () => {
     const { ref, inView } = useInView({
-        threshold: 0.3, // Trigger when 30% visible
+        threshold: 0.1, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
 

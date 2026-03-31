@@ -41,7 +41,7 @@ type TmoreAbout = {
 
 const About = () => {
     const { ref, inView } = useInView({
-        threshold: 0.3, // Trigger when 30% visible
+        threshold: 0.2, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
 
@@ -272,7 +272,7 @@ const About = () => {
                         </Button>
                     </div>
                     <div className="sm:hidden! gap-2">
-                        <IconButton color="primary">
+                        <IconButton color="primary" onClick={handleOnClose}>
                             <DownloadIcon />
                         </IconButton>
                         <IconButton color="primary" onClick={handleOnClose}>
