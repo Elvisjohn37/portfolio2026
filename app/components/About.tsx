@@ -236,7 +236,7 @@ const About = () => {
                 className="min-w-1/2 w-full lg:[&>div:first-child]:w-screen [&>div>div:first-child]:w-full sm:[&>div>div:first-child]:w-fit"
             >
                 <DialogTitle>
-                    Updated CV
+                    <p className="text-primary">Updated CV</p>
                     <IconButton
                         aria-label="close"
                         onClick={handleOnClose}
