@@ -22,6 +22,8 @@ import CloseIcon from "@mui/icons-material/Close"
 import SchoolIcon from "@mui/icons-material/School"
 import { getAboutData } from "../api/about"
 import _ from "lodash"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
     ssr: false,
@@ -40,6 +42,8 @@ type TmoreAbout = {
 }
 
 const About = () => {
+    const theme = useTheme()
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
     const { ref, inView } = useInView({
         threshold: 0.2, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
@@ -228,7 +232,7 @@ const About = () => {
                 open={isOpenPdf}
                 onClose={handleOnClose}
                 maxWidth="xl"
-                // fullScreen
+                fullScreen={isSmallScreen}
                 className="min-w-1/2 w-full lg:[&>div:first-child]:w-screen [&>div>div:first-child]:w-full sm:[&>div>div:first-child]:w-fit"
             >
                 <DialogTitle>
