@@ -146,6 +146,9 @@ const About = () => {
                                         <Skeleton className="w-[90%]" />
                                         <Skeleton className="w-[80%]" />
                                         <Skeleton className="w-[75%]" />
+                                        {isSmallScreen && (
+                                            <Skeleton className="w-[80%]" />
+                                        )}
                                     </>
                                 ) : (
                                     about2
