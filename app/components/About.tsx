@@ -272,7 +272,7 @@ const About = () => {
                         </Button>
                     </div>
                     <div className="sm:hidden! gap-2">
-                        <IconButton color="primary" onClick={handleOnClose}>
+                        <IconButton color="primary" onClick={handleDownload}>
                             <DownloadIcon />
                         </IconButton>
                         <IconButton color="primary" onClick={handleOnClose}>
