@@ -174,8 +174,8 @@ const Projects = () => {
             thumbnail: "/projects/sbobet_asi.png",
             images: [
                 "/projects/sbobet_bsi.png",
-                "/projects/sbobet_mobile.png",
-                "/projects/sbobet_mobile_reports.png",
+                // "/projects/sbobet_mobile.png",
+                // "/projects/sbobet_mobile_reports.png",
             ],
             info: "Online gaming casino platform, designed exclusively for players across Indonesia. Our website offers a secure, fast, and immersive gaming experience featuring popular slot games, live casino tables, sports betting, and exciting jackpot opportunities. Built with user-friendly navigation and mobile compatibility, players can enjoy seamless access anytime, anywhere within Indonesia.",
             url: "https://games.classicku.com",
