@@ -296,9 +296,9 @@ const Projects = () => {
             images: [
                 "/projects/338a_account.png",
                 "/projects/338a_asi.png",
-                "/projects/338a_mobile.png",
-                "/projects/338a_mobile_bsi.png",
                 "/projects/338a_reports.png",
+                // "/projects/338a_mobile.png",
+                // "/projects/338a_mobile_bsi.png",
             ],
             info: "Online gaming casino platform, designed exclusively for players across Indonesia. Our website offers a secure, fast, and immersive gaming experience featuring popular slot games, live casino tables, sports betting, and exciting jackpot opportunities. Built with user-friendly navigation and mobile compatibility, players can enjoy seamless access anytime, anywhere within Indonesia.",
             url: "https://338a.com",
