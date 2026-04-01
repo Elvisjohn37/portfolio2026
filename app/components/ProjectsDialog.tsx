@@ -115,11 +115,11 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
                 <div className="grid lg:grid-cols-[2fr_1fr] gap-10 lg:gap-0">
                     <div className="flex flex-col gap-5">
                         <div className="relative">
-                            {!isImageReady && (
+                            {/* {!isImageReady && (
                                 <div className="flex justify-center items-center w-full h-full min-h-[50vh]">
                                     <Loader />
                                 </div>
-                            )}
+                            )} */}
                             <>
                                 <div className="overflow-hidden" ref={emblaRef}>
                                     <div className="flex">
