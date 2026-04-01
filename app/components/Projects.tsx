@@ -63,7 +63,7 @@ const Projects = () => {
     const projects = [
         {
             id: 1,
-            logoSrc: "/projects/leekie/338a/favicon.png",
+            logoSrc: "/projects/elgada/streameline verify/favicon.webp",
             name: "Streamline Verify",
             description: "Admin Website",
             thumbnail: "/projects/elgada1.png",

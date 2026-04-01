@@ -1,7 +1,8 @@
 "use client"
 
-import Image from "next/image"
-import { useState } from "react"
+import Image, { ImageProps } from "next/image"
+import { ReactElement, useState } from "react"
+import { TLoaderParams } from "./Loader"
 
 type Props = {
     src: string
@@ -11,16 +12,19 @@ type Props = {
     width?: number
     height?: number
     setIsReady?: (isReady: boolean) => void
-}
+    Loader?: (props: TLoaderParams) => ReactElement
+} & ImageProps
 
 export default function ImageWithSkeleton({
     src,
     alt,
     fallback = "/fallback.png",
     className = "",
-    width,
-    height,
     setIsReady,
+    Loader = () => (
+        <div className="absolute inset-0 animate-pulse bg-gray-300 h-full" />
+    ),
+    ...props
 }: Props) {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -28,15 +32,11 @@ export default function ImageWithSkeleton({
     return (
         <div className={`relative overflow-hidden ${className}`}>
             {/* Skeleton */}
-            {loading && !error && (
-                <div className="absolute inset-0 animate-pulse bg-gray-300" />
-            )}
+            {loading && !error && <Loader />}
 
             <Image
                 src={error ? fallback : src}
                 alt={alt}
-                width={width}
-                height={height}
                 onLoadingComplete={() => {
                     setLoading(false)
                     setIsReady?.(true)
@@ -48,6 +48,7 @@ export default function ImageWithSkeleton({
                 className={`transition-opacity duration-500 ${
                     loading ? "opacity-0" : "opacity-100"
                 }`}
+                {...props}
             />
         </div>
     )

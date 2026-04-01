@@ -16,7 +16,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material"
-import Image from "next/image"
+import Image from "@/app/components/Image"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import Slider from "react-slick"
@@ -57,7 +57,7 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
         Autoplay({ delay: 10000 }),
     ])
 
-    const [isImageLoading, setIsImageLoading] = useState(true)
+    const [isImageReady, setIsImageReady] = useState(false)
 
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev()
@@ -71,8 +71,6 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
     const { frontend, backend, tools } = techStacks
 
     const imagesCarousel = [thumbnail, ...(images || "")]
-
-    const handleImageOnLoad = () => setIsImageLoading(false)
 
     return (
         <Dialog
@@ -88,7 +86,15 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
             fullScreen={isSmallScreen}
         >
             <DialogTitle>
-                <p className="text-primary">{name}</p>
+                <div className="flex flex-row gap-2 items-center">
+                    <Image
+                        width={25}
+                        height={25}
+                        src={data.logoSrc}
+                        alt={"project-logo"}
+                    />
+                    <p className="text-primary">{name}</p>
+                </div>
                 <IconButton
                     aria-label="close"
                     onClick={onClose}
@@ -109,7 +115,7 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
                 <div className="grid lg:grid-cols-[2fr_1fr] gap-10 lg:gap-0">
                     <div className="flex flex-col gap-5">
                         <div className="relative">
-                            {isImageLoading && (
+                            {!isImageReady && (
                                 <div className="flex justify-center items-center w-full h-full min-h-[50vh]">
                                     <Loader />
                                 </div>
@@ -123,34 +129,34 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
                                                 className="min-w-full"
                                             >
                                                 <Image
-                                                    onLoad={handleImageOnLoad}
+                                                    setIsReady={setIsImageReady}
                                                     src={image}
                                                     width={1000}
                                                     height={100}
                                                     alt={`slide ${index}`}
+                                                    Loader={Loader}
                                                 />
                                             </div>
                                         ))}
                                     </div>
                                 </div>
-                                {!isImageLoading &&
-                                    imagesCarousel.length > 1 && (
-                                        <>
-                                            <button
-                                                onClick={scrollPrev}
-                                                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded cursor-pointer z-[-1] sm:z-1"
-                                            >
-                                                <ArrowBackIosIcon fontSize="small" />
-                                            </button>
+                                {isImageReady && imagesCarousel.length > 1 && (
+                                    <>
+                                        <button
+                                            onClick={scrollPrev}
+                                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded cursor-pointer z-[-1] sm:z-1"
+                                        >
+                                            <ArrowBackIosIcon fontSize="small" />
+                                        </button>
 
-                                            <button
-                                                onClick={scrollNext}
-                                                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded cursor-pointer z-[-1] sm:z-1"
-                                            >
-                                                <ArrowForwardIosIcon fontSize="small" />
-                                            </button>
-                                        </>
-                                    )}
+                                        <button
+                                            onClick={scrollNext}
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded cursor-pointer z-[-1] sm:z-1"
+                                        >
+                                            <ArrowForwardIosIcon fontSize="small" />
+                                        </button>
+                                    </>
+                                )}
                             </>
                         </div>
                         {url ? (
