@@ -38,7 +38,7 @@ const Home = () => {
         triggerOnce: false, // Animate in and out repeatedly
     })
 
-    const { data, isLoading } = useSWR(["home-data", "about"], getHomeData, {
+    const { data, isLoading } = useSWR(["about-data", "home"], getHomeData, {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         revalidateIfStale: false,

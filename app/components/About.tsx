@@ -64,11 +64,13 @@ const About = () => {
         link.click()
     }
 
-    const { data, isLoading } = useSWR(["home-data", "about"], getAboutData, {
+    const { data, isLoading } = useSWR(["about-data", "about"], getAboutData, {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         revalidateIfStale: false,
     })
+
+    console.log(data)
 
     const {
         firstName,

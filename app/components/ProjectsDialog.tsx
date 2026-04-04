@@ -373,6 +373,7 @@ const ProjectsDialog = ({
     const imagesCarousel = [thumbnail, ...(images || "")]
 
     const handleClose = () => {
+        // document.documentElement.classList.remove("scroll-smooth")
         if (hasParams) {
             router.back()
         } else {
