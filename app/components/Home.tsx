@@ -74,7 +74,6 @@ const Home = () => {
                 (!errorMessage ? (
                     <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
                         <div className="flex sm:flex-7 w-full flex-col gap-2 justify-center order-2 sm:order-1">
-                            <Link href={"/project/1"}>Project</Link>
                             <Slide
                                 direction="right"
                                 in={inView && !isLoading}
