@@ -375,7 +375,6 @@ const ProjectsDialog = ({
     const handleClose = () => {
         if (hasParams) {
             router.back()
-            window.history.scrollRestoration = "manual"
         } else {
             onClose()
         }

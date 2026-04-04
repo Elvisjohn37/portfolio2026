@@ -364,7 +364,10 @@ const Projects = () => {
                             timeout={1000 + index * 600}
                             key={`${project.name}-${project.id}`}
                         >
-                            <Link href={`/project/${project.id}`}>
+                            <Link
+                                href={`/project/${project.id}`}
+                                scroll={false}
+                            >
                                 <Card className="cursor-pointer transition-transform">
                                     <CardHeader
                                         avatar={
