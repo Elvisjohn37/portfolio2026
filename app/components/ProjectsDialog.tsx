@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
+
 import {
     Alert,
     AlertTitle,
@@ -21,17 +23,32 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import Slider from "react-slick"
 import {
+    Bitbucket,
     Bootstrap,
     Css,
+    Docker,
+    Expressjs,
+    Github,
     Gulp,
     Html,
     Javascript,
+    Jenkins,
     Jest,
+    Jira,
     Jquery,
+    Laravel,
     MaterialUi,
+    Mongodb,
+    Mysql,
+    Nextjs,
+    Nodejs,
+    Php,
     Reactjs,
     Sass,
     Tailwindcss,
+    Trello,
+    Typescript,
+    Vitejs,
     Vuejs,
     Webpack,
 } from "./Icons"
@@ -39,7 +56,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import Link from "next/link"
 import classNames from "classnames"
 import ThemeContext from "../utils/js/ThemeContext"
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import useEmblaCarousel from "embla-carousel-react"
 import Autoplay from "embla-carousel-autoplay"
 import _ from "lodash"
@@ -48,8 +65,286 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import { useRouter } from "next/navigation"
 
-const ProjectsDialog = ({ open, onClose, data }: any) => {
+const ProjectsDialog = ({
+    open = true,
+    onClose,
+    id,
+    hasParams = false,
+}: any) => {
+    const router = useRouter()
+    const projects = [
+        {
+            id: 1,
+            logoSrc: "/projects/elgada/streameline verify/favicon.webp",
+            name: "Streamline Verify",
+            description: "Admin Website",
+            thumbnail: "/projects/elgada1.png",
+            images: [
+                "/projects/elgada2.png",
+                "/projects/elgada3.png",
+                "/projects/elgada4.png",
+                "/projects/elgada5.png",
+                "/projects/elgada6.png",
+                "/projects/elgada7.png",
+                "/projects/elgada8.png",
+                "/projects/elgada9.png",
+                "/projects/elgada10.png",
+            ],
+            info: "This is an admin website of employee records, organization records, etc.",
+            techStacks: {
+                frontend: [
+                    { icon: Reactjs, name: "Reactjs" },
+                    { icon: MaterialUi, name: "MaterialUi" },
+                    { icon: Css, name: "Css" },
+                    { icon: Html, name: "Html" },
+                    { icon: Javascript, name: "Javascript" },
+                    { icon: Typescript, name: "Typescript" },
+                    { icon: Jest, name: "Jest" },
+                    { icon: Sass, name: "Sass" },
+                ],
+                tools: [
+                    { icon: Docker, name: "Docker" },
+                    { icon: Bitbucket, name: "Bitbucket" },
+                    { icon: Jira, name: "Jira" },
+                    { icon: Jenkins, name: "Jenkins" },
+                ],
+                backend: [
+                    { icon: Laravel, name: "Laravel" },
+                    { icon: Php, name: "PHP" },
+                    { icon: Nodejs, name: "Nodejs" },
+                    { icon: Expressjs, name: "Expressjs" },
+                    { icon: Mysql, name: "Mysql" },
+                    { icon: Mongodb, name: "Mongodb" },
+                ],
+            },
+        },
+        {
+            id: 2,
+            logoSrc: "/projects/landers/favicon.ico",
+            name: "Landers Admin Website",
+            description: "Admin Website",
+            thumbnail: "/projects/landers_admin.png",
+            info: "Landers offers a wide variety of local and imported products including groceries, household items, personal care, and specialty goods in spacious, well-organized aisles, similar to other membership club formats.",
+            url: "https://admin.snapmart.ph",
+            techStacks: {
+                frontend: [
+                    { icon: Reactjs, name: "Reactjs" },
+                    { icon: MaterialUi, name: "MaterialUi" },
+                    { icon: Css, name: "Css" },
+                    { icon: Html, name: "Html" },
+                    { icon: Javascript, name: "Javascript" },
+                    { icon: Typescript, name: "Typescript" },
+                    { icon: Jest, name: "Jest" },
+                    { icon: Sass, name: "Sass" },
+                ],
+                tools: [
+                    { icon: Docker, name: "Docker" },
+                    { icon: Bitbucket, name: "Bitbucket" },
+                    { icon: Jira, name: "Jira" },
+                    { icon: Jenkins, name: "Jenkins" },
+                ],
+            },
+        },
+        {
+            id: 3,
+            logoSrc: "/projects/landers/favicon.ico",
+            name: "Landers",
+            description: "E-commerce",
+            thumbnail: "/projects/landers1.png",
+            images: [
+                "/projects/landers2.png",
+                "/projects/landers3.png",
+                "/projects/landers4.png",
+                "/projects/landers5.png",
+            ],
+            info: "Landers offers a wide variety of local and imported products including groceries, household items, personal care, and specialty goods in spacious, well-organized aisles, similar to other membership club formats.",
+            url: "http://landers.ph",
+            techStacks: {
+                frontend: [
+                    { icon: Reactjs, name: "Reactjs" },
+                    { icon: MaterialUi, name: "MaterialUi" },
+                    { icon: Css, name: "Css" },
+                    { icon: Html, name: "Html" },
+                    { icon: Javascript, name: "Javascript" },
+                    { icon: Typescript, name: "Typescript" },
+                    { icon: Jest, name: "Jest" },
+                    { icon: Sass, name: "Sass" },
+                ],
+                tools: [
+                    { icon: Docker, name: "Docker" },
+                    { icon: Bitbucket, name: "Bitbucket" },
+                    { icon: Jira, name: "Jira" },
+                    { icon: Jenkins, name: "Jenkins" },
+                ],
+            },
+        },
+        {
+            id: 4,
+            logoSrc: "/projects/leekie/sbobet/favicon.ico",
+            name: "SBOBET Classic games",
+            description: "Online Gaming",
+            thumbnail: "/projects/sbobet_asi.png",
+            images: [
+                "/projects/sbobet_bsi.png",
+                // "/projects/sbobet_mobile.png",
+                // "/projects/sbobet_mobile_reports.png",
+            ],
+            info: "Online gaming casino platform, designed exclusively for players across Indonesia. Our website offers a secure, fast, and immersive gaming experience featuring popular slot games, live casino tables, sports betting, and exciting jackpot opportunities. Built with user-friendly navigation and mobile compatibility, players can enjoy seamless access anytime, anywhere within Indonesia.",
+            url: "https://games.classicku.com",
+            techStacks: {
+                frontend: [
+                    { icon: Reactjs, name: "Reactjs" },
+                    { icon: MaterialUi, name: "MaterialUi" },
+                    { icon: Css, name: "Css" },
+                    { icon: Html, name: "Html" },
+                    { icon: Javascript, name: "Javascript" },
+                    { icon: Typescript, name: "Typescript" },
+                    { icon: Jest, name: "Jest" },
+                    { icon: Nextjs, name: "Nextjs" },
+                    { icon: Tailwindcss, name: "Tailwindcss" },
+                ],
+                backend: [
+                    { icon: Laravel, name: "Laravel" },
+                    { icon: Php, name: "PHP" },
+                    { icon: Nodejs, name: "Nodejs" },
+                    { icon: Expressjs, name: "Expressjs" },
+                    { icon: Mysql, name: "Mysql" },
+                    { icon: Mongodb, name: "Mongodb" },
+                ],
+                tools: [
+                    { icon: Docker, name: "Docker" },
+                    { icon: Github, name: "Github" },
+                    { icon: Jira, name: "Jira" },
+                    { icon: Jenkins, name: "Jenkins" },
+                ],
+            },
+        },
+        {
+            id: 5,
+            logoSrc: "/projects/leekie/gosdsb/favicon.png",
+            name: "GOSDSB",
+            description: "Online Gaming",
+            thumbnail: "/projects/gosdsb_bsi.png",
+            images: [
+                "/projects/gosdsb_asi.png",
+                "/projects/gosdsb_reports.png",
+            ],
+            info: "Online gaming casino platform, designed exclusively for players across Indonesia. Our website offers a secure, fast, and immersive gaming experience featuring popular slot games, live casino tables, sports betting, and exciting jackpot opportunities. Built with user-friendly navigation and mobile compatibility, players can enjoy seamless access anytime, anywhere within Indonesia.",
+            url: "https://gosdsb.com",
+            techStacks: {
+                frontend: [
+                    { icon: Reactjs, name: "Reactjs" },
+                    { icon: MaterialUi, name: "MaterialUi" },
+                    { icon: Css, name: "Css" },
+                    { icon: Html, name: "Html" },
+                    { icon: Javascript, name: "Javascript" },
+                    { icon: Typescript, name: "Typescript" },
+                    { icon: Sass, name: "Sass" },
+                    { icon: Jest, name: "Jest" },
+                    { icon: Vitejs, name: "Vitejs" },
+                ],
+                backend: [
+                    { icon: Laravel, name: "Laravel" },
+                    { icon: Php, name: "PHP" },
+                    { icon: Nodejs, name: "Nodejs" },
+                    { icon: Expressjs, name: "Expressjs" },
+                    { icon: Mysql, name: "Mysql" },
+                    { icon: Mongodb, name: "Mongodb" },
+                ],
+                tools: [
+                    { icon: Docker, name: "Docker" },
+                    { icon: Github, name: "Github" },
+                    { icon: Trello, name: "Trello" },
+                    { icon: Jenkins, name: "Jenkins" },
+                ],
+            },
+        },
+        {
+            id: 6,
+            logoSrc: "/projects/leekie/gobetx/favicon.png",
+            name: "GOBETX",
+            description: "Online Gaming",
+            thumbnail: "/projects/gobetx_asi.png",
+            images: [
+                "/projects/gobetx_games.png",
+                "/projects/gobetx_account.png",
+            ],
+            info: "Online gaming casino platform, designed exclusively for players across Indonesia. Our website offers a secure, fast, and immersive gaming experience featuring popular slot games, live casino tables, sports betting, and exciting jackpot opportunities. Built with user-friendly navigation and mobile compatibility, players can enjoy seamless access anytime, anywhere within Indonesia.",
+            url: "https://gobetx.com",
+            techStacks: {
+                frontend: [
+                    { icon: Reactjs, name: "Reactjs" },
+                    { icon: MaterialUi, name: "MaterialUi" },
+                    { icon: Css, name: "Css" },
+                    { icon: Html, name: "Html" },
+                    { icon: Javascript, name: "Javascript" },
+                    { icon: Typescript, name: "Typescript" },
+                    { icon: Sass, name: "Sass" },
+                    { icon: Jest, name: "Jest" },
+                    { icon: Webpack, name: "Webpack" },
+                ],
+                backend: [
+                    { icon: Laravel, name: "Laravel" },
+                    { icon: Php, name: "PHP" },
+                    { icon: Nodejs, name: "Nodejs" },
+                    { icon: Expressjs, name: "Expressjs" },
+                    { icon: Mysql, name: "Mysql" },
+                    { icon: Mongodb, name: "Mongodb" },
+                ],
+                tools: [
+                    { icon: Docker, name: "Docker" },
+                    { icon: Github, name: "Github" },
+                    { icon: Jira, name: "Jira" },
+                    { icon: Jenkins, name: "Jenkins" },
+                ],
+            },
+        },
+        {
+            id: 7,
+            logoSrc: "/projects/leekie/338a/favicon.png",
+            name: "338a",
+            description: "Online Gaming",
+            thumbnail: "/projects/338a_bsi.png",
+            images: [
+                "/projects/338a_account.png",
+                "/projects/338a_asi.png",
+                "/projects/338a_reports.png",
+                // "/projects/338a_mobile.png",
+                // "/projects/338a_mobile_bsi.png",
+            ],
+            info: "Online gaming casino platform, designed exclusively for players across Indonesia. Our website offers a secure, fast, and immersive gaming experience featuring popular slot games, live casino tables, sports betting, and exciting jackpot opportunities. Built with user-friendly navigation and mobile compatibility, players can enjoy seamless access anytime, anywhere within Indonesia.",
+            url: "https://338a.com",
+            techStacks: {
+                frontend: [
+                    { icon: Vuejs, name: "Vuejs" },
+                    { icon: Bootstrap, name: "Bootstrap" },
+                    { icon: Css, name: "Css" },
+                    { icon: Html, name: "Html" },
+                    { icon: Javascript, name: "Javascript" },
+                    { icon: Typescript, name: "Typescript" },
+                    { icon: Sass, name: "Sass" },
+                    { icon: Gulp, name: "Gulp" },
+                ],
+                backend: [
+                    { icon: Laravel, name: "Laravel" },
+                    { icon: Php, name: "PHP" },
+                    { icon: Nodejs, name: "Nodejs" },
+                    { icon: Expressjs, name: "Expressjs" },
+                    { icon: Mysql, name: "Mysql" },
+                    { icon: Mongodb, name: "Mongodb" },
+                ],
+                tools: [
+                    { icon: Docker, name: "Docker" },
+                    { icon: Github, name: "Github" },
+                    { icon: Jira, name: "Jira" },
+                    { icon: Jenkins, name: "Jenkins" },
+                ],
+            },
+        },
+    ]
+
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
@@ -67,15 +362,28 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
         if (emblaApi) emblaApi.scrollNext()
     }, [emblaApi])
 
-    const { name, description, thumbnail, images, info, techStacks, url } = data
+    const project: any = projects.find((project) => id == project.id)
+
+    if (_.isEmpty(project)) return null
+
+    const { name, description, thumbnail, images, info, techStacks, url } =
+        project
     const { frontend, backend, tools } = techStacks
 
     const imagesCarousel = [thumbnail, ...(images || "")]
 
+    const handleClose = () => {
+        if (hasParams) {
+            router.back()
+        } else {
+            onClose()
+        }
+    }
+
     return (
         <Dialog
             open={open}
-            onClose={onClose}
+            onClose={handleClose}
             PaperProps={{
                 sx: {
                     width: "1100px",
@@ -90,14 +398,14 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
                     <Image
                         width={25}
                         height={25}
-                        src={data.logoSrc}
+                        src={project.logoSrc}
                         alt={"project-logo"}
                     />
                     <p className="text-primary">{name}</p>
                 </div>
                 <IconButton
                     aria-label="close"
-                    onClick={onClose}
+                    onClick={handleClose}
                     sx={{
                         position: "absolute",
                         right: 8,
@@ -203,7 +511,7 @@ const ProjectsDialog = ({ open, onClose, data }: any) => {
             </DialogContent>
             {isSmallScreen && (
                 <DialogActions>
-                    <Button onClick={onClose}>
+                    <Button onClick={handleClose}>
                         <CloseIcon />
                     </Button>
                 </DialogActions>

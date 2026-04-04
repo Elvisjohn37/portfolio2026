@@ -53,6 +53,7 @@ import {
     Vuejs,
     Webpack,
 } from "./Icons"
+import Link from "next/link"
 
 const Projects = () => {
     const { ref, inView } = useInView({
@@ -363,40 +364,32 @@ const Projects = () => {
                             timeout={1000 + index * 600}
                             key={`${project.name}-${project.id}`}
                         >
-                            <Card
-                                className="cursor-pointer transition-transform"
-                                onClick={() => handleClick(project as any)}
-                            >
-                                <CardHeader
-                                    avatar={
-                                        <Image
-                                            src={project.logoSrc}
-                                            alt={""}
-                                            width={20}
-                                            height={20}
-                                        />
-                                    }
-                                    title={project.name}
-                                    subheader={project.description}
-                                />
-                                <Image
-                                    src={project.thumbnail}
-                                    width={300}
-                                    height={100}
-                                    alt="test"
-                                    className="w-full duration-300 ease-in-out hover:scale-110"
-                                />
-                            </Card>
+                            <Link href={`/project/${project.id}`}>
+                                <Card className="cursor-pointer transition-transform">
+                                    <CardHeader
+                                        avatar={
+                                            <Image
+                                                src={project.logoSrc}
+                                                alt={""}
+                                                width={20}
+                                                height={20}
+                                            />
+                                        }
+                                        title={project.name}
+                                        subheader={project.description}
+                                    />
+                                    <Image
+                                        src={project.thumbnail}
+                                        width={300}
+                                        height={100}
+                                        alt="test"
+                                        className="w-full duration-300 ease-in-out hover:scale-110"
+                                    />
+                                </Card>
+                            </Link>
                         </Grow>
                     ))}
                 </div>
-                {currentProject && (
-                    <ProjectsDialog
-                        open={isModalOpen}
-                        data={currentProject}
-                        onClose={handleClose}
-                    />
-                )}
             </div>
         </div>
     )

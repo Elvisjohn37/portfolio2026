@@ -28,8 +28,10 @@ const Footer = () => (
 
 export default function RootLayout({
     children,
+    modal,
 }: {
     children: React.ReactNode
+    modal: React.ReactNode
 }) {
     return (
         <html lang="en">
@@ -40,6 +42,7 @@ export default function RootLayout({
                     <MainNav />
                     <ColorTheme />
                     {children}
+                    {modal}
                     <Footer />
                 </ThemeProvider>
             </body>

@@ -12,15 +12,16 @@ import {
     Slide,
     Tooltip,
     Typography,
-    Zoom,
 } from "@mui/material"
 import Image from "@/app/components/Image"
 import { useInView } from "react-intersection-observer"
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { getHomeData } from "@/app/api/about"
 import LvsLoading from "./LvsLoading"
 import _ from "lodash"
+import Link from "next/link"
+import useSWR from "swr"
 
 type TuserData = {
     firstName: string
@@ -37,13 +38,17 @@ const Home = () => {
         triggerOnce: false, // Animate in and out repeatedly
     })
 
-    const [isReady, setIsReady] = useState(false)
-    const [errorMessage, setErrorMessage] = useState(null)
+    const { data, isLoading } = useSWR(["home-data", "about"], getHomeData, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false,
+    })
 
-    const [data, setData] = useState<TuserData | null>(null)
+    const errorMessage = data?.errorMessage
+
     const { firstName, position, about1, province, country } = useMemo(
         () =>
-            data || {
+            data?.data || {
                 firstName: "",
                 position: "",
                 about1: "",
@@ -53,17 +58,7 @@ const Home = () => {
         [data],
     )
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await getHomeData()
-            if (_.isEmpty(res.data)) setErrorMessage(res.errorMessage)
-            setData(res.data)
-            setIsReady(true)
-        }
-        fetchData()
-    }, [])
-
-    if (!isReady)
+    if (isLoading)
         return (
             <div className="relative w-full h-lvh flex items-center justify-center">
                 <LvsLoading />
@@ -79,9 +74,10 @@ const Home = () => {
                 (!errorMessage ? (
                     <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
                         <div className="flex sm:flex-7 w-full flex-col gap-2 justify-center order-2 sm:order-1">
+                            <Link href={"/project/1"}>Project</Link>
                             <Slide
                                 direction="right"
-                                in={inView && isReady}
+                                in={inView && !isLoading}
                                 timeout={1000}
                             >
                                 <div className="flex flex-col gap-2">
@@ -105,7 +101,7 @@ const Home = () => {
                             </Slide>
                             <Slide
                                 direction="right"
-                                in={inView && isReady}
+                                in={inView && !isLoading}
                                 timeout={1200}
                             >
                                 <p className="text-2xl lg:text-5xl text-primary">
@@ -118,7 +114,7 @@ const Home = () => {
                             </Slide>
                             <Slide
                                 direction="right"
-                                in={inView && isReady}
+                                in={inView && !isLoading}
                                 timeout={1400}
                             >
                                 <Typography className="sm:flex sm:flex-col">
@@ -205,7 +201,7 @@ const Home = () => {
                         <div className="flex sm:flex-5 w-full justify-center items-center order-1 sm:order-2">
                             <Slide
                                 direction="left"
-                                in={inView && isReady}
+                                in={inView && !isLoading}
                                 timeout={1000}
                             >
                                 <div className="w-3/4 md:w-1/2 rounded-sm overflow-hidden">

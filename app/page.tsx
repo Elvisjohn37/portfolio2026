@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import { useEffect, useState, ComponentType } from "react"
 import Loader from "./components/Loader"
 import LvsLoading from "./components/LvsLoading"
+import Link from "next/link"
 
 // Section IDs as a union type
 type SectionID = "home" | "about" | "projects" | "contact"

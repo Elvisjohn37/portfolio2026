@@ -24,6 +24,7 @@ import { getAboutData } from "../api/about"
 import _ from "lodash"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import useSWR from "swr"
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
     ssr: false,
@@ -49,10 +50,7 @@ const About = () => {
         triggerOnce: false, // Animate in and out repeatedly
     })
 
-    const [isReady, setIsReady] = useState(false)
-    const [errorMessage, setErrorMessage] = useState(null)
     const [isOpenPdf, setIsOpenPdf] = useState(false)
-    const [data, setData] = useState<TmoreAbout | null>(null)
 
     const handleOpenPdf = () => setIsOpenPdf(true)
 
@@ -66,6 +64,12 @@ const About = () => {
         link.click()
     }
 
+    const { data, isLoading } = useSWR(["home-data", "about"], getAboutData, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false,
+    })
+
     const {
         firstName,
         middleName,
@@ -77,7 +81,7 @@ const About = () => {
         schoolYear,
     } = useMemo(
         () =>
-            data || {
+            data?.data || {
                 firstName: "",
                 middleName: "",
                 lastName: "",
@@ -91,17 +95,6 @@ const About = () => {
     )
 
     const fullName = `${firstName} ${middleName} ${lastName}`
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await getAboutData()
-            if (_.isEmpty(res.data)) setErrorMessage(res.errorMessage)
-            setData(res.data)
-            setIsReady(true)
-        }
-        fetchData()
-    }, [])
-    console.log(data)
 
     return (
         <div
@@ -120,7 +113,7 @@ const About = () => {
                     <div className="flex flex-col flex-1 gap-3 sm:gap-5">
                         <Slide direction="right" in={inView} timeout={1000}>
                             <Typography>
-                                {_.isEmpty(data) ? (
+                                {isLoading ? (
                                     <Skeleton className="w-50" />
                                 ) : (
                                     fullName
@@ -129,7 +122,7 @@ const About = () => {
                         </Slide>
                         <Slide direction="right" in={inView} timeout={1200}>
                             <p className="text-2xl lg:text-3xl text-primary">
-                                {_.isEmpty(data) ? (
+                                {isLoading ? (
                                     <Skeleton className="w-[80%]" />
                                 ) : (
                                     position
@@ -138,7 +131,7 @@ const About = () => {
                         </Slide>
                         <Slide direction="right" in={inView} timeout={1400}>
                             <Typography>
-                                {_.isEmpty(data) ? (
+                                {isLoading ? (
                                     <>
                                         <Skeleton className="w-[95%]" />
                                         <Skeleton className="w-full" />
@@ -193,27 +186,19 @@ const About = () => {
                                     <div className="flex gap-2">
                                         <Typography>Degree: </Typography>
                                         <Typography className="font-bold! w-[80%]">
-                                            {_.isEmpty(data) ? (
-                                                <Skeleton />
-                                            ) : (
-                                                degree
-                                            )}
+                                            {isLoading ? <Skeleton /> : degree}
                                         </Typography>
                                     </div>
                                     <div className="flex gap-2">
                                         <Typography>School: </Typography>
                                         <Typography className="font-bold! w-[70%]">
-                                            {_.isEmpty(data) ? (
-                                                <Skeleton />
-                                            ) : (
-                                                school
-                                            )}
+                                            {isLoading ? <Skeleton /> : school}
                                         </Typography>
                                     </div>
                                     <div className="flex gap-2">
                                         <Typography>School Year: </Typography>
                                         <Typography className="font-bold! w-[50%]">
-                                            {_.isEmpty(data) ? (
+                                            {isLoading ? (
                                                 <Skeleton />
                                             ) : (
                                                 schoolYear
