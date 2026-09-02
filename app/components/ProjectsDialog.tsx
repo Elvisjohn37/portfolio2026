@@ -120,7 +120,7 @@ const ProjectsDialog = ({
         if (hasParams) {
             router.back()
         } else {
-            onClose()
+            onClose?.()
         }
         setTimeout(() => {
             rootStyle.scrollBehavior = ""
