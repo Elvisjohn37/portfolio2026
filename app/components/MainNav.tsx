@@ -3,11 +3,14 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useContext, useEffect, useState } from "react"
+import ThemeContext from "../utils/js/ThemeContext"
 
 const MainNav = () => {
     const pathname = usePathname()
     const [activeHash, setActiveHash] = useState("")
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
 
     const sections = ["home", "about", "projects", "contact"]
 
@@ -56,7 +59,9 @@ const MainNav = () => {
                     href="#home"
                 >
                     <Image
-                        className="w-19.5"
+                        className={`w-19.5 ${
+                            theme === "light" ? "invert hue-rotate-180" : ""
+                        }`}
                         src="/logo.png"
                         width={78}
                         height={39}

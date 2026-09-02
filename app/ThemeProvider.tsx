@@ -39,9 +39,15 @@ const createAppTheme = (activeTheme: Ttheme) => {
             secondary: {
                 main: "#0f172a",
             },
-            text: {
-                secondary: "#7b8383",
+            background: {
+                default: isLight ? "#f1f5f9" : "#0a0f1c",
+                paper: isLight ? "#ffffff" : "#0f172a",
             },
+            text: {
+                primary: isLight ? "#0f172a" : "#ededed",
+                secondary: isLight ? "#64748b" : "#94a3b8",
+            },
+            divider: isLight ? "#e2e8f0" : "#30374c",
         },
         components: {
             MuiTypography: {
@@ -69,7 +75,7 @@ const createAppTheme = (activeTheme: Ttheme) => {
                 styleOverrides: {
                     paper: {
                         border: isLight
-                            ? "1px solid #ffffff"
+                            ? "1px solid #e2e8f0"
                             : "1px solid #30374c",
                     },
                 },
@@ -78,7 +84,7 @@ const createAppTheme = (activeTheme: Ttheme) => {
                 styleOverrides: {
                     root: {
                         borderTop: isLight
-                            ? "1px solid #ffffff"
+                            ? "1px solid #e2e8f0"
                             : "1px solid #30374c",
                     },
                 },
@@ -105,6 +111,12 @@ const ThemeProvider = ({ children }: Props) => {
             theme: storedTheme,
         })
     }, [])
+
+    // Sync the theme to <html data-theme="..."> so all CSS variables
+    // (Tailwind tokens, body gradient, scrollbar, etc.) follow the toggle.
+    useEffect(() => {
+        document.documentElement.dataset.theme = state.theme
+    }, [state.theme])
 
     useEffect(() => {
         localStorage.setItem("theme", state.theme)

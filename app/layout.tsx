@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 }
 
 const Footer = () => (
-    <footer className="flex absolute w-full h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secobg-secondary-text">
+    <footer className="flex absolute w-full h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secondary-text">
         <p>All Rights Reserved</p>
     </footer>
 )

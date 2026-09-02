@@ -107,8 +107,8 @@ const BackendTechStack = () => {
                             className={classnames([
                                 "icon-container",
                                 theme === "dark"
-                                    ? "bg-secondary border-secondary-light border  hover:shadow-[0_0_8px_#30374c]"
-                                    : "shadow-2xl hover:shadow-lg",
+                                    ? "bg-secondary border-secondary-light border hover:shadow-[0_0_8px_#30374c]"
+                                    : "bg-secondary border-secondary-light border shadow-md hover:shadow-[0_0_8px_#0d9488]",
                             ])}
                         >
                             <item.Component

@@ -1,21 +1,24 @@
 "use client"
 
 import { Document, Page, pdfjs } from "react-pdf"
-import { useState } from "react"
-import "react-pdf/dist/Page/AnnotationLayer.css"
-import "react-pdf/dist/Page/TextLayer.css"
 import { DotLoader } from "react-spinners"
+import { useContext, useState } from "react"
+import ThemeContext from "../utils/js/ThemeContext"
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
     import.meta.url,
 ).toString()
 
-const Loading = () => (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <DotLoader color="#30374c" />
-    </div>
-)
+const Loading = () => {
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
+    return (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <DotLoader color={theme === "dark" ? "#58dad2" : "#0d9488"} />
+        </div>
+    )
+}
 
 const PdfViewer = () => {
     const [numPages, setNumPages] = useState<number | null>(null)

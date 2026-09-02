@@ -67,7 +67,11 @@ export default function LVSLoader({ size = 60 }) {
             </div>
 
             {/* Text */}
-            <div className="text-[#e6e6e6] font-sans">
+            <div
+                className={`font-sans ${
+                    theme === "light" ? "text-secondary-text" : "text-[#e6e6e6]"
+                }`}
+            >
                 <div className={lvsText}>LVS</div>
                 <div className={webSolutionsText}>WEB SOLUTIONS</div>
             </div>
