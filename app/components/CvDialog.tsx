@@ -30,7 +30,7 @@ type TCvDialogParams = {
 const CvDialog = ({ open = true, onClose, hasParams = false }: TCvDialogParams) => {
     const router = useRouter()
     const theme = useTheme()
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"))
 
     const filePath = "/cv/updated CV 01-15-2026.pdf"
     const handleDownload = () => {
@@ -42,22 +42,24 @@ const CvDialog = ({ open = true, onClose, hasParams = false }: TCvDialogParams) 
     }
 
     const handleClose = () => {
-        if (hasParams) {
-            // Route-driven (/cv): close the modal by navigating back.
-            // The popstate listener in ThemeProvider prevents the scroll animation.
-            router.back()
-        } else {
-            onClose?.()
-        }
+        if (hasParams) router.back()
+        else onClose?.()
     }
 
     return (
         <Dialog
             open={open}
             onClose={handleClose}
-            maxWidth="xl"
+            maxWidth="md"
             fullScreen={isSmallScreen}
-            className="min-w-1/2 w-full lg:[&>div:first-child]:w-screen [&>div>div:first-child]:w-full sm:[&>div>div:first-child]:w-fit"
+            PaperProps={{
+                sx: {
+                    width: '100%',
+                    maxWidth: { xs: '100%', md: '900px' },
+                    maxHeight: { xs: '100%', md: '90vh' },
+                    m: isSmallScreen ? 0 : 2,
+                },
+            }}
         >
             <DialogTitle>
                 <p className="text-primary">Updated CV</p>
@@ -76,7 +78,12 @@ const CvDialog = ({ open = true, onClose, hasParams = false }: TCvDialogParams) 
             </DialogTitle>
             <DialogContent
                 dividers
-                className="lg:max-w-[75vw] w-full h-full overflow-auto"
+                sx={{
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'auto',
+                    p: { xs: 0.5, sm: 1, md: 2 },
+                }}
             >
                 <PdfViewer />
             </DialogContent>

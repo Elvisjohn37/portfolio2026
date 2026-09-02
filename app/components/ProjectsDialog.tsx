@@ -117,14 +117,9 @@ const ProjectsDialog = ({
         // scrolling for regular nav links afterwards.
         const rootStyle = document.documentElement.style
         rootStyle.scrollBehavior = "auto"
-        if (hasParams) {
-            router.back()
-        } else {
-            onClose?.()
-        }
-        setTimeout(() => {
-            rootStyle.scrollBehavior = ""
-        }, 200)
+        if (hasParams) router.back()
+        else onClose?.()
+        setTimeout(() => (rootStyle.scrollBehavior = ""), 200)
     }
 
     return (

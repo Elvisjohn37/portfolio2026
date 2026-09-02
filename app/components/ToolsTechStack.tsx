@@ -70,9 +70,7 @@ const ToolsTechStack = () => {
         setCurrentDetails(currentTeckstacks)
     }
 
-    const handleClose = () => {
-        setAnchorEl(null)
-    }
+    const handleClose = () => setAnchorEl(null)
 
     const [currentDetails, setCurrentDetails] = useState<ToolItem | undefined>(
         TOOLS_TECH_STACKS[0],

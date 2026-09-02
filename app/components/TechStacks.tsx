@@ -31,9 +31,7 @@ const TechStacks = () => {
     const handleChange = (_: SyntheticEvent, newValue: number) => {
         setValue(newValue)
 
-        if (!mountedTabs.includes(newValue)) {
-            setMountedTabs((prev) => [...prev, newValue])
-        }
+        if (!mountedTabs.includes(newValue)) setMountedTabs((prev) => [...prev, newValue])
     }
 
     return (
