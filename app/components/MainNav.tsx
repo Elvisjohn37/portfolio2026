@@ -2,9 +2,11 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { SetStateAction, useEffect, useState } from "react"
 
 const MainNav = () => {
+    const pathname = usePathname()
     const [activeHash, setActiveHash] = useState("")
 
     const sections = ["home", "about", "projects", "contact"]
@@ -40,7 +42,10 @@ const MainNav = () => {
         })
 
         return () => observer.disconnect()
-    }, [])
+        // Re-run when the route changes: soft navigations (e.g. the project
+        // modal via @modal interception) replace the section DOM nodes, so the
+        // observer must re-attach to the new elements.
+    }, [pathname])
 
     return (
         <nav className="flex justify-between px-5 bg-secondary items-center fixed w-full z-10 overflow-y-hidden">
