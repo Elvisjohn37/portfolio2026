@@ -122,6 +122,32 @@ const ThemeProvider = ({ children }: Props) => {
         localStorage.setItem("theme", state.theme)
     }, [state.theme])
 
+    // Disable CSS smooth scrolling while the browser performs back/forward
+    // history navigation (e.g. closing the project modal with the browser
+    // back button, which restores "/#projects"). Otherwise the hash jump to
+    // the section would be animated by "scroll-smooth" in globals.css.
+    useEffect(() => {
+        let restoreTimer: ReturnType<typeof setTimeout>
+
+        const onPopState = () => {
+            const rootStyle = document.documentElement.style
+            rootStyle.scrollBehavior = "auto"
+
+            // Restore smooth scrolling (used by the nav links) once the
+            // instant jump is done.
+            clearTimeout(restoreTimer)
+            restoreTimer = setTimeout(() => {
+                rootStyle.scrollBehavior = ""
+            }, 200)
+        }
+
+        window.addEventListener("popstate", onPopState)
+        return () => {
+            window.removeEventListener("popstate", onPopState)
+            clearTimeout(restoreTimer)
+        }
+    }, [])
+
     return (
         <ThemeContext.Provider value={contextValue}>
             <MuiThemeProvider theme={muiTheme}>

@@ -1,11 +1,6 @@
 import {
     Button,
     Chip,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
     Skeleton,
     Slide,
     Typography,
@@ -14,21 +9,15 @@ import { useInView } from "react-intersection-observer"
 import DescriptionIcon from "@mui/icons-material/Description"
 import TechStacks from "./TechStacks"
 import CallIcon from "@mui/icons-material/Call"
-import { useEffect, useMemo, useState } from "react"
-import dynamic from "next/dynamic"
-import DownloadIcon from "@mui/icons-material/Download"
+import { useMemo } from "react"
 import { redirect } from "next/navigation"
-import CloseIcon from "@mui/icons-material/Close"
 import SchoolIcon from "@mui/icons-material/School"
 import { getAboutData } from "../api/about"
 import _ from "lodash"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import useSWR from "swr"
-
-const PdfViewer = dynamic(() => import("./PdfViewer"), {
-    ssr: false,
-})
+import Link from "next/link"
 
 type TmoreAbout = {
     firstName: string
@@ -49,20 +38,6 @@ const About = () => {
         threshold: 0.2, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
-
-    const [isOpenPdf, setIsOpenPdf] = useState(false)
-
-    const handleOpenPdf = () => setIsOpenPdf(true)
-
-    const handleOnClose = () => setIsOpenPdf(false)
-    const filePath = "/cv/updated CV 01-15-2026.pdf"
-    const handleDownload = () => {
-        // Create an invisible link and click it programmatically
-        const link = document.createElement("a")
-        link.href = filePath
-        link.download = "CAYETANO_ELVIS_JOHN_REYES.pdf" // File name when downloaded
-        link.click()
-    }
 
     const { data, isLoading } = useSWR(["about-data", "about"], getAboutData, {
         revalidateOnFocus: false,
@@ -155,14 +130,18 @@ const About = () => {
                         </Slide>
                         <Slide direction="right" in={inView} timeout={1600}>
                             <div className="flex gap-2 sm:gap-1 md:gap-2 justify-end sm:justify-start">
-                                <Button
-                                    onClick={handleOpenPdf}
-                                    startIcon={<DescriptionIcon />}
-                                    variant="outlined"
-                                    size="small"
+                                <Link
+                                    href="/cv"
+                                    className="no-underline"
                                 >
-                                    View My CV
-                                </Button>
+                                    <Button
+                                        startIcon={<DescriptionIcon />}
+                                        variant="outlined"
+                                        size="small"
+                                    >
+                                        View My CV
+                                    </Button>
+                                </Link>
                                 <Button
                                     startIcon={<CallIcon />}
                                     variant="outlined"
@@ -221,63 +200,6 @@ const About = () => {
                     </div>
                 </div>
             </div>
-            <Dialog
-                open={isOpenPdf}
-                onClose={handleOnClose}
-                maxWidth="xl"
-                fullScreen={isSmallScreen}
-                className="min-w-1/2 w-full lg:[&>div:first-child]:w-screen [&>div>div:first-child]:w-full sm:[&>div>div:first-child]:w-fit"
-            >
-                <DialogTitle>
-                    <p className="text-primary">Updated CV</p>
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleOnClose}
-                        sx={{
-                            position: "absolute",
-                            right: 8,
-                            top: 8,
-                            color: "#7b8383",
-                        }}
-                    >
-                        <CloseIcon className="opacity-0 sm:opacity-100" />
-                    </IconButton>
-                </DialogTitle>
-                <DialogContent
-                    dividers
-                    className="lg:max-w-[75vw] w-full justify-items-center"
-                >
-                    <PdfViewer />
-                </DialogContent>
-                <DialogActions>
-                    <div className="hidden! sm:flex! gap-2">
-                        <Button
-                            variant="contained"
-                            size="small"
-                            startIcon={<DownloadIcon />}
-                            onClick={handleDownload}
-                        >
-                            Download CV
-                        </Button>
-                        <Button
-                            size="small"
-                            startIcon={<CloseIcon />}
-                            onClick={handleOnClose}
-                            variant="outlined"
-                        >
-                            Close
-                        </Button>
-                    </div>
-                    <div className="sm:hidden! gap-2">
-                        <IconButton color="primary" onClick={handleDownload}>
-                            <DownloadIcon />
-                        </IconButton>
-                        <IconButton color="primary" onClick={handleOnClose}>
-                            <CloseIcon />
-                        </IconButton>
-                    </div>
-                </DialogActions>
-            </Dialog>
         </div>
     )
 }
