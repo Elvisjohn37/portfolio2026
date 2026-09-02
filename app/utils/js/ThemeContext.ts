@@ -1,17 +1,22 @@
-import { createContext } from "react"
+import { createContext, Dispatch } from "react"
 
 export type Ttheme = "light" | "dark"
 
-type Tstate = {
+export type Tstate = {
     theme: Ttheme
 }
 
-type Taction = {
+export type Taction = {
     theme: Ttheme
     type: string
 }
 
-const ThemeReducer = (state: Tstate, action: Taction) => {
+export type ThemeContextValue = {
+    state: Tstate
+    dispatch: Dispatch<Taction>
+}
+
+const ThemeReducer = (state: Tstate, action: Taction): Tstate => {
     switch (action.type) {
         case "CHANGE_THEME":
             return { ...state, theme: action.theme }
@@ -20,9 +25,10 @@ const ThemeReducer = (state: Tstate, action: Taction) => {
     }
 }
 
-export default createContext({
+const ThemeContext = createContext<ThemeContextValue>({
     state: { theme: "dark" },
-    dispatch: (p0: { type: string; theme: Ttheme }) => null,
+    dispatch: () => null,
 })
 
+export default ThemeContext
 export { ThemeReducer }

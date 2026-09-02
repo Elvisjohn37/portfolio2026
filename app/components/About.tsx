@@ -13,7 +13,6 @@ import { useMemo } from "react"
 import { redirect } from "next/navigation"
 import SchoolIcon from "@mui/icons-material/School"
 import { getAboutData } from "../api/about"
-import _ from "lodash"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import useSWR from "swr"
@@ -44,8 +43,6 @@ const About = () => {
         revalidateOnReconnect: false,
         revalidateIfStale: false,
     })
-
-    console.log(data)
 
     const {
         firstName,

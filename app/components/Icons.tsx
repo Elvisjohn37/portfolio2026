@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { SVGProps } from "react"
+
+export type IconProps = SVGProps<SVGSVGElement>
+
 export const BrowserCode = ({ fill = "#000000", ...props }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -412,7 +416,7 @@ export const Laravel = ({ fill = "#ff5252", ...props }) => (
     </svg>
 )
 
-export const Php = (props: any) => (
+export const Php = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -453,7 +457,7 @@ export const Php = (props: any) => (
     </svg>
 )
 
-export const Nodejs = (props: any) => (
+export const Nodejs = (props: IconProps) => (
     <svg
         width="1em"
         height="1em"
@@ -472,7 +476,7 @@ export const Nodejs = (props: any) => (
     </svg>
 )
 
-export const Expressjs = (props: any) => (
+export const Expressjs = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -493,7 +497,7 @@ export const Expressjs = (props: any) => (
     </svg>
 )
 
-export const Mysql = (props: any) => (
+export const Mysql = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -516,7 +520,7 @@ export const Mysql = (props: any) => (
     </svg>
 )
 
-export const Postgresql = (props: any) => (
+export const Postgresql = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -540,7 +544,7 @@ export const Postgresql = (props: any) => (
     </svg>
 )
 
-export const Mongodb = (props: any) => (
+export const Mongodb = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -566,7 +570,7 @@ export const Mongodb = (props: any) => (
     </svg>
 )
 
-export const Docker = (props: any) => (
+export const Docker = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -707,7 +711,7 @@ export const Docker = (props: any) => (
 //     </svg>
 // )
 
-export const Trello = (props: any) => (
+export const Trello = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -747,7 +751,7 @@ export const Trello = (props: any) => (
     </svg>
 )
 
-export const Github = (props: any) => (
+export const Github = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -762,7 +766,7 @@ export const Github = (props: any) => (
     </svg>
 )
 
-export const Bitbucket = (props: any) => (
+export const Bitbucket = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -796,7 +800,7 @@ export const Bitbucket = (props: any) => (
     </svg>
 )
 
-export const Jira = (props: any) => (
+export const Jira = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -871,7 +875,7 @@ export const Whatsapp = ({ fill = "#000000", ...props }) => (
     </svg>
 )
 
-export const GoogleGmail = (props: any) => (
+export const GoogleGmail = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -902,7 +906,7 @@ export const GoogleGmail = (props: any) => (
     </svg>
 )
 
-export const Telegram = (props: any) => (
+export const Telegram = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
@@ -963,7 +967,7 @@ export const Wordpress = ({
     </svg>
 )
 
-export const Jenkins = (props: any) => (
+export const Jenkins = (props: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"

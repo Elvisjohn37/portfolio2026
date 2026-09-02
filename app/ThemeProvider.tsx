@@ -1,8 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material"
-import ThemeContext, { ThemeReducer, Ttheme } from "./utils/js/ThemeContext"
+import ThemeContext, {
+    ThemeReducer,
+    Ttheme,
+    ThemeContextValue,
+} from "./utils/js/ThemeContext"
 import { useEffect, useMemo, useReducer, ReactNode } from "react"
 
 declare module "@mui/material/styles" {
@@ -98,7 +101,10 @@ const ThemeProvider = ({ children }: Props) => {
 
     const muiTheme = useMemo(() => createAppTheme(state.theme), [state.theme])
 
-    const contextValue: any = useMemo(() => ({ state, dispatch }), [state])
+    const contextValue: ThemeContextValue = useMemo(
+        () => ({ state, dispatch }),
+        [state],
+    )
 
     const bgClass =
         state.theme === "dark" ? "bg-secondary-dark" : "bg-background"

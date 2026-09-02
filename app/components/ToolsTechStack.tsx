@@ -4,62 +4,69 @@ import { useInView } from "react-intersection-observer"
 import { useContext, useState } from "react"
 import classnames from "classnames"
 import ThemeContext from "../utils/js/ThemeContext"
+import type { TechIcon } from "../utils/js/projects"
+
+type ToolItem = {
+    id: number
+    Component: TechIcon
+    title: string
+    details: string
+}
+
+// Module scope: created once instead of on every render
+const TOOLS_TECH_STACKS: ToolItem[] = [
+    {
+        id: 1,
+        Component: Docker,
+        title: "Docker",
+        details: "7 years of experience",
+    },
+    {
+        id: 2,
+        Component: Github,
+        title: "Github",
+        details: "7 years of experience",
+    },
+    {
+        id: 3,
+        Component: Bitbucket,
+        title: "Bitbucket",
+        details: "7 years of experience",
+    },
+    {
+        id: 4,
+        Component: Jira,
+        title: "Jira",
+        details: "7 years of experience",
+    },
+    {
+        id: 5,
+        Component: Trello,
+        title: "Trello",
+        details: "7 years of experience",
+    },
+    {
+        id: 6,
+        Component: Jenkins,
+        title: "Jenkins",
+        details: "7 years of experience",
+    },
+]
 
 const ToolsTechStack = () => {
     const { state } = useContext(ThemeContext)
     const { theme } = state
-    const toolsTechStacks = [
-        {
-            id: 1,
-            Component: Docker,
-            title: "Docker",
-            details: "7 years of experience",
-        },
-        {
-            id: 2,
-            Component: Github,
-            title: "Github",
-            details: "7 years of experience",
-        },
-        {
-            id: 3,
-            Component: Bitbucket,
-            title: "Bitbucket",
-            details: "7 years of experience",
-        },
-        {
-            id: 4,
-            Component: Jira,
-            title: "Jira",
-            details: "7 years of experience",
-        },
-        {
-            id: 4,
-            Component: Trello,
-            title: "Trello",
-            details: "7 years of experience",
-        },
-        {
-            id: 5,
-            Component: Jenkins,
-            title: "Jenkins",
-            details: "7 years of experience",
-        },
-    ]
 
     const { ref, inView } = useInView({
         threshold: 0.3, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
     })
 
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+    const [anchorEl, setAnchorEl] = useState<SVGSVGElement | null>(null)
 
-    const handleClick = (
-        event: React.MouseEvent<HTMLButtonElement>,
-        id: number,
-    ) => {
+    const handleClick = (event: React.MouseEvent<SVGSVGElement>, id: number) => {
         setAnchorEl(event.currentTarget)
-        const currentTeckstacks = toolsTechStacks.find((item) => item.id === id)
+        const currentTeckstacks = TOOLS_TECH_STACKS.find((item) => item.id === id)
         setCurrentDetails(currentTeckstacks)
     }
 
@@ -67,9 +74,8 @@ const ToolsTechStack = () => {
         setAnchorEl(null)
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [currentDetails, setCurrentDetails] = useState<any>(
-        toolsTechStacks[0],
+    const [currentDetails, setCurrentDetails] = useState<ToolItem | undefined>(
+        TOOLS_TECH_STACKS[0],
     )
 
     const open = Boolean(anchorEl)
@@ -77,7 +83,7 @@ const ToolsTechStack = () => {
 
     return (
         <div ref={ref} className="grid grid-cols-5 gap-5">
-            {toolsTechStacks.map((item, index) => (
+            {TOOLS_TECH_STACKS.map((item, index) => (
                 <Grow
                     in={inView}
                     timeout={1000 + index * 200}
@@ -93,8 +99,7 @@ const ToolsTechStack = () => {
                             ])}
                         >
                             <item.Component
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                onClick={(event: any) =>
+                                onClick={(event) =>
                                     handleClick(event, item.id)
                                 }
                                 className="w-full h-full"
@@ -117,7 +122,7 @@ const ToolsTechStack = () => {
                     }}
                 >
                     <Typography sx={{ p: 2 }}>
-                        {currentDetails.details}
+                        {currentDetails?.details}
                     </Typography>
                 </Popover>
             </div>

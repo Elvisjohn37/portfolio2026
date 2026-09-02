@@ -43,9 +43,9 @@ const CvDialog = ({ open = true, onClose, hasParams = false }: TCvDialogParams) 
 
     const handleClose = () => {
         if (hasParams) {
-            // Route-driven (/cv): return to the about section with a forward
-            // navigation instead of going back through the history stack.
-            router.push("/#about")
+            // Route-driven (/cv): close the modal by navigating back.
+            // The popstate listener in ThemeProvider prevents the scroll animation.
+            router.back()
         } else {
             onClose?.()
         }
@@ -71,17 +71,17 @@ const CvDialog = ({ open = true, onClose, hasParams = false }: TCvDialogParams) 
                         color: "#7b8383",
                     }}
                 >
-                    <CloseIcon className="opacity-0 sm:opacity-100" />
+                    <CloseIcon />
                 </IconButton>
             </DialogTitle>
             <DialogContent
                 dividers
-                className="lg:max-w-[75vw] w-full justify-items-center"
+                className="lg:max-w-[75vw] w-full h-full overflow-auto"
             >
                 <PdfViewer />
             </DialogContent>
             <DialogActions>
-                <div className="hidden! sm:flex! gap-2">
+                <div className="hidden sm:flex gap-2">
                     <Button
                         variant="contained"
                         size="small"
@@ -99,7 +99,7 @@ const CvDialog = ({ open = true, onClose, hasParams = false }: TCvDialogParams) 
                         Close
                     </Button>
                 </div>
-                <div className="sm:hidden! gap-2">
+                <div className="flex sm:hidden gap-2">
                     <IconButton color="primary" onClick={handleDownload}>
                         <DownloadIcon />
                     </IconButton>

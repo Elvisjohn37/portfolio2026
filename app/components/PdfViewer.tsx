@@ -34,14 +34,20 @@ const PdfViewer = () => {
     }
 
     return (
-        <div className="flex justify-center scale-50 lg:scale-100 w-[50vw] h-[50vh] sm:h-screen translate-y-[-25%] lg:translate-y-0">
+        <div className="flex flex-col items-center justify-center w-full h-full overflow-auto">
             {isLoading && <Loading />}
             <Document
                 file="/cv/updated CV 01-15-2026.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}
             >
                 {Array.from(new Array(numPages), (el, index) => (
-                    <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+                    <Page
+                        key={`page_${index + 1}`}
+                        pageNumber={index + 1}
+                        className="mb-4 shadow-lg"
+                        renderTextLayer={false}
+                        renderAnnotationLayer={false}
+                    />
                 ))}
             </Document>
         </div>

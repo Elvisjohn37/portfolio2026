@@ -121,3 +121,12 @@ footer,
 ::-webkit-scrollbar-thumb:hover {
     @apply bg-secondary-text;
 }
+
+/* PDF viewer - ensure pages have solid white background so content is always readable */
+.react-pdf__Page {
+    background-color: white !important;
+}
+
+.react-pdf__Page__canvas {
+    background-color: white !important;
+}
