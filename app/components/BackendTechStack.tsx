@@ -7,21 +7,17 @@ import {
     Mysql,
     Postgresql,
     Mongodb,
+    IconProps,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
-import { useState, MouseEvent, useContext } from "react"
+import { useState, useContext, type MouseEvent } from "react"
 import useSWR from "swr"
 import { getAboutTechStacks } from "../api/about"
 import Loader from "./Loader"
 import classnames from "classnames"
 import ThemeContext from "../utils/js/ThemeContext"
 
-type IconComponent = React.ComponentType<{
-    onClick?: (event: MouseEvent<HTMLElement>) => void
-    className?: string
-    width?: number
-    height?: number
-}>
+type IconComponent = React.ComponentType<IconProps>
 
 const components: Record<string, IconComponent> = {
     Laravel,
@@ -72,9 +68,11 @@ const BackendTechStack = () => {
     })
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+    const [currentDetails, setCurrentDetails] =
+        useState<FrontendTechItem | null>(null)
 
-    const handleClick = (event: MouseEvent<HTMLElement>, id: string) => {
-        setAnchorEl(event.currentTarget)
+    const handleClick = (event: MouseEvent<SVGSVGElement>, id: string) => {
+        setAnchorEl(event.currentTarget.parentElement)
 
         const selected = backendTechStacks.find((item) => item.id === id)
         setCurrentDetails(selected ?? null)
@@ -83,11 +81,6 @@ const BackendTechStack = () => {
     const handleClose = () => {
         setAnchorEl(null)
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [currentDetails, setCurrentDetails] = useState<any>(
-        backendTechStacks[0],
-    )
 
     const open = Boolean(anchorEl)
     const id = open ? "simple-popover" : undefined
@@ -112,8 +105,7 @@ const BackendTechStack = () => {
                             ])}
                         >
                             <item.Component
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                onClick={(event: any) =>
+                                onClick={(event) =>
                                     handleClick(event, item.id)
                                 }
                                 className="w-full h-full"
