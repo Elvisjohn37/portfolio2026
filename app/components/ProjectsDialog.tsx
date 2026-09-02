@@ -53,6 +53,7 @@ import {
     Webpack,
 } from "./Icons"
 import CloseIcon from "@mui/icons-material/Close"
+import LaunchIcon from "@mui/icons-material/Launch"
 import Link from "next/link"
 import classNames from "classnames"
 import ThemeContext from "../utils/js/ThemeContext"
@@ -349,10 +350,15 @@ const ProjectsDialog = ({
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-        Autoplay({ delay: 10000 }),
+        Autoplay({
+            delay: 10000,
+            stopOnInteraction: false,
+            stopOnMouseEnter: true,
+        }),
     ])
 
     const [isImageReady, setIsImageReady] = useState(false)
+    const [selectedIndex, setSelectedIndex] = useState(0)
 
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev()
@@ -361,6 +367,35 @@ const ProjectsDialog = ({
     const scrollNext = useCallback(() => {
         if (emblaApi) emblaApi.scrollNext()
     }, [emblaApi])
+
+    const scrollTo = useCallback(
+        (index: number) => {
+            if (emblaApi) emblaApi.scrollTo(index)
+        },
+        [emblaApi],
+    )
+
+    // Keep the dot indicators in sync with the visible slide
+    useEffect(() => {
+        if (!emblaApi) return
+        const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap())
+        emblaApi.on("select", onSelect)
+        onSelect()
+        return () => {
+            emblaApi.off("select", onSelect)
+        }
+    }, [emblaApi])
+
+    // Navigate the carousel with the keyboard while the dialog is open
+    useEffect(() => {
+        if (!open) return
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "ArrowLeft") scrollPrev()
+            if (event.key === "ArrowRight") scrollNext()
+        }
+        window.addEventListener("keydown", onKeyDown)
+        return () => window.removeEventListener("keydown", onKeyDown)
+    }, [open, scrollPrev, scrollNext])
 
     const project: any = projects.find((project) => id == project.id)
 
@@ -453,24 +488,73 @@ const ProjectsDialog = ({
                                     <>
                                         <button
                                             onClick={scrollPrev}
-                                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded cursor-pointer z-[-1] sm:z-1"
+                                            aria-label="Previous image"
+                                            className="absolute left-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-9 h-9 rounded-full bg-black/50 text-white hover:bg-black/75 active:scale-95 transition-all duration-200 cursor-pointer z-1 backdrop-blur-sm"
                                         >
-                                            <ArrowBackIosIcon fontSize="small" />
+                                            <ArrowBackIosIcon
+                                                fontSize="small"
+                                                sx={{ ml: "2px" }}
+                                            />
                                         </button>
 
                                         <button
                                             onClick={scrollNext}
-                                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded cursor-pointer z-[-1] sm:z-1"
+                                            aria-label="Next image"
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-9 h-9 rounded-full bg-black/50 text-white hover:bg-black/75 active:scale-95 transition-all duration-200 cursor-pointer z-1 backdrop-blur-sm"
                                         >
-                                            <ArrowForwardIosIcon fontSize="small" />
+                                            <ArrowForwardIosIcon
+                                                fontSize="small"
+                                                sx={{ ml: "2px" }}
+                                            />
                                         </button>
+
+                                        <div
+                                            role="tablist"
+                                            aria-label="Screenshot pagination"
+                                            className="flex justify-center gap-2 mt-3"
+                                        >
+                                            {imagesCarousel.map(
+                                                (_, index) => (
+                                                    <button
+                                                        key={index}
+                                                        role="tab"
+                                                        aria-selected={
+                                                            index ===
+                                                            selectedIndex
+                                                        }
+                                                        aria-label={`Go to image ${index + 1}`}
+                                                        onClick={() =>
+                                                            scrollTo(index)
+                                                        }
+                                                        className={classNames(
+                                                            "h-2 rounded-full transition-all duration-300 cursor-pointer",
+                                                            index ===
+                                                                selectedIndex
+                                                                ? "w-6 bg-primary"
+                                                                : "w-2 bg-secondary-text/50 hover:bg-secondary-text",
+                                                        )}
+                                                    />
+                                                ),
+                                            )}
+                                        </div>
                                     </>
                                 )}
                             </>
                         </div>
                         {url ? (
-                            <Link href={url} target="_blank">
-                                <Button size="small" variant="outlined">
+                            <Link
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="no-underline w-fit"
+                            >
+                                <Button
+                                    size="small"
+                                    variant="outlined"
+                                    endIcon={
+                                        <LaunchIcon fontSize="small" />
+                                    }
+                                >
                                     Live demo
                                 </Button>
                             </Link>
@@ -488,7 +572,7 @@ const ProjectsDialog = ({
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col gap-5 lg:overflow-y-scroll lg:overflow-x-hidden lg:max-h-[68vh] sm:px-5">
+                    <div className="flex flex-col gap-5 lg:overflow-y-auto lg:overflow-x-hidden lg:max-h-[68vh] [scrollbar-gutter:stable] sm:px-5">
                         <div className="flex flex-col gap-2">
                             <p className="text-primary">{description}</p>
                             <DialogContentText>{info}</DialogContentText>
@@ -502,7 +586,7 @@ const ProjectsDialog = ({
                                 />
                                 <TechStacks
                                     techStack={backend}
-                                    label="Backtend"
+                                    label="Backend"
                                 />
                                 <TechStacks techStack={tools} label="Tools" />
                             </div>
@@ -512,8 +596,12 @@ const ProjectsDialog = ({
             </DialogContent>
             {isSmallScreen && (
                 <DialogActions>
-                    <Button onClick={handleClose}>
-                        <CloseIcon />
+                    <Button
+                        onClick={handleClose}
+                        startIcon={<CloseIcon />}
+                        aria-label="Close dialog"
+                    >
+                        Close
                     </Button>
                 </DialogActions>
             )}
