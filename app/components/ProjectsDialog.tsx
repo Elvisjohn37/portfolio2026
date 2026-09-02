@@ -408,12 +408,20 @@ const ProjectsDialog = ({
     const imagesCarousel = [thumbnail, ...(images || "")]
 
     const handleClose = () => {
-        // document.documentElement.classList.remove("scroll-smooth")
+        // Closing navigates back to "/#projects", which would normally be an
+        // animated scroll (html has scroll-smooth in globals.css). Override
+        // it so the jump back to the section is instant, then restore smooth
+        // scrolling for regular nav links afterwards.
+        const rootStyle = document.documentElement.style
+        rootStyle.scrollBehavior = "auto"
         if (hasParams) {
             router.back()
         } else {
             onClose()
         }
+        setTimeout(() => {
+            rootStyle.scrollBehavior = ""
+        }, 200)
     }
 
     return (

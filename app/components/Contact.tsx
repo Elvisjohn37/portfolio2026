@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import {
@@ -13,11 +12,29 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material"
-import { useActionState, useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { useInView } from "react-intersection-observer"
-import { FormState, submitContactForm } from "./forms/email-form"
+import * as yup from "yup"
 import { Viber, Whatsapp, Location } from "./Icons"
 import ThemeContext from "../utils/js/ThemeContext"
+
+const contactSchema = yup.object({
+    email: yup
+        .string()
+        .required("Email is required")
+        .email("Please enter a valid email address"),
+    subject: yup.string().required("Subject is required"),
+    message: yup.string().required("Message is required"),
+})
+
+type ContactFormField = keyof yup.InferType<typeof contactSchema>
+type ContactFormErrors = Partial<Record<ContactFormField, string>>
+
+type ContactFormResult = {
+    success?: boolean
+    error?: string
+    message?: string
+}
 
 const Contact = () => {
     const { state } = useContext(ThemeContext)
@@ -27,12 +44,62 @@ const Contact = () => {
         triggerOnce: false, // Animate in and out repeatedly
     })
 
-    const [currentState, formAction, isPending] = useActionState<
-        FormState,
-        FormData
-    >(submitContactForm, {})
+    const [currentState, setCurrentState] = useState<ContactFormResult>({})
+    const [isPending, setIsPending] = useState(false)
+    const [open, setOpen] = useState(false)
 
-    const [open, setOpen] = useState(currentState.success)
+    const [errors, setErrors] = useState<ContactFormErrors>({})
+
+    const clearError = (field: ContactFormField) =>
+        setErrors((prev) => ({ ...prev, [field]: undefined }))
+
+    // Client-side action wrapper: React intercepts the submit event for
+    // forms using the "action" prop (no native submission / page reload),
+    // and this wrapper only posts to the API route once all fields pass
+    // yup validation. Using fetch keeps the submission completely outside
+    // of the App Router server-action pipeline, so nothing refreshes or
+    // remounts after the form is sent.
+    const handleFormAction = (formData: FormData) => {
+        contactSchema
+            .validate(Object.fromEntries(formData.entries()), {
+                abortEarly: false,
+            })
+            .then(async () => {
+                setErrors({})
+                setIsPending(true)
+                try {
+                    const response = await fetch("/api/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(
+                            Object.fromEntries(formData.entries()),
+                        ),
+                    })
+                    const state: ContactFormResult = await response.json()
+                    setCurrentState(state)
+                    setOpen(true)
+                } catch {
+                    setCurrentState({
+                        success: false,
+                        error: "Something went wrong. Please try again.",
+                    })
+                    setOpen(true)
+                } finally {
+                    setIsPending(false)
+                }
+            })
+            .catch((validationError: yup.ValidationError) => {
+                const fieldErrors: ContactFormErrors = {}
+                validationError.inner.forEach((issue) => {
+                    const field = issue.path as ContactFormField | undefined
+                    // keep only the first message per field
+                    if (field && !fieldErrors[field]) {
+                        fieldErrors[field] = issue.message
+                    }
+                })
+                setErrors(fieldErrors)
+            })
+    }
 
     const handleClose = (
         event?: React.SyntheticEvent | Event,
@@ -44,11 +111,6 @@ const Contact = () => {
 
         setOpen(false)
     }
-
-    useEffect(() => {
-        if (isPending) return
-        setOpen(currentState.success || Boolean(currentState.error))
-    }, [isPending])
 
     return (
         <div
@@ -87,7 +149,8 @@ const Contact = () => {
                                     </Alert>
                                 </Snackbar>
                                 <form
-                                    action={formAction}
+                                    action={handleFormAction}
+                                    noValidate
                                     className="flex gap-5 flex-col w-full"
                                 >
                                     <div className="flex flex-col gap-2">
@@ -98,6 +161,9 @@ const Contact = () => {
                                             label="Your Email:"
                                             variant="outlined"
                                             fullWidth
+                                            error={Boolean(errors.email)}
+                                            helperText={errors.email}
+                                            onChange={() => clearError("email")}
                                         />
                                     </div>
                                     <div className="flex flex-col gap-2">
@@ -108,6 +174,11 @@ const Contact = () => {
                                             label="Subject:"
                                             variant="outlined"
                                             fullWidth
+                                            error={Boolean(errors.subject)}
+                                            helperText={errors.subject}
+                                            onChange={() =>
+                                                clearError("subject")
+                                            }
                                         />
                                     </div>
                                     <div className="flex flex-col gap-2">
@@ -120,6 +191,11 @@ const Contact = () => {
                                             multiline
                                             rows={3}
                                             fullWidth
+                                            error={Boolean(errors.message)}
+                                            helperText={errors.message}
+                                            onChange={() =>
+                                                clearError("message")
+                                            }
                                         />
                                     </div>
                                     <Button
