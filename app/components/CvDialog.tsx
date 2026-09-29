@@ -32,12 +32,12 @@ const CvDialog = ({ open = true, onClose, hasParams = false }: TCvDialogParams) 
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"))
 
-    const filePath = "/cv/updated CV 01-15-2026.pdf"
+    const filePath = "/cv/Elvis_John_Reyes_Cayetano_AI_Engineer_Resume_With_Portfolio.pdf"
     const handleDownload = () => {
         // Create an invisible link and click it programmatically
         const link = document.createElement("a")
         link.href = filePath
-        link.download = "CAYETANO_ELVIS_JOHN_REYES.pdf" // File name when downloaded
+        link.download = "Elvis_John_Reyes_Cayetano_AI_Engineer_Resume_With_Portfolio.pdf" // File name when downloaded
         link.click()
     }
 

@@ -72,7 +72,7 @@ const PdfViewer = () => {
         >
             {isLoading && <Loading />}
             <Document
-                file="/cv/updated CV 01-15-2026.pdf"
+                file="/cv/Elvis_John_Reyes_Cayetano_AI_Engineer_Resume_With_Portfolio.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}
             >
                 {numPages && Array.from(new Array(numPages), (el, index) => (
