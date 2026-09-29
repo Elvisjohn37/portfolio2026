@@ -63,7 +63,8 @@ const App = () => {
                 })
             },
             {
-                threshold: 0.6, // section must be 60% visible
+                rootMargin: "-40% 0px -40% 0px",
+                threshold: 0, // Also detect sections taller than the viewport.
             },
         )
 

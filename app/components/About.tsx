@@ -1,6 +1,5 @@
 import {
     Button,
-    Chip,
     Skeleton,
     Slide,
     Typography,
@@ -17,6 +16,7 @@ import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import useSWR from "swr"
 import Link from "next/link"
+import WorkExperience from "./WorkExperience"
 
 type TmoreAbout = {
     firstName: string
@@ -35,7 +35,7 @@ const About = () => {
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
     const { ref, inView } = useInView({
         threshold: 0.2, // Trigger when 30% visible
-        triggerOnce: false, // Animate in and out repeatedly
+        triggerOnce: true,
     })
 
     const { data, isLoading } = useSWR(["about-data", "about"], getAboutData, {
@@ -73,10 +73,9 @@ const About = () => {
     return (
         <div
             className="flex justify-center min-h-lvh items-center scroll-m-16 sm:scroll-m-0"
-            ref={ref}
         >
             <div className="flex sm:justify-center flex-col w-full">
-                <div className="overflow-y-hidden">
+                <div className="overflow-y-hidden" ref={ref}>
                     <Slide in={inView} direction="up" timeout={1000}>
                         <p className="text-center text-[16px] sm:text-3xl text-primary">
                             ABOUT ME
@@ -196,6 +195,7 @@ const About = () => {
                         </Slide>
                     </div>
                 </div>
+                <WorkExperience />
             </div>
         </div>
     )
