@@ -10,12 +10,12 @@ import {
     IconProps,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
-import { useState, useContext, type MouseEvent } from "react"
+import { useState, type MouseEvent } from "react"
 import useSWR from "swr"
 import { getAboutTechStacks } from "../api/about"
-import Loader from "./Loader"
-import classnames from "classnames"
-import ThemeContext from "../utils/js/ThemeContext"
+
+/** Placeholder tiles rendered while the stack request is in flight. */
+const SKELETON_TILES = 10
 
 type IconComponent = React.ComponentType<IconProps>
 
@@ -35,7 +35,7 @@ interface TechStack {
     description: string
 }
 
-interface FrontendTechItem {
+interface BackendTechItem {
     Component: IconComponent
     title: string
     id: string
@@ -43,8 +43,6 @@ interface FrontendTechItem {
 }
 
 const BackendTechStack = () => {
-    const { state } = useContext(ThemeContext)
-    const { theme } = state
     const { data = [], isLoading } = useSWR<TechStack[]>(
         ["about-tech", "backend"],
         getAboutTechStacks,
@@ -55,13 +53,6 @@ const BackendTechStack = () => {
         },
     )
 
-    const backendTechStacks: FrontendTechItem[] = data.map((datum) => ({
-        Component: components[datum.name],
-        title: datum.name,
-        id: datum._id,
-        details: datum.description,
-    }))
-
     const { ref, inView } = useInView({
         threshold: 0.3, // Trigger when 30% visible
         triggerOnce: false, // Animate in and out repeatedly
@@ -69,10 +60,17 @@ const BackendTechStack = () => {
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
     const [currentDetails, setCurrentDetails] =
-        useState<FrontendTechItem | null>(null)
+        useState<BackendTechItem | null>(null)
 
-    const handleClick = (event: MouseEvent<SVGSVGElement>, id: string) => {
-        setAnchorEl(event.currentTarget.parentElement)
+    const backendTechStacks: BackendTechItem[] = data.map((datum) => ({
+        Component: components[datum.name],
+        title: datum.name,
+        id: datum._id,
+        details: datum.description,
+    }))
+
+    const handleClick = (event: MouseEvent<HTMLElement>, id: string) => {
+        setAnchorEl(event.currentTarget)
 
         const selected = backendTechStacks.find((item) => item.id === id)
         setCurrentDetails(selected ?? null)
@@ -85,54 +83,66 @@ const BackendTechStack = () => {
     const open = Boolean(anchorEl)
     const id = open ? "simple-popover" : undefined
 
-    if (isLoading) return <Loader />
+    if (isLoading)
+        return (
+            <div className="tech" aria-hidden="true">
+                {Array.from({ length: SKELETON_TILES }, (_, index) => (
+                    <div
+                        className="tech__skeleton"
+                        key={`backend-skeleton-${index}`}
+                    >
+                        <span className="tech__skeleton-icon" />
+                        <span className="tech__skeleton-label" />
+                    </div>
+                ))}
+            </div>
+        )
 
     return (
-        <div ref={ref} className="grid grid-cols-5 gap-5">
-            {backendTechStacks.map((item, index) => (
-                <Grow
-                    in={inView}
-                    timeout={1000 + index * 200}
-                    key={`backend-${item.id}`}
-                >
-                    <Tooltip title={item.title} placement="top" arrow>
-                        <div
-                            className={classnames([
-                                "icon-container",
-                                theme === "dark"
-                                    ? "bg-secondary border-secondary-light border hover:shadow-[0_0_8px_#30374c]"
-                                    : "bg-secondary border-secondary-light border shadow-md hover:shadow-[0_0_8px_#0d9488]",
-                            ])}
-                        >
-                            <item.Component
-                                onClick={(event) =>
-                                    handleClick(event, item.id)
-                                }
-                                className="w-full h-full"
-                                width={100}
-                                height={100}
-                            />
-                        </div>
-                    </Tooltip>
-                </Grow>
-            ))}
-            <div>
-                <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "center",
-                    }}
-                >
-                    <Typography sx={{ p: 2 }}>
-                        {currentDetails?.details}
-                    </Typography>
-                </Popover>
-            </div>
-        </div>
+        <>
+            <ul className="tech" ref={ref}>
+                {backendTechStacks.map((item, index) => (
+                    <Grow
+                        in={inView}
+                        timeout={600 + index * 120}
+                        key={`backend-${item.id}`}
+                    >
+                        <li className="tech__item">
+                            <Tooltip title={item.title} placement="top" arrow>
+                                <button
+                                    type="button"
+                                    className="tech__icon"
+                                    aria-label={`${item.title}: ${item.details}`}
+                                    onClick={(event) =>
+                                        handleClick(event, item.id)
+                                    }
+                                >
+                                    <item.Component
+                                        aria-hidden="true"
+                                        width={100}
+                                        height={100}
+                                    />
+                                </button>
+                            </Tooltip>
+                            <span className="tech__label">{item.title}</span>
+                        </li>
+                    </Grow>
+                ))}
+            </ul>
+
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                }}
+            >
+                <Typography sx={{ p: 2 }}>{currentDetails?.details}</Typography>
+            </Popover>
+        </>
     )
 }
 

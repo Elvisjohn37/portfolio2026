@@ -3,17 +3,14 @@
 import {
     Alert,
     Button,
-    Divider,
-    Paper,
-    Slide,
     Snackbar,
     SnackbarCloseReason,
     TextField,
     Tooltip,
-    Typography,
 } from "@mui/material"
 import { useContext, useState } from "react"
 import { useInView } from "react-intersection-observer"
+import classnames from "classnames"
 import * as yup from "yup"
 import { Viber, Whatsapp, Location } from "./Icons"
 import ThemeContext from "../utils/js/ThemeContext"
@@ -40,7 +37,7 @@ const Contact = () => {
     const { state } = useContext(ThemeContext)
     const { theme } = state
     const { ref, inView } = useInView({
-        threshold: 0.1, // Trigger when 30% visible
+        threshold: 0.1,
         triggerOnce: false, // Animate in and out repeatedly
     })
 
@@ -112,115 +109,118 @@ const Contact = () => {
         setOpen(false)
     }
 
+    const revealClass = classnames("reveal", { "is-visible": inView })
+
     return (
-        <div
-            className="flex justify-center min-h-lvh scroll-m-16 sm:scroll-m-0 pt-10"
-            ref={ref}
-        >
-            <div className="flex sm:justify-center flex-col w-full">
-                <div className="flex sm:justify-center flex-col w-full gap-20">
-                    <div className="overflow-y-hidden">
-                        <Slide in={inView} direction="up" timeout={1000}>
-                            <p className="text-center text-[16px] sm:text-3xl text-primary">
-                                Contact
-                            </p>
-                        </Slide>
+        <section className="contact" ref={ref} aria-labelledby="contact-title">
+            <div className="app-shell">
+                <header className="section-head section-head--start">
+                    <p className="section-eyebrow">Contact</p>
+                    <h2 id="contact-title" className="section-title">
+                        Let&apos;s build{" "}
+                        <span className="text-gradient">together</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        Have a project, a role or a question? Send a message and
+                        I will get back to you as soon as I can.
+                    </p>
+                </header>
+
+                <div className="contact__grid">
+                    <div
+                        className={classnames(
+                            "contact__form-wrap surface",
+                            revealClass,
+                        )}
+                    >
+                        <form
+                            action={handleFormAction}
+                            noValidate
+                            className="contact__form"
+                        >
+                            <TextField
+                                id="email"
+                                name="email"
+                                type="email"
+                                disabled={isPending}
+                                label="Your Email"
+                                variant="outlined"
+                                fullWidth
+                                error={Boolean(errors.email)}
+                                helperText={errors.email}
+                                onChange={() => clearError("email")}
+                            />
+                            <TextField
+                                id="subject"
+                                name="subject"
+                                disabled={isPending}
+                                label="Subject"
+                                variant="outlined"
+                                fullWidth
+                                error={Boolean(errors.subject)}
+                                helperText={errors.subject}
+                                onChange={() => clearError("subject")}
+                            />
+                            <TextField
+                                id="message"
+                                name="message"
+                                disabled={isPending}
+                                label="Message"
+                                variant="outlined"
+                                multiline
+                                rows={4}
+                                fullWidth
+                                error={Boolean(errors.message)}
+                                helperText={errors.message}
+                                onChange={() => clearError("message")}
+                            />
+                            <Button
+                                type="submit"
+                                loading={isPending}
+                                disabled={isPending}
+                                variant="contained"
+                                className="contact__submit"
+                            >
+                                Send message
+                            </Button>
+                        </form>
                     </div>
-                    <div className="flex gap-5 flex-col sm:flex-row">
-                        <Slide in={inView} direction="right" timeout={1000}>
-                            <div className="flex justify-center items-center flex-1">
-                                <Snackbar
-                                    open={open}
-                                    autoHideDuration={6000}
-                                    onClose={handleClose}
-                                >
-                                    <Alert
-                                        onClose={handleClose}
-                                        severity={
-                                            currentState.success
-                                                ? "success"
-                                                : "error"
-                                        }
-                                        variant="filled"
-                                        sx={{ width: "100%" }}
-                                    >
-                                        {currentState.message ||
-                                            currentState.error}
-                                    </Alert>
-                                </Snackbar>
-                                <form
-                                    action={handleFormAction}
-                                    noValidate
-                                    className="flex gap-5 flex-col w-full"
-                                >
-                                    <div className="flex flex-col gap-2">
-                                        <TextField
-                                            id="email"
-                                            name="email"
-                                            disabled={isPending}
-                                            label="Your Email:"
-                                            variant="outlined"
-                                            fullWidth
-                                            error={Boolean(errors.email)}
-                                            helperText={errors.email}
-                                            onChange={() => clearError("email")}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <TextField
-                                            id="subject"
-                                            name="subject"
-                                            disabled={isPending}
-                                            label="Subject:"
-                                            variant="outlined"
-                                            fullWidth
-                                            error={Boolean(errors.subject)}
-                                            helperText={errors.subject}
-                                            onChange={() =>
-                                                clearError("subject")
-                                            }
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <TextField
-                                            id="message"
-                                            name="message"
-                                            disabled={isPending}
-                                            label="Message:"
-                                            variant="outlined"
-                                            multiline
-                                            rows={3}
-                                            fullWidth
-                                            error={Boolean(errors.message)}
-                                            helperText={errors.message}
-                                            onChange={() =>
-                                                clearError("message")
-                                            }
-                                        />
-                                    </div>
-                                    <Button
-                                        type="submit"
-                                        loading={isPending}
-                                        disabled={isPending}
-                                        variant="contained"
-                                    >
-                                        Submit
-                                    </Button>
-                                </form>
+                    <aside
+                        className={classnames("contact__aside", revealClass)}
+                    >
+                        <div className="contact__info surface">
+                            <span
+                                className="contact__info-icon"
+                                aria-hidden="true"
+                            >
+                                <Location />
+                            </span>
+                            <div>
+                                <p className="contact__info-label">Based in</p>
+                                <p className="contact__info-value">
+                                    Barangay 175 Camarin, Caloocan City,
+                                    Philippines
+                                </p>
                             </div>
-                        </Slide>
-                        <Divider className="none sm:block" />
-                        <Slide in={inView} direction="left" timeout={1000}>
-                            <div className="flex justify-center flex-1 flex-col gap-5">
-                                <Paper className="flex flex-col gap-2 p-5">
-                                    <Typography>Contact Number</Typography>
-                                    <div className="flex gap-2 items-center">
-                                        <Typography>09306915794</Typography>
-                                        <Tooltip
-                                            placement="top"
-                                            arrow
-                                            title="Viber"
-                                        >
+                        </div>
+
+                        <div className="contact__info surface">
+                            <span
+                                className="contact__info-icon"
+                                aria-hidden="true"
+                            >
+                                <Whatsapp />
+                            </span>
+                            <div>
+                                <p className="contact__info-label">
+                                    Call or message
+                                </p>
+                                <p className="contact__info-value">
+                                    09306915794
+                                </p>
+                                <div className="contact__info-icons">
+                                    <Tooltip title="Viber" placement="top" arrow>
+                                        <span className="contact__chip">
                                             <Viber
                                                 fill={
                                                     theme === "dark"
@@ -228,12 +228,14 @@ const Contact = () => {
                                                         : "#30374c"
                                                 }
                                             />
-                                        </Tooltip>
-                                        <Tooltip
-                                            placement="top"
-                                            arrow
-                                            title="Whatsapp"
-                                        >
+                                        </span>
+                                    </Tooltip>
+                                    <Tooltip
+                                        title="WhatsApp"
+                                        placement="top"
+                                        arrow
+                                    >
+                                        <span className="contact__chip">
                                             <Whatsapp
                                                 fill={
                                                     theme === "dark"
@@ -241,30 +243,43 @@ const Contact = () => {
                                                         : "#30374c"
                                                 }
                                             />
-                                        </Tooltip>
-                                    </div>
-                                </Paper>
-                                <Paper className="flex flex-col gap-2 p-5">
-                                    <Typography>Address</Typography>
-                                    <div className="flex gap-2 items-center">
-                                        <Typography>
-                                            Barangay 175 Camarin Caloocan City
-                                        </Typography>
-                                        <Location
-                                            fill={
-                                                theme === "dark"
-                                                    ? "#ffffff"
-                                                    : "#30374c"
-                                            }
-                                        />
-                                    </div>
-                                </Paper>
+                                        </span>
+                                    </Tooltip>
+                                </div>
                             </div>
-                        </Slide>
-                    </div>
+                        </div>
+
+                        <div className="contact__info surface">
+                            <span
+                                className="contact__info-icon"
+                                aria-hidden="true"
+                            >
+                                <Viber />
+                            </span>
+                            <div>
+                                <p className="contact__info-label">
+                                    Response time
+                                </p>
+                                <p className="contact__info-value">
+                                    Usually within 24 hours on weekdays
+                                </p>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </div>
-        </div>
+
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    severity={currentState.success ? "success" : "error"}
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    {currentState.message || currentState.error}
+                </Alert>
+            </Snackbar>
+        </section>
     )
 }
 

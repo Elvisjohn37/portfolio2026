@@ -1,21 +1,13 @@
-import {
-    Button,
-    Skeleton,
-    Slide,
-    Typography,
-} from "@mui/material"
 import { useInView } from "react-intersection-observer"
 import DescriptionIcon from "@mui/icons-material/Description"
-import TechStacks from "./TechStacks"
 import CallIcon from "@mui/icons-material/Call"
-import { useMemo } from "react"
-import { redirect } from "next/navigation"
 import SchoolIcon from "@mui/icons-material/School"
-import { getAboutData } from "../api/about"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { useMemo } from "react"
+import classnames from "classnames"
 import useSWR from "swr"
 import Link from "next/link"
+import TechStacks from "./TechStacks"
+import { getAboutData } from "../api/about"
 import WorkExperience from "./WorkExperience"
 
 type TmoreAbout = {
@@ -31,10 +23,8 @@ type TmoreAbout = {
 }
 
 const About = () => {
-    const theme = useTheme()
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
     const { ref, inView } = useInView({
-        threshold: 0.2, // Trigger when 30% visible
+        threshold: 0.2, // Trigger when 20% visible
         triggerOnce: true,
     })
 
@@ -68,136 +58,106 @@ const About = () => {
         [data],
     )
 
-    const fullName = `${firstName} ${middleName} ${lastName}`
+    const fullName =
+        [firstName, middleName, lastName].filter(Boolean).join(" ") ||
+        "Elvis John"
+
+    const revealClass = classnames("reveal", { "is-visible": inView })
+
+    const loadingLine = <span className="loading-line" />
 
     return (
-        <div
-            className="flex justify-center min-h-lvh items-center scroll-m-16 sm:scroll-m-0"
-        >
-            <div className="flex sm:justify-center flex-col w-full">
-                <div className="overflow-y-hidden" ref={ref}>
-                    <Slide in={inView} direction="up" timeout={1000}>
-                        <p className="text-center text-[16px] sm:text-3xl text-primary">
-                            ABOUT ME
+        <section className="about" ref={ref} aria-labelledby="about-title">
+            <div className="app-shell">
+                <header className="section-head section-head--start">
+                    <p className="section-eyebrow">About me</p>
+                    <h2 id="about-title" className="section-title">
+                        The story behind the{" "}
+                        <span className="text-gradient">code</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        What I build, the stack I reach for and where I have
+                        worked so far.
+                    </p>
+                </header>
+
+                <div className="about__grid">
+                    <div className={revealClass}>
+                        <p className="about__name">
+                            {isLoading ? (
+                                <span className="loading-line loading-line--sm" />
+                            ) : (
+                                fullName
+                            )}
                         </p>
-                    </Slide>
-                </div>
-                <div className="flex flex-col sm:flex-row mt-5 gap-3 sm:mt-10">
-                    <div className="flex flex-col flex-1 gap-3 sm:gap-5">
-                        <Slide direction="right" in={inView} timeout={1000}>
-                            <Typography>
-                                {isLoading ? (
-                                    <Skeleton className="w-50" />
-                                ) : (
-                                    fullName
-                                )}
-                            </Typography>
-                        </Slide>
-                        <Slide direction="right" in={inView} timeout={1200}>
-                            <p className="text-2xl lg:text-3xl text-primary">
-                                {isLoading ? (
-                                    <Skeleton className="w-[80%]" />
-                                ) : (
-                                    position
-                                )}
+
+                        <p className="about__position">
+                            {isLoading ? loadingLine : position}
+                        </p>
+
+                        {isLoading ? (
+                            <div className="lead">
+                                {loadingLine}
+                                {loadingLine}
+                                {loadingLine}
+                                {loadingLine}
+                            </div>
+                        ) : (
+                            <p className="lead">{about2}</p>
+                        )}
+
+                        <div className="about__actions">
+                            <Link href="/cv" className="pill pill--primary">
+                                <DescriptionIcon aria-hidden="true" />
+                                View my CV
+                            </Link>
+                            <Link
+                                href="#contact"
+                                scroll={false}
+                                className="pill pill--ghost"
+                            >
+                                <CallIcon aria-hidden="true" />
+                                Contact me
+                            </Link>
+                        </div>
+
+                        <div className="about__education">
+                            <p className="about__education-title">
+                                <SchoolIcon aria-hidden="true" />
+                                Education
                             </p>
-                        </Slide>
-                        <Slide direction="right" in={inView} timeout={1400}>
-                            <Typography>
-                                {isLoading ? (
-                                    <>
-                                        <Skeleton className="w-[95%]" />
-                                        <Skeleton className="w-full" />
-                                        <Skeleton className="w-[85%]" />
-                                        <Skeleton className="w-[90%]" />
-                                        <Skeleton className="w-[80%]" />
-                                        <Skeleton className="w-[75%]" />
-                                        {isSmallScreen && (
-                                            <>
-                                                <Skeleton className="w-[80%]" />
-                                                <Skeleton className="w-[75%]" />
-                                            </>
-                                        )}
-                                    </>
-                                ) : (
-                                    about2
-                                )}
-                            </Typography>
-                        </Slide>
-                        <Slide direction="right" in={inView} timeout={1600}>
-                            <div className="flex gap-2 sm:gap-1 md:gap-2 justify-end sm:justify-start">
-                                <Link
-                                    href="/cv"
-                                    className="no-underline"
-                                >
-                                    <Button
-                                        startIcon={<DescriptionIcon />}
-                                        variant="outlined"
-                                        size="small"
-                                    >
-                                        View My CV
-                                    </Button>
-                                </Link>
-                                <Button
-                                    startIcon={<CallIcon />}
-                                    variant="outlined"
-                                    size="small"
-                                    onClick={() => redirect("#contact")}
-                                >
-                                    Contact Me
-                                </Button>
-                            </div>
-                        </Slide>
-                        <Slide timeout={1800} direction="right" in={inView}>
-                            <div className="flex flex-col gap-2">
-                                <div
-                                    className="flex gap-2
-                        "
-                                >
-                                    <SchoolIcon color="primary" />
-                                    <Typography color="primary">
-                                        Education
-                                    </Typography>
+                            <dl className="about__education-list">
+                                <div>
+                                    <dt>Degree</dt>
+                                    <dd>{isLoading ? loadingLine : degree}</dd>
                                 </div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex gap-2">
-                                        <Typography>Degree: </Typography>
-                                        <Typography className="font-bold! w-[80%]">
-                                            {isLoading ? <Skeleton /> : degree}
-                                        </Typography>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <Typography>School: </Typography>
-                                        <Typography className="font-bold! w-[70%]">
-                                            {isLoading ? <Skeleton /> : school}
-                                        </Typography>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <Typography>School Year: </Typography>
-                                        <Typography className="font-bold! w-[50%]">
-                                            {isLoading ? (
-                                                <Skeleton />
-                                            ) : (
-                                                schoolYear
-                                            )}
-                                        </Typography>
-                                    </div>
+                                <div>
+                                    <dt>School</dt>
+                                    <dd>{isLoading ? loadingLine : school}</dd>
                                 </div>
-                            </div>
-                        </Slide>
+                                <div>
+                                    <dt>School year</dt>
+                                    <dd>
+                                        {isLoading ? loadingLine : schoolYear}
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
 
-                    <div className="flex flex-1 gap-2 flex-col">
-                        <Slide direction="left" timeout={1800} in={inView}>
-                            <div>
-                                <TechStacks />
-                            </div>
-                        </Slide>
+                    <div
+                        className={classnames(
+                            "about__stacks surface stack-panel",
+                            revealClass,
+                        )}
+                    >
+                        <TechStacks />
                     </div>
                 </div>
+
                 <WorkExperience />
             </div>
-        </div>
+        </section>
     )
 }
 

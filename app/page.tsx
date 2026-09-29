@@ -83,27 +83,27 @@ const App = () => {
     }, [activeHash, renderedSections])
 
     return (
-        <div className="2xl:px-80 xl:px-50 lg:px-30 md:px-20 sm:px-10 px-5 overflow-x-hidden pb-5">
+        <main className="overflow-x-hidden">
             <div id="home" className="min-h-lvh">
                 {(activeHash === "#home" ||
                     renderedSections.includes("#home")) && <Home />}
             </div>
 
-            <div id="about" className="min-h-lvh scroll-m-16 sm:scroll-m-5">
+            <div id="about" className="page-section min-h-lvh">
                 {(activeHash === "#about" ||
                     renderedSections.includes("#about")) && <About />}
             </div>
 
-            <div id="projects" className="min-h-lvh scroll-m-16 sm:scroll-m-20">
+            <div id="projects" className="page-section min-h-lvh">
                 {(activeHash === "#projects" ||
                     renderedSections.includes("#projects")) && <Projects />}
             </div>
 
-            <div id="contact" className="min-h-lvh scroll-m-16 sm:scroll-m-0">
+            <div id="contact" className="page-section min-h-lvh">
                 {(activeHash === "#contact" ||
                     renderedSections.includes("#contact")) && <Contact />}
             </div>
-        </div>
+        </main>
     )
 }
 

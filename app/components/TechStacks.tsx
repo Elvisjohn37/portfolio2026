@@ -31,23 +31,28 @@ const TechStacks = () => {
     const handleChange = (_: SyntheticEvent, newValue: number) => {
         setValue(newValue)
 
-        if (!mountedTabs.includes(newValue)) setMountedTabs((prev) => [...prev, newValue])
+        if (!mountedTabs.includes(newValue))
+            setMountedTabs((prev) => [...prev, newValue])
     }
 
     return (
-        <Box sx={{ width: "100%" }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={value} onChange={handleChange}>
-                    {TABS.map((tab, index) => (
-                        <Tab
-                            key={tab.label}
-                            label={tab.label}
-                            id={`tab-${index}`}
-                            aria-controls={`tabpanel-${index}`}
-                        />
-                    ))}
-                </Tabs>
-            </Box>
+        <>
+            <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                sx={{ borderBottom: 1, borderColor: "divider" }}
+            >
+                {TABS.map((tab, index) => (
+                    <Tab
+                        key={tab.label}
+                        label={tab.label}
+                        id={`tab-${index}`}
+                        aria-controls={`tabpanel-${index}`}
+                    />
+                ))}
+            </Tabs>
 
             {TABS.map(({ Component }, index) => {
                 const isActive = value === index
@@ -62,7 +67,6 @@ const TechStacks = () => {
                         hidden={!isActive}
                         id={`tabpanel-${index}`}
                         aria-labelledby={`tab-${index}`}
-                        sx={{ p: 3 }}
                     >
                         <Box className="min-h-80 relative">
                             <Component />
@@ -70,7 +74,7 @@ const TechStacks = () => {
                     </Box>
                 )
             })}
-        </Box>
+        </>
     )
 }
 

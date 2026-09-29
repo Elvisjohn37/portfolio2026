@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import MainNav from "./components/MainNav"
 import ThemeProvider from "./ThemeProvider"
-import ColorTheme from "./components/ColorTheme"
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -21,8 +20,11 @@ export const metadata: Metadata = {
 }
 
 const Footer = () => (
-    <footer className="flex absolute w-full h-12.5 bg-secondary border-t border-secondary-light justify-center items-center text-secondary-text">
-        <p>All Rights Reserved</p>
+    <footer className="border-t border-line">
+        <div className="app-shell flex min-h-16 flex-wrap items-center justify-between gap-2 py-4 text-sm text-secondary-text">
+            <p>© {new Date().getFullYear()} Elvis John. All rights reserved.</p>
+            <p>Built with Next.js, TypeScript &amp; Tailwind CSS</p>
+        </div>
     </footer>
 )
 
@@ -40,7 +42,6 @@ export default function RootLayout({
             >
                 <ThemeProvider>
                     <MainNav />
-                    <ColorTheme />
                     {children}
                     {modal}
                     <Footer />

@@ -18,11 +18,11 @@ type Props = {
 export default function ImageWithSkeleton({
     src,
     alt,
-    fallback = "/fallback.png",
+    fallback = "/placeholder.svg",
     className = "",
     setIsReady,
     Loader = () => (
-        <div className="absolute inset-0 animate-pulse bg-gray-300 h-full" />
+        <div className="absolute inset-0 animate-pulse bg-secondary-light h-full" />
     ),
     ...props
 }: Props) {
@@ -37,7 +37,7 @@ export default function ImageWithSkeleton({
             <Image
                 src={error ? fallback : src}
                 alt={alt}
-                onLoadingComplete={() => {
+                onLoad={() => {
                     setLoading(false)
                     setIsReady?.(true)
                 }}

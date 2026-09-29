@@ -20,13 +20,12 @@ import {
     Wordpress,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
-import { useState, type MouseEvent } from "react"
+import { useState, MouseEvent, useContext } from "react"
 import { getAboutTechStacks } from "../api/about"
+import Loader from "./Loader"
 import useSWR from "swr"
-
-/** Placeholder tiles rendered while the stack request is in flight. */
-const SKELETON_TILES = 10
-
+import classnames from "classnames"
+import ThemeContext from "../utils/js/ThemeContext"
 /**
  * API response type
  */
@@ -81,6 +80,8 @@ interface FrontendTechItem {
 }
 
 const FrontendTechStack = () => {
+    const { state } = useContext(ThemeContext)
+    const { theme } = state
     const { data = [], isLoading } = useSWR<TechStack[]>(
         ["about-tech", "frontend"],
         getAboutTechStacks,
@@ -121,48 +122,35 @@ const FrontendTechStack = () => {
     const open = Boolean(anchorEl)
     const id = open ? "simple-popover" : undefined
 
-    if (isLoading)
-        return (
-            <div className="tech" aria-hidden="true">
-                {Array.from({ length: SKELETON_TILES }, (_, index) => (
-                    <div
-                        className="tech__skeleton"
-                        key={`frontend-skeleton-${index}`}
-                    >
-                        <span className="tech__skeleton-icon" />
-                        <span className="tech__skeleton-label" />
-                    </div>
-                ))}
-            </div>
-        )
+    if (isLoading) return <Loader />
 
     return (
-        <>
-            <ul className="tech" ref={ref}>
-                {frontendTechStacks.map((item, index) => (
-                    <Grow
-                        in={inView}
-                        timeout={600 + index * 120}
-                        key={`frontend-${item.id}`}
-                    >
-                        <li className="tech__item">
-                            <Tooltip title={item.title} placement="top" arrow>
-                                <button
-                                    type="button"
-                                    className="tech__icon"
-                                    aria-label={`${item.title}: ${item.details}`}
-                                    onClick={(event) =>
-                                        handleClick(event, item.id)
-                                    }
-                                >
-                                    <item.Component width={100} height={100} />
-                                </button>
-                            </Tooltip>
-                            <span className="tech__label">{item.title}</span>
-                        </li>
-                    </Grow>
-                ))}
-            </ul>
+        <div ref={ref} className="grid grid-cols-5 gap-2 md:gap-3 lg:gap-5">
+            {frontendTechStacks.map((item, index) => (
+                <Grow
+                    in={inView}
+                    timeout={1000 + index * 200}
+                    key={`frontend-${item.id}`}
+                >
+                    <Tooltip title={item.title} placement="top" arrow>
+                        <div
+                            className={classnames([
+                                "icon-container",
+                                theme === "dark"
+                                    ? "bg-secondary border-secondary-light border hover:shadow-[0_0_8px_#30374c]"
+                                    : "bg-secondary border-secondary-light border shadow-md hover:shadow-[0_0_8px_#0d9488]",
+                            ])}
+                        >
+                            <item.Component
+                                onClick={(event) => handleClick(event, item.id)}
+                                className="w-full h-full duration-300 transition transform-[translate] hover:scale-110"
+                                width={100}
+                                height={100}
+                            />
+                        </div>
+                    </Tooltip>
+                </Grow>
+            ))}
 
             <Popover
                 id={id}
@@ -176,7 +164,7 @@ const FrontendTechStack = () => {
             >
                 <Typography sx={{ p: 2 }}>{currentDetails?.details}</Typography>
             </Popover>
-        </>
+        </div>
     )
 }
 

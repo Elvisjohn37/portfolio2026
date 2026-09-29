@@ -1,39 +1,46 @@
 @import "tailwindcss";
-@import "./utils/css/MainNav.css";
-@import "./utils/css/home.css";
+@import "./utils/css/ui.css";
 @import "./utils/css/about.css";
-
-@import "@fontsource/roboto/300.css";
-@import "@fontsource/roboto/400.css";
-@import "@fontsource/roboto/500.css";
-@import "@fontsource/roboto/700.css";
 
 /* ===== Dark theme (default) ===== */
 :root {
-    --background: #0a0f1c;
-    --foreground: #ededed;
-    --primary: #58dad2;
-    --primary-light: #dbf6f5;
+    --background: #060a15;
+    --foreground: #eaf1fb;
+    --primary: #5ee6dc;
+    --primary-light: #d3f6f3;
     --primary-dark: #00baab;
-    --primary-text: #ffffff;
-    --secondary: #0f172a;
-    --secondary-light: #30374c;
-    --secondary-dark: #080d1b;
-    --secondary-text: #94a3b8;
-    --nav-link: #dbf6f5;
-    --bg-gradient: linear-gradient(
-        90deg,
-        rgba(46, 58, 89, 1) 0%,
-        rgba(8, 13, 27, 1) 50%,
-        rgba(8, 13, 27, 1) 100%
-    );
-    --navigation-height: 50px;
+    --primary-text: #04231f;
+    --secondary: #0e1626;
+    --secondary-light: #27324b;
+    --secondary-dark: #04070f;
+    --secondary-text: #93a4bf;
+    --nav-link: #d5e6f5;
+
+    /* Surfaces, borders, elevation */
+    --surface: rgba(14, 22, 38, 0.55);
+    --surface-strong: rgba(11, 19, 34, 0.92);
+    --border-subtle: rgba(147, 167, 199, 0.16);
+    --shadow-sm: 0 1px 2px rgba(2, 6, 16, 0.5);
+    --shadow-md: 0 18px 40px -22px rgba(2, 6, 16, 0.9);
+    --shadow-lg: 0 34px 70px -28px rgba(2, 6, 16, 0.95);
+    --glow: rgba(94, 230, 220, 0.35);
+    --scrim: rgba(4, 7, 15, 0.72);
+
+    /* Ambient background */
+    --aurora-1: rgba(0, 186, 171, 0.24);
+    --aurora-2: rgba(56, 132, 255, 0.18);
+    --aurora-3: rgba(124, 244, 222, 0.12);
+    --grid-line: rgba(147, 167, 199, 0.07);
+
+    /* Layout */
+    --nav-height: 62px;
+    --nav-offset: 78px;
 }
 
 /* ===== Light theme ===== */
 :root[data-theme="light"] {
-    --background: #f1f5f9;
-    --foreground: #0f172a;
+    --background: #f5f8fc;
+    --foreground: #0d1b2e;
     --primary: #0d9488;
     --primary-light: #ccfbf1;
     --primary-dark: #0f766e;
@@ -41,14 +48,30 @@
     --secondary: #ffffff;
     --secondary-light: #e2e8f0;
     --secondary-dark: #cbd5e1;
-    --secondary-text: #64748b;
+    --secondary-text: #56637a;
     --nav-link: #0f766e;
-    --bg-gradient: linear-gradient(
-        135deg,
-        #eef2f7 0%,
-        #f8fafc 50%,
-        #e8f4f3 100%
-    );
+
+    --surface: rgba(255, 255, 255, 0.78);
+    --surface-strong: rgba(255, 255, 255, 0.96);
+    --border-subtle: rgba(15, 32, 56, 0.1);
+    --shadow-sm: 0 1px 2px rgba(15, 32, 56, 0.06);
+    --shadow-md: 0 18px 40px -24px rgba(15, 32, 56, 0.26);
+    --shadow-lg: 0 30px 62px -26px rgba(15, 32, 56, 0.3);
+    --glow: rgba(13, 148, 136, 0.26);
+    --scrim: rgba(232, 238, 246, 0.78);
+
+    --aurora-1: rgba(13, 148, 136, 0.17);
+    --aurora-2: rgba(59, 130, 246, 0.13);
+    --aurora-3: rgba(20, 184, 166, 0.11);
+    --grid-line: rgba(15, 32, 56, 0.045);
+}
+
+/* Small phones get a shorter bar so content keeps its breathing room. */
+@media (max-width: 600px) {
+    :root {
+        --nav-height: 56px;
+        --nav-offset: 70px;
+    }
 }
 
 @theme inline {
@@ -63,27 +86,73 @@
     --color-secondary-dark: var(--secondary-dark);
     --color-secondary-text: var(--secondary-text);
     --color-nav-link: var(--nav-link);
+    --color-surface: var(--surface);
+    --color-line: var(--border-subtle);
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
-    --navigation-height: var(--navigation-height);
 }
 
 body {
-    background: var(--bg-gradient);
+    background: var(--background);
     color: var(--secondary-text);
-    font-family: Arial, Helvetica, sans-serif;
-    transition: background 0.4s ease, color 0.4s ease;
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* background-image: url("/bg.jpg");
-    background-attachment: fixed;
-    background-size: cover;
-    background-blend-mode: overlay; */
+    overflow-x: hidden;
+    transition: background-color 0.45s ease, color 0.45s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Ambient aurora wash — fixed so it stays put while the page scrolls. */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            58% 48% at 10% -4%,
+            var(--aurora-1),
+            transparent 62%
+        ),
+        radial-gradient(
+            48% 42% at 92% 4%,
+            var(--aurora-2),
+            transparent 64%
+        ),
+        radial-gradient(
+            46% 40% at 50% 104%,
+            var(--aurora-3),
+            transparent 62%
+        );
+    transition: background 0.45s ease;
+}
+
+/* Faint engineering grid, faded out towards the middle of the page. */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 68px 68px;
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000 15%, transparent 78%);
+    -webkit-mask-image: radial-gradient(
+        80% 60% at 50% 0%,
+        #000 15%,
+        transparent 78%
+    );
 }
 
 html {
     @apply scroll-smooth;
+    /* Keep anchored sections clear of the fixed header. */
+    scroll-padding-top: var(--nav-offset);
 }
 
 html,
@@ -91,42 +160,60 @@ body {
     min-height: 100vh;
 }
 
-/* Smooth color transitions across themed components */
+/* Smooth color transitions across themed surfaces */
 body,
 nav,
 footer,
 .MuiCard-root,
 .MuiPaper-root,
-.MuiDialog-paper {
-    transition: background-color 0.4s ease, border-color 0.4s ease,
-        color 0.4s ease;
+.MuiDialog-paper,
+.MuiButtonBase-root {
+    transition: background-color 0.35s ease, border-color 0.35s ease,
+        color 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* width */
+/* ---- Scrollbar ---- */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-light) transparent;
+}
+
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 8px;
+    height: 8px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-    @apply bg-secondary-light;
+    background: transparent;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-    @apply bg-secondary-dark rounded-full;
+    background: color-mix(in srgb, var(--secondary-text) 45%, transparent);
+    border-radius: 999px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    @apply bg-secondary-text;
+    background: var(--primary);
 }
 
-/* PDF viewer - ensure pages have solid white background so content is always readable */
-.react-pdf__Page {
-    background-color: white !important;
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
+/* PDF viewer - ensure pages have a solid white background so content is readable */
+.react-pdf__Page,
 .react-pdf__Page__canvas {
     background-color: white !important;
 }
