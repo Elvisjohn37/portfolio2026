@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { useInView } from "react-intersection-observer"
+import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import Link from "next/link"
 import classnames from "classnames"
 import useSWR from "swr"
@@ -57,10 +58,7 @@ const FALLBACK_BLURB =
     "I design and build fast, accessible web products end to end — from pixel-perfect interfaces to the APIs and delivery pipelines behind them."
 
 const Home = () => {
-    const { ref, inView } = useInView({
-        threshold: 0.15, // Trigger when 15% visible
-        triggerOnce: false, // Animate in and out repeatedly
-    })
+    const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
 
     const { data, isLoading } = useSWR(["about-data", "home"], getHomeData, {
         revalidateOnFocus: false,

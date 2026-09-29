@@ -8,6 +8,7 @@ import useSWR from "swr"
 import Link from "next/link"
 import TechStacks from "./TechStacks"
 import { getAboutData } from "../api/about"
+import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import WorkExperience from "./WorkExperience"
 
 type TmoreAbout = {
@@ -23,10 +24,13 @@ type TmoreAbout = {
 }
 
 const About = () => {
-    const { ref, inView } = useInView({
-        threshold: 0.2, // Trigger when 20% visible
-        triggerOnce: true,
-    })
+    // One observer per revealed block: the whole About section is several
+    // screens high on a phone, so a single observer on the section (with a
+    // ratio threshold) would never become visible and every ".reveal" child
+    // would stay stuck at opacity 0.
+    const { ref: bioRef, inView: bioInView } = useInView(REVEAL_IN_VIEW_OPTIONS)
+    const { ref: stacksRef, inView: stacksInView } =
+        useInView(REVEAL_IN_VIEW_OPTIONS)
 
     const { data, isLoading } = useSWR(["about-data", "about"], getAboutData, {
         revalidateOnFocus: false,
@@ -62,12 +66,15 @@ const About = () => {
         [firstName, middleName, lastName].filter(Boolean).join(" ") ||
         "Elvis John"
 
-    const revealClass = classnames("reveal", { "is-visible": inView })
+    const bioRevealClass = classnames("reveal", { "is-visible": bioInView })
+    const stacksRevealClass = classnames("reveal", {
+        "is-visible": stacksInView,
+    })
 
     const loadingLine = <span className="loading-line" />
 
     return (
-        <section className="about" ref={ref} aria-labelledby="about-title">
+        <section className="about" aria-labelledby="about-title">
             <div className="app-shell">
                 <header className="section-head section-head--start">
                     <p className="section-eyebrow">About me</p>
@@ -82,7 +89,7 @@ const About = () => {
                 </header>
 
                 <div className="about__grid">
-                    <div className={revealClass}>
+                    <div className={bioRevealClass} ref={bioRef}>
                         <p className="about__name">
                             {isLoading ? (
                                 <span className="loading-line loading-line--sm" />
@@ -148,8 +155,9 @@ const About = () => {
                     <div
                         className={classnames(
                             "about__stacks surface stack-panel",
-                            revealClass,
+                            stacksRevealClass,
                         )}
+                        ref={stacksRef}
                     >
                         <TechStacks />
                     </div>

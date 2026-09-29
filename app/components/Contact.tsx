@@ -10,6 +10,7 @@ import {
 } from "@mui/material"
 import { useContext, useState } from "react"
 import { useInView } from "react-intersection-observer"
+import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import classnames from "classnames"
 import * as yup from "yup"
 import { Viber, Whatsapp, Location } from "./Icons"
@@ -36,10 +37,7 @@ type ContactFormResult = {
 const Contact = () => {
     const { state } = useContext(ThemeContext)
     const { theme } = state
-    const { ref, inView } = useInView({
-        threshold: 0.1,
-        triggerOnce: false, // Animate in and out repeatedly
-    })
+    const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
 
     const [currentState, setCurrentState] = useState<ContactFormResult>({})
     const [isPending, setIsPending] = useState(false)

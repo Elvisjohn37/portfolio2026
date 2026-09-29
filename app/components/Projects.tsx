@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { useInView } from "react-intersection-observer"
+import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import classnames from "classnames"
 import ArrowOutwardRoundedIcon from "@mui/icons-material/ArrowOutwardRounded"
 import { projects } from "../utils/js/projects"
@@ -17,10 +18,7 @@ const STACK_PREVIEW_LIMIT = 5
 const ALL_PROJECTS = "All projects"
 
 const Projects = () => {
-    const { ref, inView } = useInView({
-        threshold: 0.1, // Trigger when 10% visible
-        triggerOnce: false, // Animate in and out repeatedly
-    })
+    const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
 
     // Filter pills are derived from the categories present in the data set.
     const categories = useMemo(() => {

@@ -10,6 +10,7 @@ import {
     IconProps,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
+import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import { useState, type MouseEvent } from "react"
 import useSWR from "swr"
 import { getAboutTechStacks } from "../api/about"
@@ -53,10 +54,7 @@ const BackendTechStack = () => {
         },
     )
 
-    const { ref, inView } = useInView({
-        threshold: 0.3, // Trigger when 30% visible
-        triggerOnce: false, // Animate in and out repeatedly
-    })
+    const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
     const [currentDetails, setCurrentDetails] =

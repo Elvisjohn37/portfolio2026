@@ -20,6 +20,7 @@ import {
     Wordpress,
 } from "./Icons"
 import { useInView } from "react-intersection-observer"
+import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import { useState, type MouseEvent } from "react"
 import { getAboutTechStacks } from "../api/about"
 import useSWR from "swr"
@@ -91,10 +92,7 @@ const FrontendTechStack = () => {
         },
     )
 
-    const { ref, inView } = useInView({
-        threshold: 0.3,
-        triggerOnce: false,
-    })
+    const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
     const [currentDetails, setCurrentDetails] =

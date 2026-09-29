@@ -6,6 +6,7 @@ import WorkOutlineRoundedIcon from "@mui/icons-material/WorkOutlineRounded"
 import ArrowOutwardRoundedIcon from "@mui/icons-material/ArrowOutwardRounded"
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded"
 import { useInView } from "react-intersection-observer"
+import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import Link from "next/link"
 import { projects } from "../utils/js/projects"
 
@@ -90,7 +91,7 @@ const ExperienceCard = ({ experience, index }: {
     experience: typeof experiences[number]
     index: number
 }) => {
-    const { ref, inView } = useInView({ threshold: 0.08, triggerOnce: false })
+    const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
     const current = !experience.endDate
     const linkedProjects = projects.filter((project) =>
         experience.projectIds.includes(project.id) && project.url,
