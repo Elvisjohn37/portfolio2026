@@ -1645,3 +1645,7 @@ button.tech__icon {
 
 
 
+
+/* Keep monochrome remote logos legible without changing the icon tile. */
+.technology-icon--monochrome { filter: brightness(0) invert(1); }
+:root[data-theme="light"] .technology-icon--monochrome { filter: brightness(0); }
