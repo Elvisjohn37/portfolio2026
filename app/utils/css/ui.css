@@ -403,6 +403,12 @@
     color: var(--secondary-text);
 }
 
+.experience-empty {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--secondary-text);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .projects__grid > li,
     .projects__thumb,

@@ -8,7 +8,11 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded"
 import { useInView } from "react-intersection-observer"
 import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import Link from "next/link"
-import { projects } from "../utils/js/projects"
+import useSWR from "swr"
+import { getExperiences } from "../api/experiences"
+import { getProjects } from "../api/projects"
+import type { Experience } from "../utils/js/experiences"
+import type { Project } from "../utils/js/projects"
 
 const techLabels: Record<string, string> = {
     Reactjs: "React", Vuejs: "Vue", Nextjs: "Next.js", Nodejs: "Node.js",
@@ -24,78 +28,32 @@ const stackGroups = [
     { key: "tools", label: "Tools & delivery" },
 ] as const
 
-function getProjectStacks(projectIds: number[]) {
-    const matchedProjects = projects.filter((project) => projectIds.includes(project.id))
+/**
+ * The timeline only carries a light project projection (name / slug /
+ * thumbnail / url), so the full project list is matched by id to recover each
+ * role's tech stacks.
+ */
+function getProjectStacks(projects: Project[], experience: Experience) {
+    const ids = new Set(experience.projects.map((project) => project._id))
+    const matchedProjects = projects.filter((project) => ids.has(project._id))
     return stackGroups.map(({ key, label }) => ({
         label,
         technologies: [...new Set(matchedProjects.flatMap((project) =>
-            (project.techStacks[key] ?? []).map(({ name }) => techLabels[name] ?? name),
+            (project.techStacks[key] ?? []).map((name) => techLabels[name] ?? name),
         ))],
     })).filter(({ technologies }) => technologies.length > 0)
 }
 
-// Role titles, dates, and contributions are sourced from the portfolio resume.
-const experiences = [
-    {
-        title: "AI Engineer",
-        company: "Elgada BPO Solutions Inc.",
-        start: "March 2024",
-        startDate: "2024-03",
-        end: "Present",
-        endDate: undefined,
-        focus: "Modern web development, powered by AI-assisted engineering.",
-        highlights: [
-            "Redesign and rebuild legacy websites with React, focusing on maintainability, responsive design, and user experience.",
-            "Use Claude AI, GitHub Copilot, and OpenAI Codex for development, code analysis, debugging, and refactoring.",
-            "Integrate RESTful APIs, GraphQL, and third-party services; collaborate with designers and project owners on iterative improvements.",
-            "Contribute to CI/CD, testing, QA, code reviews, and Agile delivery across browsers and devices.",
-        ],
-        projectIds: [1],
-        skills: ["AI-assisted development", "REST APIs", "GraphQL", "CI/CD"],
-    },
-    {
-        title: "Frontend Web Developer",
-        company: "Snapmart Incorporated",
-        start: "April 2023",
-        startDate: "2023-04",
-        end: "March 2024",
-        endDate: "2024-03",
-        focus: "React interfaces and the modernization of established applications.",
-        highlights: [
-            "Developed React-based interfaces and managed application state using modern frontend patterns.",
-            "Modernized legacy web applications and improved frontend maintainability while adapting to the team's stack and workflows.",
-            "Worked toward delivery milestones, participated in field testing, and resolved implementation issues.",
-        ],
-        projectIds: [2, 3],
-        skills: ["State management", "Legacy modernization", "Field testing"],
-    },
-    {
-        title: "Senior Fullstack Web Developer",
-        company: "Leekie Enterprises Incorporated",
-        start: "October 2018",
-        startDate: "2018-10",
-        end: "April 2023",
-        endDate: "2023-04",
-        focus: "Full-stack delivery for online gaming applications.",
-        highlights: [
-            "Built frontend-heavy applications with React, Vue, SASS, Webpack, and Material UI, alongside backend functionality in PHP, Laravel, Node.js, and Express.",
-            "Translated design mockups and workflows into responsive, cross-browser interfaces in collaboration with UI/UX stakeholders.",
-            "Maintained and optimized production applications through patching, debugging, and performance tuning, with attention to security and stability.",
-        ],
-        projectIds: [4, 5, 6, 7],
-        skills: ["Performance tuning"],
-    },
-]
-
-const ExperienceCard = ({ experience, index }: {
-    experience: typeof experiences[number]
+const ExperienceCard = ({ experience, index, projects }: {
+    experience: Experience
     index: number
+    projects: Project[]
 }) => {
     const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
     const current = !experience.endDate
-    const linkedProjects = projects.filter((project) =>
-        experience.projectIds.includes(project.id) && project.url,
-    )
+    // The API already populated each role's projects, so the chips come
+    // straight from the response; only roles with a live site get a chip.
+    const linkedProjects = experience.projects.filter((project) => project.url)
     const [stackExpanded, setStackExpanded] = useState(false)
     const reduceMotion = useMediaQuery("(prefers-reduced-motion: reduce)")
 
@@ -142,7 +100,7 @@ const ExperienceCard = ({ experience, index }: {
                         aria-hidden={!stackExpanded}
                     >
                     <div className="experience-stack-groups">
-                    {[...getProjectStacks(experience.projectIds), {
+                    {[...getProjectStacks(projects, experience), {
                         label: "Additional focus",
                         technologies: experience.skills,
                     }].map(({ label, technologies }) => (
@@ -163,7 +121,7 @@ const ExperienceCard = ({ experience, index }: {
                         <span>Selected projects</span>
                         <ul className="experience-project-links">
                             {linkedProjects.map((project) => (
-                                <li key={project.id}>
+                                <li key={project._id}>
                                     <a
                                         href={project.url}
                                         target="_blank"
@@ -184,6 +142,20 @@ const ExperienceCard = ({ experience, index }: {
 }
 
 export default function WorkExperience() {
+    // Roles are managed in the admin panel and served by the API.
+    const { data: experiences = [], isLoading } = useSWR(["work-experience"], getExperiences, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false,
+    })
+
+    // Full project documents, needed only for the per-role tech stacks.
+    const { data: projects = [] } = useSWR(["projects"], getProjects, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false,
+    })
+
     return (
         <section className="work-experience" aria-labelledby="work-experience-title">
             <header className="experience-heading">
@@ -196,11 +168,17 @@ export default function WorkExperience() {
                     View full resume <ArrowOutwardRoundedIcon fontSize="small" />
                 </Link>
             </header>
-            <ol className="experience-timeline">
-                {experiences.map((experience, index) => (
-                    <ExperienceCard key={experience.company} experience={experience} index={index} />
-                ))}
-            </ol>
+            {isLoading && experiences.length === 0 ? (
+                <p className="experience-empty">Loading work experience…</p>
+            ) : experiences.length === 0 ? (
+                <p className="experience-empty">No work experience published yet.</p>
+            ) : (
+                <ol className="experience-timeline">
+                    {experiences.map((experience, index) => (
+                        <ExperienceCard key={experience._id} experience={experience} index={index} projects={projects} />
+                    ))}
+                </ol>
+            )}
         </section>
     )
 }

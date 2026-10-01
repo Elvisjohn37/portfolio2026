@@ -30,8 +30,14 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { useRouter } from "next/navigation"
-import { projects } from "../utils/js/projects"
-import type { TechItem } from "../utils/js/projects"
+import useSWR from "swr"
+import TechnologyIcon from "./TechnologyIcon"
+import { getProject } from "../api/projects"
+import type { Project } from "../utils/js/projects"
+
+// Next 16's image optimizer blocks private IPs (e.g. localhost) for SSRF
+// protection, so uploaded media served from the API is rendered unoptimized.
+const isRemote = (src: string) => /^https?:\/\//i.test(src)
 
 type ProjectsDialogProps = {
     open?: boolean
@@ -100,7 +106,15 @@ const ProjectsDialog = ({
         return () => window.removeEventListener("keydown", onKeyDown)
     }, [open, scrollPrev, scrollNext])
 
-    const project = projects.find((item) => String(item.id) === String(id))
+    const { data: project = null } = useSWR<Project | null>(
+        id != null ? ["project", String(id)] : null,
+        getProject,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            revalidateIfStale: false,
+        },
+    )
 
     if (!project) return null
 
@@ -108,7 +122,7 @@ const ProjectsDialog = ({
         project
     const { frontend, backend, tools } = techStacks
 
-    const imagesCarousel = [thumbnail, ...(images ?? [])]
+    const imagesCarousel = [thumbnail, ...(images ?? [])].filter(Boolean)
 
     const handleClose = () => {
         // Closing navigates back to "/#projects", which would normally be an
@@ -137,12 +151,15 @@ const ProjectsDialog = ({
         >
             <DialogTitle>
                 <div className="flex flex-row gap-2 items-center">
-                    <Image
-                        width={25}
-                        height={25}
-                        src={project.logoSrc}
-                        alt={"project-logo"}
-                    />
+                    {project.logoSrc ? (
+                        <Image
+                            width={25}
+                            height={25}
+                            src={project.logoSrc}
+                            alt={"project-logo"}
+                            unoptimized={isRemote(project.logoSrc)}
+                        />
+                    ) : null}
                     <p className="text-primary">{name}</p>
                 </div>
                 <IconButton
@@ -185,6 +202,7 @@ const ProjectsDialog = ({
                                                     height={100}
                                                     alt={`slide ${index}`}
                                                     Loader={Loader}
+                                                    unoptimized={isRemote(image)}
                                                 />
                                             </div>
                                         ))}
@@ -316,7 +334,7 @@ const ProjectsDialog = ({
 }
 
 type TechStacksProps = {
-    techStack?: TechItem[]
+    techStack?: string[]
     label: string
 }
 
@@ -334,23 +352,20 @@ const TechStacks = ({ techStack, label }: TechStacksProps) => {
                     variant="outlined"
                 />
             </div>
-            <div className="flex gap-3 flex-wrap sm:px-2">
-                {techStack?.map((item: any, index: any) => (
-                    <Tooltip
-                        key={index}
-                        title={item.name}
-                        placement="top"
-                        arrow
-                    >
+            <div className="flex flex-wrap items-center gap-3 sm:px-2">
+                {techStack?.map((name) => (
+                    <Tooltip key={name} title={name} placement="top" arrow>
+                        {/* Fixed square + flex centering keeps the tile a perfect
+                            circle and the glyph evenly spaced inside it. */}
                         <div
                             className={classNames([
-                                "p-2 rounded-full duration-300 hover:scale-110",
+                                "flex h-10 w-10 shrink-0 items-center justify-center rounded-full duration-300 hover:scale-110",
                                 theme === "light"
                                     ? "border border-primary-light hover:border-primary"
                                     : "bg-secondary-light border border-transparent hover:border-primary-dark hover:bg-secondary-light",
                             ])}
                         >
-                            <item.icon width={20} height={20} />
+                            <TechnologyIcon name={name} size={20} />
                         </div>
                     </Tooltip>
                 ))}

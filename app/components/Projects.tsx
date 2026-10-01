@@ -4,10 +4,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { useInView } from "react-intersection-observer"
+import useSWR from "swr"
 import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import classnames from "classnames"
 import ArrowOutwardRoundedIcon from "@mui/icons-material/ArrowOutwardRounded"
-import { projects } from "../utils/js/projects"
+import TechnologyIcon from "./TechnologyIcon"
+import { getProjects } from "../api/projects"
 
 // Grid image width hints so next/image can serve appropriately sized files
 const THUMBNAIL_SIZES = "(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -15,10 +17,23 @@ const THUMBNAIL_SIZES = "(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33v
 // How many stack icons fit comfortably on one card row
 const STACK_PREVIEW_LIMIT = 5
 
+// Next 16's image optimizer blocks private IPs (e.g. localhost/127.0.0.1) for
+// SSRF protection, so uploaded media served from the API is rendered
+// unoptimized (the browser fetches it directly). Static local images keep
+// their optimisation.
+const isRemote = (src: string) => /^https?:\/\//i.test(src)
+
 const ALL_PROJECTS = "All projects"
 
 const Projects = () => {
     const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
+
+    // Projects are managed in the admin panel and served by the API.
+    const { data: projects = [], isLoading } = useSWR(["projects"], getProjects, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false,
+    })
 
     // Filter pills are derived from the categories present in the data set.
     const categories = useMemo(() => {
@@ -32,7 +47,7 @@ const Projects = () => {
             { label: ALL_PROJECTS, count: projects.length },
             ...[...counts].map(([label, count]) => ({ label, count })),
         ]
-    }, [])
+    }, [projects])
 
     const [activeCategory, setActiveCategory] = useState(ALL_PROJECTS)
 
@@ -43,7 +58,7 @@ const Projects = () => {
                 : projects.filter(
                       ({ description }) => description === activeCategory,
                   ),
-        [activeCategory],
+        [activeCategory, projects],
     )
 
     return (
@@ -76,7 +91,9 @@ const Projects = () => {
                     ))}
                 </div>
 
-                {visibleProjects.length === 0 ? (
+                {isLoading && projects.length === 0 ? (
+                    <p className="projects__empty">Loading projects…</p>
+                ) : visibleProjects.length === 0 ? (
                     <p className="projects__empty">
                         No projects in this category yet.
                     </p>
@@ -87,21 +104,24 @@ const Projects = () => {
                         })}
                     >
                         {visibleProjects.map((project) => (
-                            <li key={project.id}>
+                            <li key={project._id}>
                                 <Link
-                                    href={`/project/${project.id}`}
+                                    href={`/project/${project.slug || project._id}`}
                                     scroll={false}
                                     className="projects__card surface surface-hover"
                                     aria-label={`${project.name} — view the case study`}
                                 >
                                     <div className="projects__media">
-                                        <Image
-                                            src={project.thumbnail}
-                                            alt={`${project.name} preview`}
-                                            fill
-                                            sizes={THUMBNAIL_SIZES}
-                                            className="projects__thumb"
-                                        />
+                                        {project.thumbnail ? (
+                                            <Image
+                                                src={project.thumbnail}
+                                                alt={`${project.name} preview`}
+                                                fill
+                                                sizes={THUMBNAIL_SIZES}
+                                                className="projects__thumb"
+                                                unoptimized={isRemote(project.thumbnail)}
+                                            />
+                                        ) : null}
                                         <span className="projects__tag">
                                             {project.description}
                                         </span>
@@ -109,13 +129,16 @@ const Projects = () => {
 
                                     <div className="projects__body">
                                         <div className="projects__title-row">
-                                            <Image
-                                                src={project.logoSrc}
-                                                alt=""
-                                                width={26}
-                                                height={26}
-                                                className="projects__logo"
-                                            />
+                                            {project.logoSrc ? (
+                                                <Image
+                                                    src={project.logoSrc}
+                                                    alt=""
+                                                    width={26}
+                                                    height={26}
+                                                    className="projects__logo"
+                                                    unoptimized={isRemote(project.logoSrc)}
+                                                />
+                                            ) : null}
                                             <h3 className="projects__name">
                                                 {project.name}
                                             </h3>
@@ -133,10 +156,11 @@ const Projects = () => {
                                         <ul className="projects__stack">
                                             {project.techStacks.frontend
                                                 .slice(0, STACK_PREVIEW_LIMIT)
-                                                .map(({ icon: Icon, name }) => (
+                                                .map((name) => (
                                                     <li key={name} title={name}>
-                                                        <Icon
-                                                            aria-hidden="true"
+                                                        <TechnologyIcon
+                                                            name={name}
+                                                            size={20}
                                                         />
                                                     </li>
                                                 ))}
@@ -153,9 +177,4 @@ const Projects = () => {
 }
 
 export default Projects
-
-
-
-
-
 

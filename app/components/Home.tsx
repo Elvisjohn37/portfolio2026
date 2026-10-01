@@ -13,8 +13,8 @@ import EmailIcon from "@mui/icons-material/Email"
 import Image from "./Image"
 import LvsLoading from "./LvsLoading"
 import { getHomeData } from "@/app/api/about"
+import { getProjects } from "@/app/api/projects"
 import { Location, Nodejs, Reactjs } from "./Icons"
-import { projects } from "../utils/js/projects"
 
 type TuserData = {
     firstName: string
@@ -61,6 +61,12 @@ const Home = () => {
     const { ref, inView } = useInView(REVEAL_IN_VIEW_OPTIONS)
 
     const { data, isLoading } = useSWR(["about-data", "home"], getHomeData, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false,
+    })
+
+    const { data: projects = [] } = useSWR(["projects"], getProjects, {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         revalidateIfStale: false,
@@ -114,7 +120,7 @@ const Home = () => {
             { value: projects.length, label: "Featured projects" },
             { value: "AI", label: "Augmented workflow" },
         ],
-        [],
+        [projects.length],
     )
 
     const location = [province, country].filter(Boolean).join(", ")

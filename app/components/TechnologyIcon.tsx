@@ -93,7 +93,7 @@ export default function TechnologyIcon({ name, size = 48, preview = false }: {
                     referrerPolicy="no-referrer" onError={() => setFailedUrl(url)}
                     style={{ width: size, height: size, objectFit: "contain", flexShrink: 0 }} />
             ) : (
-                <span aria-hidden="true" style={{ width: size, height: size, display: "inline-grid", placeItems: "center", color: "inherit", fontWeight: 700, fontSize: size * 0.45, flexShrink: 0 }}>
+                <span aria-hidden="true" style={{ width: size, height: size, display: "inline-grid", placeItems: "center", color: "inherit", fontWeight: 700, fontSize: size * 0.5, lineHeight: 1, flexShrink: 0 }}>
                     {name.trim().slice(0, 2).toUpperCase() || "?"}
                 </span>
             )}
