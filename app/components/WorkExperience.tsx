@@ -13,6 +13,7 @@ import { getExperiences } from "../api/experiences"
 import { getProjects } from "../api/projects"
 import type { Experience } from "../utils/js/experiences"
 import type { Project } from "../utils/js/projects"
+import { ExperienceSkeleton } from "./Skeletons"
 
 const techLabels: Record<string, string> = {
     Reactjs: "React", Vuejs: "Vue", Nextjs: "Next.js", Nodejs: "Node.js",
@@ -169,7 +170,7 @@ export default function WorkExperience() {
                 </Link>
             </header>
             {isLoading && experiences.length === 0 ? (
-                <p className="experience-empty">Loading work experience…</p>
+                <ExperienceSkeleton />
             ) : experiences.length === 0 ? (
                 <p className="experience-empty">No work experience published yet.</p>
             ) : (

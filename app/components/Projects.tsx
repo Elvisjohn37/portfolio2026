@@ -9,6 +9,7 @@ import { REVEAL_IN_VIEW_OPTIONS } from "../utils/js/inView"
 import classnames from "classnames"
 import ArrowOutwardRoundedIcon from "@mui/icons-material/ArrowOutwardRounded"
 import TechnologyIcon from "./TechnologyIcon"
+import { ProjectsSkeleton } from "./Skeletons"
 import { getProjects } from "../api/projects"
 import { isLocalMedia } from "../utils/js/media"
 
@@ -90,7 +91,7 @@ const Projects = () => {
                 </div>
 
                 {isLoading && projects.length === 0 ? (
-                    <p className="projects__empty">Loading projects…</p>
+                    <ProjectsSkeleton />
                 ) : visibleProjects.length === 0 ? (
                     <p className="projects__empty">
                         No projects in this category yet.
