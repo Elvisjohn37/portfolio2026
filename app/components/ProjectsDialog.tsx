@@ -33,11 +33,11 @@ import { useRouter } from "next/navigation"
 import useSWR from "swr"
 import TechnologyIcon from "./TechnologyIcon"
 import { getProject } from "../api/projects"
+import { isLocalMedia } from "../utils/js/media"
 import type { Project } from "../utils/js/projects"
 
-// Next 16's image optimizer blocks private IPs (e.g. localhost) for SSRF
-// protection, so uploaded media served from the API is rendered unoptimized.
-const isRemote = (src: string) => /^https?:\/\//i.test(src)
+// Media paths are resolved to absolute URLs by the data layer
+// (`api/projects.ts`), so a src is either a local static asset or an API URL.
 
 type ProjectsDialogProps = {
     open?: boolean
@@ -157,7 +157,7 @@ const ProjectsDialog = ({
                             height={25}
                             src={project.logoSrc}
                             alt={"project-logo"}
-                            unoptimized={isRemote(project.logoSrc)}
+                            unoptimized={isLocalMedia(project.logoSrc)}
                         />
                     ) : null}
                     <p className="text-primary">{name}</p>
@@ -202,7 +202,7 @@ const ProjectsDialog = ({
                                                     height={100}
                                                     alt={`slide ${index}`}
                                                     Loader={Loader}
-                                                    unoptimized={isRemote(image)}
+                                                    unoptimized={isLocalMedia(image)}
                                                 />
                                             </div>
                                         ))}

@@ -1,4 +1,5 @@
 import type { Project } from "../utils/js/projects"
+import { withResolvedProjectMedia } from "../utils/js/media"
 
 const url =
     process.env.NODE_ENV === "development"
@@ -11,7 +12,9 @@ const getProjects = async (): Promise<Project[]> => {
         const res = await fetch(`${url}/api/projects/`)
         if (!res.ok) throw new Error("Projects are unavailable")
         const { data } = await res.json()
-        return Array.isArray(data?.projects) ? (data.projects as Project[]) : []
+        return Array.isArray(data?.projects)
+            ? (data.projects as Project[]).map(withResolvedProjectMedia)
+            : []
     } catch {
         return []
     }
@@ -23,7 +26,9 @@ const getProject = async ([, identifier]: [string, string]): Promise<Project | n
         const res = await fetch(`${url}/api/projects/${encodeURIComponent(identifier)}`)
         if (!res.ok) return null
         const { data } = await res.json()
-        return (data?.project as Project) ?? null
+        const project = (data?.project as Project) ?? null
+
+        return project ? withResolvedProjectMedia(project) : null
     } catch {
         return null
     }

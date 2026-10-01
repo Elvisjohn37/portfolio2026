@@ -10,6 +10,7 @@ import classnames from "classnames"
 import ArrowOutwardRoundedIcon from "@mui/icons-material/ArrowOutwardRounded"
 import TechnologyIcon from "./TechnologyIcon"
 import { getProjects } from "../api/projects"
+import { isLocalMedia } from "../utils/js/media"
 
 // Grid image width hints so next/image can serve appropriately sized files
 const THUMBNAIL_SIZES = "(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -17,11 +18,8 @@ const THUMBNAIL_SIZES = "(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33v
 // How many stack icons fit comfortably on one card row
 const STACK_PREVIEW_LIMIT = 5
 
-// Next 16's image optimizer blocks private IPs (e.g. localhost/127.0.0.1) for
-// SSRF protection, so uploaded media served from the API is rendered
-// unoptimized (the browser fetches it directly). Static local images keep
-// their optimisation.
-const isRemote = (src: string) => /^https?:\/\//i.test(src)
+// Media paths are resolved to absolute URLs by the data layer
+// (`api/projects.ts`), so a src is either a local static asset or an API URL.
 
 const ALL_PROJECTS = "All projects"
 
@@ -119,7 +117,9 @@ const Projects = () => {
                                                 fill
                                                 sizes={THUMBNAIL_SIZES}
                                                 className="projects__thumb"
-                                                unoptimized={isRemote(project.thumbnail)}
+                                                unoptimized={isLocalMedia(
+                                                    project.thumbnail,
+                                                )}
                                             />
                                         ) : null}
                                         <span className="projects__tag">
@@ -136,7 +136,9 @@ const Projects = () => {
                                                     width={26}
                                                     height={26}
                                                     className="projects__logo"
-                                                    unoptimized={isRemote(project.logoSrc)}
+                                                    unoptimized={isLocalMedia(
+                                                        project.logoSrc,
+                                                    )}
                                                 />
                                             ) : null}
                                             <h3 className="projects__name">

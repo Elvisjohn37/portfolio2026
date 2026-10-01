@@ -1,4 +1,5 @@
 import type { Experience } from "../utils/js/experiences"
+import { resolveMediaUrl } from "../utils/js/media"
 
 const url =
     process.env.NODE_ENV === "development"
@@ -11,7 +12,17 @@ const getExperiences = async (): Promise<Experience[]> => {
         const res = await fetch(`${url}/api/work-experiences/`)
         if (!res.ok) throw new Error("Work experience is unavailable")
         const { data } = await res.json()
-        return Array.isArray(data?.experiences) ? (data.experiences as Experience[]) : []
+        if (!Array.isArray(data?.experiences)) return []
+
+        // Each role embeds a light project projection (name / slug / thumbnail),
+        // so the thumbnails need the same API-origin resolution as the grid.
+        return (data.experiences as Experience[]).map(experience => ({
+            ...experience,
+            projects: (experience.projects ?? []).map(project => ({
+                ...project,
+                thumbnail: resolveMediaUrl(project.thumbnail),
+            })),
+        }))
     } catch {
         return []
     }
