@@ -22,6 +22,12 @@ type TuserData = {
     about1: string
     province: string
     country: string
+    yearsOfExperience: number
+    heroStat1Label: string
+    heroStat2Value: string
+    heroStat2Label: string
+    heroStat3Value: string
+    heroStat3Label: string
 }
 
 // Rotating focus line — every title is taken from the resume (see WorkExperience).
@@ -74,7 +80,19 @@ const Home = () => {
 
     const errorMessage = data?.errorMessage
 
-    const { firstName, position, about1, province, country } = useMemo(
+    const {
+        firstName,
+        position,
+        about1,
+        province,
+        country,
+        yearsOfExperience,
+        heroStat1Label,
+        heroStat2Value,
+        heroStat2Label,
+        heroStat3Value,
+        heroStat3Label,
+    } = useMemo(
         () =>
             data?.data || {
                 firstName: "",
@@ -82,6 +100,12 @@ const Home = () => {
                 about1: "",
                 province: "",
                 country: "",
+                yearsOfExperience: 0,
+                heroStat1Label: "",
+                heroStat2Value: "",
+                heroStat2Label: "",
+                heroStat3Value: "",
+                heroStat3Label: "",
             },
         [data],
     ) as TuserData
@@ -110,17 +134,35 @@ const Home = () => {
     const stats = useMemo<{ value: ReactNode; label: string }[]>(
         () => [
             {
+                // The "+" is part of the design; 7 keeps the placeholder for
+                // profiles that never set yearsOfExperience.
                 value: (
                     <>
-                        7<span>+</span>
+                        {yearsOfExperience > 0 ? yearsOfExperience : 7}
+                        <span>+</span>
                     </>
                 ),
-                label: "Years of experience",
+                label: heroStat1Label || "Years of experience",
             },
-            { value: projects.length, label: "Featured projects" },
-            { value: "AI", label: "Augmented workflow" },
+            {
+                // Blank value = live count of the published projects.
+                value: heroStat2Value.trim() || projects.length,
+                label: heroStat2Label || "Featured projects",
+            },
+            {
+                value: heroStat3Value || "AI",
+                label: heroStat3Label || "Augmented workflow",
+            },
         ],
-        [projects.length],
+        [
+            yearsOfExperience,
+            heroStat1Label,
+            heroStat2Value,
+            heroStat2Label,
+            heroStat3Value,
+            heroStat3Label,
+            projects.length,
+        ],
     )
 
     const location = [province, country].filter(Boolean).join(", ")
